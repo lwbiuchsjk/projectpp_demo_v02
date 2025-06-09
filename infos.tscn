@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://dal63mce6o2s"]
+
+[ext_resource type="Script" uid="uid://btnlg573sw431" path="res://infos.gd" id="1_ek0vb"]
+[ext_resource type="PackedScene" uid="uid://5aq8sw700syb" path="res://deck/handDeck.tscn" id="3_obuaq"]
+
+[node name="infos" type="CanvasLayer"]
+visible = false
+script = ExtResource("1_ek0vb")
+
+[node name="handDeck" parent="." groups=["saveableDecks"] instance=ExtResource("3_obuaq")]
+offset_left = 355.0
+offset_top = 720.0
+offset_right = 1920.0
+offset_bottom = 1080.0
