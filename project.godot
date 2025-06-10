@@ -17,7 +17,7 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-CardsInfo="*res://assets/cardsInfo.gd"
+CardsInfo="*res://assets/script/cardsInfo.gd"
 VfSlayer="*res://VFSlayer.tscn"
 Infos="*res://infos.tscn"
 

@@ -1,0 +1,17 @@
+[remap]
+
+importer="csv_translation"
+type="Translation"
+uid="uid://5wlhy503ydsr"
+
+[deps]
+
+files=["res://assets/data/cardsInfo.index.translation", "res://assets/data/cardsInfo.base.translation", "res://assets/data/cardsInfo.base.translation", "res://assets/data/cardsInfo.base.translation", "res://assets/data/cardsInfo.base.translation", "res://assets/data/cardsInfo.base.translation", "res://assets/data/cardsInfo.base.translation", "res://assets/data/cardsInfo.site.translation", "res://assets/data/cardsInfo.npc.translation", "res://assets/data/cardsInfo.food_HP.translation"]
+
+source_file="res://assets/data/cardsInfo.csv"
+dest_files=["res://assets/data/cardsInfo.index.translation", "res://assets/data/cardsInfo.base.translation", "res://assets/data/cardsInfo.base.translation", "res://assets/data/cardsInfo.base.translation", "res://assets/data/cardsInfo.base.translation", "res://assets/data/cardsInfo.base.translation", "res://assets/data/cardsInfo.base.translation", "res://assets/data/cardsInfo.site.translation", "res://assets/data/cardsInfo.npc.translation", "res://assets/data/cardsInfo.food_HP.translation"]
+
+[params]
+
+compress=true
+delimiter=0

@@ -1,9 +1,9 @@
 extends Node
-var file_path="res://assets/cardsInfo.CSV"
-var infosDic:Dictionary
+var itemCard_file_path="res://assets/data/cardsInfo.CSV"
+var itemCard:Dictionary
 
-func _init() -> void:
-	infosDic=read_csv_as_nested_dict(file_path)
+func _ready() -> void:
+	itemCard=read_csv_as_nested_dict(itemCard_file_path)
 
 	# 函数读取CSV文件并将其转换为嵌套字典
 func read_csv_as_nested_dict(path: String) -> Dictionary:

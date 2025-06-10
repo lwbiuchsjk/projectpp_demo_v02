@@ -101,7 +101,7 @@ func _on_button_button_up() -> void:
 	pass # Replace with function body.
 
 func initCard(Nm) -> void:
-	cardInfo=CardsInfo.infosDic[Nm]
+	cardInfo=CardsInfo.itemCard[Nm]
 	cardWeight=float(cardInfo["base_cardWeight"])
 	cardClass=cardInfo["base_cardClass"]
 	cardName=cardInfo["base_cardName"]
@@ -136,13 +136,16 @@ func is_card_following() -> bool:
 	return false
 	
 func _on_button_mouse_entered() -> void:
-	cardCurrentState = cardState.focus
-	scale = Vector2(1.2, 1.2)
-	z_index = 100
+	if dup == null:
+		dup=self.duplicate() as card
+		VfSlayer.add_child(dup)
+		dup.global_position=global_position
+		dup.cardCurrentState=cardState.focus
+		dup.scale = Vector2(1.2, 1.2)
 	pass
 	
 func _on_button_mouse_exited() -> void:
-	cardCurrentState = cardState.following
-	scale = Vector2(1, 1)
+	if dup!=null:
+		dup.queue_free()
 	pass
 	

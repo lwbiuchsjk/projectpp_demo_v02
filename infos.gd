@@ -11,7 +11,7 @@ var playerInfoPath:String
 
 func add_new_card(cardName,cardDeck,caller = get_tree().get_first_node_in_group("cardDeck"))->Node:
 		print("开始创建新卡牌："+str(cardName))
-		var cardClass=CardsInfo.infosDic[cardName]["base_cardClass"]
+		var cardClass=CardsInfo.itemCard[cardName]["base_cardClass"]
 		print("添加的卡的类型为%s:"%cardClass)
 		var cardToAdd
 		
