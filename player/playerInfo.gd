@@ -1,4 +1,4 @@
-extends CanvasLayer
+extends Node
 
 #存储所有的存档
 var saves:Dictionary
@@ -6,8 +6,6 @@ var saves:Dictionary
 var save:player
 
 var playerInfoPath:String
-
-@onready var hand_deck: Control = $handDeck
 
 func add_new_card(cardName,cardDeck,caller = get_tree().get_first_node_in_group("cardDeck"))->Node:
 		print("开始创建新卡牌："+str(cardName))
@@ -28,17 +26,8 @@ func loadPlayerInfo(savePath:String="autoSave"):
 	var path = "user://save/"+savePath+".tres"
 	playerInfoPath=path
 	save = load(playerInfoPath) as player
-	
-	print(hand_deck)
-	print($handDeck)
-	# 可能由于加载顺序不同，导致需要在此处手动设置一下变量关联
-	hand_deck = $handDeck
-	print(hand_deck.maxWeight)
-	
-	hand_deck.maxWeight=save.handMax
-	#get_tree().change_scene_to_file(save.location)
-	hand_deck.loadCards()
-	visible = true
+
+
 
 func savePlayerInfo(newSavePath:String):
 	for d in get_tree().get_nodes_in_group("saveableDecks"):

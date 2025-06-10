@@ -14,7 +14,7 @@ func playerInit(newPlayer:player):
 	create_folder(folderPath)
 	newPlayer.folderPath=folderPath
 	ResourceSaver.save(newPlayer,savePath)
-	Infos.loadPlayerInfo()
+	PlayerInfo.loadPlayerInfo()
 	
 # 创建文件夹的函数
 func create_folder(folder_path: String):

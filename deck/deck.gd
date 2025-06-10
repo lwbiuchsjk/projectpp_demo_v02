@@ -15,7 +15,7 @@ func _ready() -> void:
 		loadCards()
 	else:
 		for i in defultCards:
-			Infos.nowScene.add_new_card(i,self)
+			PlayerInfo.nowScene.add_new_card(i,self)
 	$ProgressBar.max_value = maxWeight
 
 
@@ -44,7 +44,7 @@ func add_card(cardToAdd)->void:
 			return
 	
 	var index=cardToAdd.z_index
-	var cardBackground=preload("res://card_background.tscn").instantiate()
+	var cardBackground=preload("res://cards/card_background.tscn").instantiate()
 	cardPoiDeck.add_child(cardBackground)
 	
 	
@@ -119,7 +119,7 @@ func storCard():
 	saver.cards=cardsSaved
 	var path = str(get_path())
 	var savePath = path
-	Infos.save.decks[savePath] = saver
+	PlayerInfo.save.decks[savePath] = saver
 	
 	
 	
@@ -129,15 +129,15 @@ func loadCards():
 	clear_children($cardDcek)
 	var path = str(get_path())
 	var savePath = path
-	if Infos.save.decks.has(savePath):
-		var save = Infos.save.decks[savePath]
+	if PlayerInfo.save.decks.has(savePath):
+		var save = PlayerInfo.save.decks[savePath]
 		if save.cards.size()>0:
 			for c in save.cards:
 				var p = c.instantiate()
 				add_card(p)
 	else :
 		for i in defultCards:
-			Infos.nowScene.add_new_card(i,self)
+			PlayerInfo.nowScene.add_new_card(i,self)
 	
 	
 func clear_children(node: Node):

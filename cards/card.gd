@@ -71,7 +71,7 @@ func _on_button_button_down() -> void:
 		cardCurrentState = cardState.dragging
 		get_parent().get_parent().update_weight()#在满的时候就要先检测一下了，相对于提前删除这部分重量
 		if numc!=1&&numc!=null:
-			var c:card = Infos.add_new_card(cardName,get_parent().get_parent(),self)
+			var c:card = PlayerInfo.add_new_card(cardName,get_parent().get_parent(),self)
 			c.follow_target.queue_free()
 			c.follow_target=follow_target
 			c.global_position=global_position
