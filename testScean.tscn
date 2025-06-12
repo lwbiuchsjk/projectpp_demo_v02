@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://bf6gbw70vnbbg"]
+[gd_scene load_steps=4 format=3 uid="uid://bf6gbw70vnbbg"]
 
 [ext_resource type="Script" uid="uid://wnq72km4wsvd" path="res://test_scean.gd" id="1_qgpw2"]
 [ext_resource type="PackedScene" uid="uid://cper56cxk0sl1" path="res://site/site1.tscn" id="2_i2vi0"]
+[ext_resource type="PackedScene" uid="uid://o7p1yie6n1oh" path="res://player/playerInfoPannel.tscn" id="3_ef8qq"]
 
 [node name="Control" type="Control"]
 layout_mode = 3
@@ -15,3 +16,9 @@ grow_vertical = 2
 script = ExtResource("1_qgpw2")
 
 [node name="site1" parent="." instance=ExtResource("2_i2vi0")]
+
+[node name="PlayerInfoPannel" parent="." instance=ExtResource("3_ef8qq")]
+offset_left = 32.0
+offset_top = 764.0
+offset_right = 252.0
+offset_bottom = 1084.0

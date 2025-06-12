@@ -29,9 +29,10 @@ func get_some_card():
 				break
 
 	for c in selected_cards:
-		var randomDeck = get_tree().get_nodes_in_group("cardDeck")[randi_range(0,2)]
+		#var randomDeck = get_tree().get_nodes_in_group("cardDeck")[randi_range(0,0)]
+		var handDeck = $handDeck
 		await get_tree().create_timer(0.1).timeout
-		PlayerInfo.add_new_card(c,randomDeck,$Button)
+		PlayerInfo.add_new_card(c,handDeck,$Button)
 	
 	
 # 计算权重总和
