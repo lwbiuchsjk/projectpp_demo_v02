@@ -19,7 +19,7 @@ config/icon="res://icon.svg"
 
 CardsInfo="*res://assets/script/cardsInfo.gd"
 VfSlayer="*res://VFSlayer.tscn"
-PlayerInfo="*res://player/playerInfo.gd"
+PlayerInfo="*res://scene/player/playerInfo.gd"
 
 [display]
 
@@ -29,6 +29,10 @@ window/size/viewport_height=1080
 [dotnet]
 
 project/assembly_name="ProjectPP_demo_v02"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/script-ide/plugin.cfg")
 
 [global_group]
 

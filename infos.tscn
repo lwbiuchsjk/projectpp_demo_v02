@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://cum3xvcx3nvrh"]
 
-[ext_resource type="PackedScene" uid="uid://5aq8sw700syb" path="res://deck/handDeck.tscn" id="3_obuaq"]
+[ext_resource type="PackedScene" uid="uid://5aq8sw700syb" path="res://scene/deck/handDeck.tscn" id="3_obuaq"]
 
 [sub_resource type="GDScript" id="GDScript_ek0vb"]
 script/source = "extends CanvasLayer

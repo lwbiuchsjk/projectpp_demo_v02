@@ -1,5 +1,6 @@
 extends Control
 
+@export var characters: Array[PlayerInfoPannel] = []
 
 func _init() -> void:
 	var newPlayerInfo = player.new()
@@ -30,6 +31,11 @@ func create_folder(folder_path: String):
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	print("...测试属性")
+	for _player in characters:
+		var attribute_set = _player.get_attribute_set() as AttributeSet
+		for _name in attribute_set.attributes_runtime_dict:
+			print(_name)
 	pass # Replace with function body.
 
 

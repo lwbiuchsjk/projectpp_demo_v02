@@ -1,0 +1,104 @@
+[gd_scene load_steps=14 format=3 uid="uid://o7p1yie6n1oh"]
+
+[ext_resource type="Script" uid="uid://c0x71khe3tbo7" path="res://scene/player/PlayerInfoPannel.gd" id="1_x4gct"]
+[ext_resource type="Texture2D" uid="uid://dfijlfbfhha3n" path="res://assets/image/MainFemale_1_head_1.png" id="1_x20al"]
+[ext_resource type="Texture2D" uid="uid://4ncp1rmh7sm0" path="res://assets/image/UI/HealBarUnder.png" id="2_0t2ha"]
+[ext_resource type="Texture2D" uid="uid://c87barisratbx" path="res://assets/image/UI/SpiritUnder.png" id="2_fct2u"]
+[ext_resource type="Texture2D" uid="uid://cwnysynxiph00" path="res://assets/image/UI/HealBarProgress.png" id="3_kqa1o"]
+[ext_resource type="Texture2D" uid="uid://j3i7xcpaxa5m" path="res://assets/image/UI/SpiritProgress.png" id="3_vidd3"]
+[ext_resource type="PackedScene" uid="uid://drvhyyhnnfdym" path="res://assets/script/AttributeComponent/AttributeComponent.tscn" id="7_51cjt"]
+[ext_resource type="Script" uid="uid://bw4kf70rvxlww" path="res://assets/script/AttributePrototype/Attribute.gd" id="8_j7e8t"]
+[ext_resource type="Script" uid="uid://byfoak0mg8h02" path="res://assets/script/Attribute/HealthAttribute.gd" id="9_4us3i"]
+[ext_resource type="Script" uid="uid://cdcushggciuu1" path="res://assets/script/AttributePrototype/AttributeSet.gd" id="9_gc8le"]
+
+[sub_resource type="Resource" id="Resource_h4lhw"]
+script = ExtResource("8_j7e8t")
+attribute_name = "max_health"
+base_value = 100.0
+metadata/_custom_type_script = "uid://bw4kf70rvxlww"
+
+[sub_resource type="Resource" id="Resource_rlwvb"]
+script = ExtResource("9_4us3i")
+attribute_name = "health"
+base_value = 100.0
+metadata/_custom_type_script = "uid://byfoak0mg8h02"
+
+[sub_resource type="Resource" id="Resource_4us3i"]
+script = ExtResource("9_gc8le")
+attributes = Array[ExtResource("8_j7e8t")]([SubResource("Resource_h4lhw"), SubResource("Resource_rlwvb")])
+metadata/_custom_type_script = "uid://cdcushggciuu1"
+
+[node name="PlayerInfoPannel" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 220.0
+offset_bottom = 320.0
+script = ExtResource("1_x4gct")
+
+[node name="PlayerImage" type="TextureRect" parent="."]
+clip_contents = true
+layout_mode = 0
+offset_right = 220.0
+offset_bottom = 320.0
+texture = ExtResource("1_x20al")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="SpiritInfo" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_top = -20.0
+offset_right = 220.0
+offset_bottom = 20.0
+
+[node name="SpiritBar" type="TextureProgressBar" parent="SpiritInfo"]
+layout_mode = 0
+offset_right = 220.0
+offset_bottom = 60.0
+max_value = 200.0
+value = 80.0
+texture_under = ExtResource("2_fct2u")
+texture_progress = ExtResource("3_vidd3")
+
+[node name="SpiritString" type="Label" parent="SpiritInfo"]
+layout_mode = 0
+offset_left = 55.0
+offset_right = 158.0
+offset_bottom = 45.0
+theme_override_colors/font_color = Color(1, 0.843137, 0.372549, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 30
+text = "-20"
+horizontal_alignment = 1
+
+[node name="HealthInfo" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_top = 260.0
+offset_right = 220.0
+offset_bottom = 320.0
+
+[node name="HealthBar" type="TextureProgressBar" parent="HealthInfo"]
+layout_mode = 0
+offset_right = 220.0
+offset_bottom = 60.0
+value = 80.0
+fill_mode = 1
+texture_under = ExtResource("2_0t2ha")
+texture_progress = ExtResource("3_kqa1o")
+
+[node name="HealthString" type="Label" parent="HealthInfo"]
+layout_mode = 0
+offset_left = 5.0
+offset_top = 20.0
+offset_right = 108.0
+offset_bottom = 65.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 30
+text = "99 / 99"
+
+[node name="AttributeComponent" parent="." instance=ExtResource("7_51cjt")]
+unique_name_in_owner = true
+attribute_set = SubResource("Resource_4us3i")
