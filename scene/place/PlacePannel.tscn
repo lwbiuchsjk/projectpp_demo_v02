@@ -1,0 +1,29 @@
+[gd_scene load_steps=3 format=3 uid="uid://d13i0nk65cg4r"]
+
+[ext_resource type="Script" uid="uid://c0b1l60ibgacq" path="res://scene/place/place_pannel.gd" id="1_d1mjr"]
+[ext_resource type="Script" uid="uid://70uhpprjsggb" path="res://scene/place/scroll_container.gd" id="1_qtvch"]
+
+[node name="PlacePannel" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 160.0
+offset_top = 120.0
+offset_right = -160.0
+offset_bottom = -340.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_d1mjr")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_qtvch")
+
+[node name="Content" type="Control" parent="ScrollContainer"]
+layout_mode = 2

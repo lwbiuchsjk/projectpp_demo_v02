@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://o7p1yie6n1oh"]
+[gd_scene load_steps=16 format=3 uid="uid://o7p1yie6n1oh"]
 
 [ext_resource type="Script" uid="uid://c0x71khe3tbo7" path="res://scene/player/PlayerInfoPannel.gd" id="1_x4gct"]
 [ext_resource type="Texture2D" uid="uid://dfijlfbfhha3n" path="res://assets/image/MainFemale_1_head_1.png" id="1_x20al"]
@@ -10,6 +10,7 @@
 [ext_resource type="Script" uid="uid://bw4kf70rvxlww" path="res://assets/script/AttributePrototype/Attribute.gd" id="8_j7e8t"]
 [ext_resource type="Script" uid="uid://byfoak0mg8h02" path="res://assets/script/Attribute/HealthAttribute.gd" id="9_4us3i"]
 [ext_resource type="Script" uid="uid://cdcushggciuu1" path="res://assets/script/AttributePrototype/AttributeSet.gd" id="9_gc8le"]
+[ext_resource type="Script" uid="uid://cv1dyugotoumw" path="res://assets/script/Attribute/SpiritAttribute.gd" id="10_4us3i"]
 
 [sub_resource type="Resource" id="Resource_h4lhw"]
 script = ExtResource("8_j7e8t")
@@ -23,9 +24,15 @@ attribute_name = "health"
 base_value = 100.0
 metadata/_custom_type_script = "uid://byfoak0mg8h02"
 
+[sub_resource type="Resource" id="Resource_ckvpk"]
+script = ExtResource("10_4us3i")
+attribute_name = "spirit"
+base_value = -999.0
+metadata/_custom_type_script = "uid://cv1dyugotoumw"
+
 [sub_resource type="Resource" id="Resource_4us3i"]
 script = ExtResource("9_gc8le")
-attributes = Array[ExtResource("8_j7e8t")]([SubResource("Resource_h4lhw"), SubResource("Resource_rlwvb")])
+attributes = Array[ExtResource("8_j7e8t")]([SubResource("Resource_h4lhw"), SubResource("Resource_rlwvb"), SubResource("Resource_ckvpk")])
 metadata/_custom_type_script = "uid://cdcushggciuu1"
 
 [node name="PlayerInfoPannel" type="Control"]

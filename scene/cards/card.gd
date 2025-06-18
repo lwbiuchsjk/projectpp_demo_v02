@@ -114,7 +114,7 @@ func paintCard():
 	
 	#print(cardInfo)
 	pickButton=$Button
-	var imgPath="res://cardImg/"+str(cardName)+".png"
+	var imgPath="res://assets/image/cardImg/"+str(cardName)+".png"
 	$Control/ColorRect/itemImg.texture=load(imgPath)
 	$Control/ColorRect/name.text=cardInfo[ "base_displayName"]
 	$allButton.text = "X"+str(num)
