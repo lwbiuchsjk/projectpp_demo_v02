@@ -1,6 +1,7 @@
 extends Control
 
 @export var characters: Array[PlayerInfoPannel] = []
+@export var cardCound := 5
 
 func _init() -> void:
 	var newPlayerInfo = player.new()
@@ -36,6 +37,12 @@ func _ready() -> void:
 		var attribute_set = _player.get_attribute_set() as AttributeSet
 		for _name in attribute_set.attributes_runtime_dict:
 			print(_name)
+			
+	print("……测试卡牌脚本")
+	for i in range(0, cardCound):
+		var testCard = preload("res://scene/cards/card.tscn").instantiate() as card
+		$Event.add_child_item(testCard)
+	$Event.arrange_children_bottom_up()
 	pass # Replace with function body.
 
 

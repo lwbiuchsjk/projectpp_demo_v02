@@ -1,0 +1,75 @@
+[gd_scene load_steps=5 format=3 uid="uid://dd8yf04nq7y51"]
+
+[ext_resource type="Texture2D" uid="uid://fexoqmnw4eiq" path="res://assets/image/placeText.jpg" id="1_la730"]
+[ext_resource type="Script" uid="uid://kpabxofifrvt" path="res://scene/event/event.gd" id="1_luj7y"]
+[ext_resource type="Texture2D" uid="uid://dv70kq5qlxcv5" path="res://assets/image/background.png" id="2_5pdwc"]
+[ext_resource type="Script" uid="uid://db0lxuumvxkwf" path="res://scene/event/CardContainer.gd" id="2_fv7qv"]
+
+[node name="Event" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 160.0
+offset_top = 120.0
+offset_right = -160.0
+offset_bottom = -340.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_luj7y")
+
+[node name="PicCardArea" type="Control" parent="."]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="EventImage" type="TextureRect" parent="PicCardArea"]
+layout_mode = 0
+offset_right = 900.0
+offset_bottom = 620.0
+texture = ExtResource("1_la730")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="CardArea" type="Control" parent="PicCardArea"]
+anchors_preset = 0
+offset_left = 50.0
+offset_top = 50.0
+offset_right = 850.0
+offset_bottom = 570.0
+
+[node name="Container" type="Container" parent="PicCardArea/CardArea"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_vertical = 0
+script = ExtResource("2_fv7qv")
+
+[node name="TextArea" type="Control" parent="."]
+anchors_preset = 0
+offset_left = 900.0
+offset_right = 1600.0
+offset_bottom = 620.0
+
+[node name="TextureRect" type="TextureRect" parent="TextArea"]
+layout_mode = 0
+offset_right = 700.0
+offset_bottom = 620.0
+texture = ExtResource("2_5pdwc")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="TextArea"]
+custom_minimum_size = Vector2(650, 550)
+layout_mode = 0
+offset_left = 25.0
+offset_top = 25.0
+offset_right = 675.0
+offset_bottom = 575.0
+
+[node name="Label" type="Label" parent="TextArea/ScrollContainer"]
+custom_minimum_size = Vector2(650, 550)
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 28
+text = "测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测"
+autowrap_mode = 2
