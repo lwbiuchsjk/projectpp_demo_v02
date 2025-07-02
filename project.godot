@@ -20,6 +20,7 @@ config/icon="res://icon.svg"
 CardsInfo="*res://assets/script/cardsInfo.gd"
 VfSlayer="*res://VFSlayer.tscn"
 PlayerInfo="*res://scene/player/playerInfo.gd"
+GameType="*res://data/GameType.gd"
 
 [display]
 

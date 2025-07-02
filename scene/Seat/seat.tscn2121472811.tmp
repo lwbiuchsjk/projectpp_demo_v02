@@ -1,0 +1,43 @@
+[gd_scene load_steps=3 format=3 uid="uid://b80jq7wxyi2j7"]
+
+[ext_resource type="Script" uid="uid://cxfx6k81kibfm" path="res://scene/Seat/seat.gd" id="1_0tr8d"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0tr8d"]
+size = Vector2(220, 320)
+
+[node name="Seat" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 220.0
+offset_bottom = 320.0
+script = ExtResource("1_0tr8d")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.424931, 0.424931, 0.424931, 1)
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 40
+text = "+"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(110, 160)
+shape = SubResource("RectangleShape2D_0tr8d")
+
+[connection signal="area_entered" from="Area2D" to="." method="_on_area_entered"]
+[connection signal="area_exited" from="Area2D" to="." method="_on_area_exited"]

@@ -1,7 +1,7 @@
 extends Control
 
 @export var characters: Array[PlayerInfoPannel] = []
-@export var cardCound := 5
+@export var cardCound := 3
 
 func _init() -> void:
 	var newPlayerInfo = player.new()
@@ -40,8 +40,9 @@ func _ready() -> void:
 			
 	print("……测试卡牌脚本")
 	for i in range(0, cardCound):
-		var testCard = preload("res://scene/cards/card.tscn").instantiate() as card
+		var testCard = preload("res://scene/Seat/seat.tscn").instantiate() as Seat
 		$Event.add_child_item(testCard)
+		testCard.set_seat_type([GameType.CardType.SKILL])
 	$Event.arrange_children_bottom_up()
 	pass # Replace with function body.
 

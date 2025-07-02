@@ -7,6 +7,8 @@ var stiffness = 500
 
 var preDeck:deck
 
+var cardType:GameType.CardType
+
 @export var cardClass:String
 @export var cardName:String
 @export var maxStackNum:int
@@ -24,6 +26,9 @@ enum cardState{following,dragging,vfs,fake,focus}
 
 @export var follow_target:Node
 var whichDeckMouseIn
+
+func _ready() -> void:
+	add_to_group("card")
 
 func _process(delta: float) -> void:
 	match  cardCurrentState:
@@ -107,6 +112,7 @@ func initCard(Nm) -> void:
 	cardName=cardInfo["base_cardName"]
 	maxStackNum=int(cardInfo["base_maxStack"])
 	cardCurrentState=cardState.following
+	cardType=GameType.get_cardType(cardInfo['base_cardType'])
 	paintCard()
 
 
@@ -149,3 +155,9 @@ func _on_button_mouse_exited() -> void:
 		dup.queue_free()
 	pass
 	
+func get_card_type() -> GameType.CardType:
+	return cardType
+	pass
+	
+func set_card_type(setType: GameType.CardType) -> void:
+	cardType = setType
