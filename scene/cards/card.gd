@@ -114,10 +114,7 @@ func check_deck_dropable(node: deck) -> bool:
 	if node != null:
 		if node is Seat:
 			var seatNode = node as Seat
-			if seatNode.seat_card == null:
-				return seatNode.card_can_drop
-			else:
-				return false
+			return seatNode.check_seat_can_drop()
 		else:
 			return true
 	return false

@@ -50,19 +50,21 @@ func update_weight() -> void:
 	currentWeight=nowWeight
 	pass
 
+func check_seat_can_drop() -> bool:
+	if seat_card != null:
+		return false
+	return card_can_drop
+
 
 func _on_area_entered(targetArea: Area2D):
 	var targetCard = targetArea.get_parent() as card
 	card_can_drop = false
 	if targetCard.is_in_group("card") and is_type_match(targetCard.get_card_type()):
-		card_can_drop = true	
-		print("卡牌类型匹配，可以放入！")
-	print(card_can_drop)
+		card_can_drop = true
 
 func _on_area_exited(targetCard: Area2D):
 	if targetCard.is_in_group("card"):
 		card_can_drop = false
-		print("卡牌离开区域")
 		
 func set_seat_type(typeList: Array) -> void:
 	accepted_types.clear()
