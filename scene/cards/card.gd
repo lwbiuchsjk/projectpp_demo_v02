@@ -6,6 +6,7 @@ var damping = 0.35
 var stiffness = 500
 
 var preDeck:deck
+var preSeat:Seat
 
 var cardType:GameType.CardType
 
@@ -74,7 +75,8 @@ func _on_button_button_down() -> void:
 		dup.global_position=global_position
 		dup.cardCurrentState=cardState.vfs
 		cardCurrentState = cardState.dragging
-		get_parent().get_parent().update_weight()#在满的时候就要先检测一下了，相对于提前删除这部分重量
+		_update_deck_weight()
+
 		if numc!=1&&numc!=null:
 			var c:card = PlayerInfo.add_new_card(cardName,get_parent().get_parent(),self)
 			c.follow_target.queue_free()
@@ -84,19 +86,22 @@ func _on_button_button_down() -> void:
 			c.paintCard()
 		elif follow_target!=null:
 			follow_target.queue_free()
-		get_parent().get_parent().update_weight()
+		_update_deck_weight()
 		
 		pass # Replace with function body.
 
+func _update_deck_weight() -> void:
+	if preDeck != null:
+		get_parent().get_parent().update_weight()
 
 func _on_button_button_up() -> void:
 	if dup!=null:
 		dup.queue_free()
 	
-	if whichDeckMouseIn!=null:
+	if check_deck_dropable(whichDeckMouseIn):
 		whichDeckMouseIn.add_card(self)
 	else:
-		if preDeck!=null:
+		if preDeck != null:
 			preDeck.add_card(self)
 		else:
 			print("有一张卡牌没有preDeck，也没有whichDeckMouseIn，一般是由于点的太快导致的")
@@ -104,6 +109,18 @@ func _on_button_button_up() -> void:
 	cardCurrentState = cardState.following
 		
 	pass # Replace with function body.
+
+func check_deck_dropable(node: deck) -> bool:
+	if node != null:
+		if node is Seat:
+			var seatNode = node as Seat
+			if seatNode.seat_card == null:
+				return seatNode.card_can_drop
+			else:
+				return false
+		else:
+			return true
+	return false
 
 func initCard(Nm) -> void:
 	cardInfo=CardsInfo.itemCard[Nm]
