@@ -21,7 +21,6 @@ func is_type_match(type: GameType.CardType) -> bool:
 	return type in accepted_types  # 检查卡牌类型是否匹配
 
 func add_card(cardToAdd)->void:
-	var index=cardToAdd.z_index
 	var cardBackground=preload("res://scene/cards/card_background.tscn").instantiate()
 	cardPoiDeck.add_child(cardBackground)
 	
@@ -69,6 +68,10 @@ func _on_area_exited(targetCard: Area2D):
 func set_seat_type(typeList: Array) -> void:
 	accepted_types.clear()
 	for targetType in typeList:
-		accepted_types.append(targetType)
-		print(targetType)
-	pass
+		if targetType != GameType.CardType.NONE:
+			accepted_types.append(targetType)
+
+func search_seat_property(ID: String):
+	for seatInfo in CardsInfo.itemSeat.values():
+		if seatInfo.ID == ID:
+			return GameType.get_cardType(seatInfo['base_cardType'])

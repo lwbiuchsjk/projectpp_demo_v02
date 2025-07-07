@@ -1,0 +1,15 @@
+[remap]
+
+importer="csv_translation"
+type="Translation"
+uid="uid://dpbitgvim2pps"
+valid=false
+
+[deps]
+
+source_file="res://assets/data/seatsInfo.csv"
+
+[params]
+
+compress=true
+delimiter=0

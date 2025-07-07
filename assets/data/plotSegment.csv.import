@@ -1,0 +1,15 @@
+[remap]
+
+importer="csv_translation"
+type="Translation"
+uid="uid://dvjm4tbh4ujf4"
+valid=false
+
+[deps]
+
+source_file="res://assets/data/plotSegment.csv"
+
+[params]
+
+compress=true
+delimiter=0

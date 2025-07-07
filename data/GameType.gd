@@ -8,8 +8,8 @@ enum CardType {
 	MEMORY      # 记忆
 }
 
-func get_cardType(type_string: String) -> int:
-	match type_string.to_upper():
+func get_cardType(typeString: String) -> int:
+	match typeString.to_upper():
 		"SKILL":
 			return CardType.SKILL
 		"ITEM":

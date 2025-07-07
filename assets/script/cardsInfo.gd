@@ -2,8 +2,17 @@ extends Node
 var itemCard_file_path="res://assets/data/cardsInfo.CSV"
 var itemCard:Dictionary
 
+var itemSeat_file_path = 'res://assets/data/seatsInfo.csv'
+var itemSeat:Dictionary
+
+var plotSegment_file_path = 'res://assets/data/plotSegment.csv'
+var plotSegment:Dictionary
+
 func _ready() -> void:
 	itemCard=read_csv_as_nested_dict(itemCard_file_path)
+	itemSeat = read_csv_as_nested_dict(itemSeat_file_path)
+	plotSegment = read_csv_as_nested_dict(plotSegment_file_path)
+	plotSegment_data_wash()
 
 	# 函数读取CSV文件并将其转换为嵌套字典
 func read_csv_as_nested_dict(path: String) -> Dictionary:
@@ -26,7 +35,15 @@ func read_csv_as_nested_dict(path: String) -> Dictionary:
 	return data
 
 func search_card_from_cardName(cardName: String):
-	for itemKey in itemCard.keys():
-		if itemCard[itemKey]['base_cardName'] == cardName:
-			return itemCard[itemKey]
+	for checkCard in itemCard.values():
+		if checkCard['base_cardName'] == cardName:
+			return checkCard
 	return itemCard[0]
+
+## 对 plotSegment 中的部分数据进行清理，确保生成数据实际可读
+func plotSegment_data_wash() -> void:
+	for segment in plotSegment.values():
+		## 处理 seat_list 的列表配置
+		var raw_seat_list:String = segment['seat_list']
+		var seat_list = raw_seat_list.split("/")
+		segment['seat_list'] = seat_list
