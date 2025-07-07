@@ -1,4 +1,4 @@
-﻿index,base_cardType,base_cardName,base_cardClass,base_displayName,base_description,base_price,base_cardWeight,base_maxStack,site_area,npc_schedule,food_HP
+﻿ID,base_cardType,base_cardName,base_cardClass,base_displayName,base_description,base_price,base_cardWeight,base_maxStack,site_area,npc_schedule,food_HP
 1,SKILL,Ice,item,冰,不仅能降温，还能当成临时冰淇淋。,2,1,1000,0,0,0
 2,ITEM,Stone,item,石头,看似平凡，却是太空飞船的基础材料。,1,1,1000,0,0,0
 3,,Iron_ore,ore,铁矿,虽然看起来很普通，但经过加工后，它可是战斗中的坚固护甲。,10,1,1000,0,0,0
