@@ -24,3 +24,9 @@ func read_csv_as_nested_dict(path: String) -> Dictionary:
 			data[key] = row_dict
 	file.close()
 	return data
+
+func search_card_from_cardName(cardName: String):
+	for itemKey in itemCard.keys():
+		if itemCard[itemKey]['base_cardName'] == cardName:
+			return itemCard[itemKey]
+	return itemCard[0]

@@ -38,6 +38,7 @@ func _ready() -> void:
 		for _name in attribute_set.attributes_runtime_dict:
 			print(_name)
 			
+	## TODO: 此处对于创建的卡牌有很多定制写法。在通用逻辑中需要去掉
 	print("……测试卡牌脚本")
 	for i in range(0, cardCound):
 		var testCard = preload("res://scene/Seat/seat.tscn").instantiate() as Seat

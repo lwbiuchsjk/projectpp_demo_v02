@@ -32,7 +32,8 @@ func get_some_card():
 		#var randomDeck = get_tree().get_nodes_in_group("cardDeck")[randi_range(0,0)]
 		var handDeck = $handDeck
 		await get_tree().create_timer(0.1).timeout
-		PlayerInfo.add_new_card(c,handDeck,$Button)
+		var searchCard = CardsInfo.search_card_from_cardName(c)
+		PlayerInfo.add_new_card(searchCard['base_cardName'],handDeck,$Button)
 	
 	
 # 计算权重总和
