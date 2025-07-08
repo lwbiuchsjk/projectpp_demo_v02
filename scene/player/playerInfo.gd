@@ -9,7 +9,7 @@ var playerInfoPath:String
 
 func add_new_card(cardName,cardDeck,caller = get_tree().get_first_node_in_group("cardDeck"))->Node:
 		print("开始创建新卡牌："+str(cardName))
-		var searchCard = CardsInfo.search_card_from_cardName(cardName)
+		var searchCard = GameInfo.search_card_from_cardName(cardName)
 		var cardClass=searchCard["base_cardClass"]
 		print("添加的卡的类型为%s:"%cardClass)
 		var cardToAdd

@@ -72,6 +72,6 @@ func set_seat_type(typeList: Array) -> void:
 			accepted_types.append(targetType)
 
 func search_seat_property(ID: String):
-	for seatInfo in CardsInfo.itemSeat.values():
+	for seatInfo in GameInfo.itemSeat.values():
 		if seatInfo.ID == ID:
 			return GameType.get_cardType(seatInfo['base_cardType'])
