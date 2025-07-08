@@ -8,11 +8,19 @@ var itemSeat:Dictionary
 var plotSegment_file_path = 'res://assets/data/plotSegment.csv'
 var plotSegment:Dictionary
 
+var avgPlot_file_path = 'res://assets/data/avgPlot.csv'
+var avgPlot:Dictionary
+
+var pic_file_path = 'res://assets/data/pic.csv'
+var pic:Dictionary
+
 func _ready() -> void:
 	itemCard=read_csv_as_nested_dict(itemCard_file_path)
 	itemSeat = read_csv_as_nested_dict(itemSeat_file_path)
 	plotSegment = read_csv_as_nested_dict(plotSegment_file_path)
 	plotSegment_data_wash()
+	avgPlot = read_csv_as_nested_dict(avgPlot_file_path)
+	pic = read_csv_as_nested_dict(pic_file_path)
 
 	# 函数读取CSV文件并将其转换为嵌套字典
 func read_csv_as_nested_dict(path: String) -> Dictionary:
@@ -47,3 +55,18 @@ func plotSegment_data_wash() -> void:
 		var raw_seat_list:String = segment['seat_list']
 		var seat_list = raw_seat_list.split("/")
 		segment['seat_list'] = seat_list
+
+##TODO AVG相关文字的临时调用，之后需要 Manager 专门处理
+## 用于标记AVG当前状态的参数
+var nowAvgSegment:String
+## 信息改变信号
+signal new_avg()
+
+func load_avg_config():
+	for avg in avgPlot.values():
+		if nowAvgSegment == avg.ID:
+			var words = avg['words']
+			return words
+
+func set_avg_now(ID):
+	nowAvgSegment = str(ID)

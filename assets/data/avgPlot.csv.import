@@ -1,0 +1,15 @@
+[remap]
+
+importer="csv_translation"
+type="Translation"
+uid="uid://cxm5sdcwsom2g"
+valid=false
+
+[deps]
+
+source_file="res://assets/data/avgPlot.csv"
+
+[params]
+
+compress=true
+delimiter=0

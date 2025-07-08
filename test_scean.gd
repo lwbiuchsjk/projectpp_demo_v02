@@ -40,13 +40,16 @@ func _ready() -> void:
 			
 	## TODO: 此处对于创建的卡牌有很多定制写法。在通用逻辑中需要去掉
 	print("……测试卡牌脚本")
-	print("检查数据：", GameInfo.plotSegment.values()[0])
-	for i in GameInfo.plotSegment.values()[0]['seat_list']:
+	var plotSegment = GameInfo.plotSegment.values()[0]
+	GameInfo.set_avg_now(plotSegment['avg_plot'])
+	for i in plotSegment['seat_list']:
 		var testCard = preload("res://scene/Seat/seat.tscn").instantiate() as Seat
 		$Event.add_child_item(testCard)
 		var card_type = testCard.search_seat_property(i)
 		testCard.set_seat_type([card_type])
 	$Event.arrange_children_bottom_up()
+	## 触发信号
+	GameInfo.emit_signal("new_avg")
 	pass # Replace with function body.
 
 
