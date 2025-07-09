@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://b56ntj24s8aer"]
+
+[ext_resource type="Script" uid="uid://bj005rski21ke" path="res://assets/script/GameInfo.gd" id="1_i5m0w"]
+[ext_resource type="Script" uid="uid://cgylra5llr451" path="res://assets/script/AVGManager.gd" id="2_84ng3"]
+
+[node name="GameInfo" type="Node"]
+script = ExtResource("1_i5m0w")
+
+[node name="AVGManager" type="Node" parent="."]
+script = ExtResource("2_84ng3")

@@ -56,17 +56,4 @@ func plotSegment_data_wash() -> void:
 		var seat_list = raw_seat_list.split("/")
 		segment['seat_list'] = seat_list
 
-##TODO AVG相关文字的临时调用，之后需要 Manager 专门处理
-## 用于标记AVG当前状态的参数
-var nowAvgSegment:String
-## 信息改变信号
-signal new_avg()
 
-func load_avg_config():
-	for avg in avgPlot.values():
-		if nowAvgSegment == avg.ID:
-			var words = avg['words']
-			return words
-
-func set_avg_now(ID):
-	nowAvgSegment = str(ID)
