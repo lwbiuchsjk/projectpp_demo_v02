@@ -6,7 +6,7 @@ extends Control
 func _init() -> void:
 	var newPlayerInfo = player.new()
 	playerInit(newPlayerInfo)
-	
+
 func playerInit(newPlayer:player):
 	newPlayer.playerName="lwbiuchsjk"
 	newPlayer.location="res://site/site1.tscn"
@@ -17,7 +17,7 @@ func playerInit(newPlayer:player):
 	newPlayer.folderPath=folderPath
 	ResourceSaver.save(newPlayer,savePath)
 	PlayerInfo.loadPlayerInfo()
-	
+
 # 创建文件夹的函数
 func create_folder(folder_path: String):
 	var dir = DirAccess.open(folder_path)
@@ -37,20 +37,26 @@ func _ready() -> void:
 		var attribute_set = _player.get_attribute_set() as AttributeSet
 		for _name in attribute_set.attributes_runtime_dict:
 			print(_name)
-			
-	## TODO: 此处对于创建的卡牌有很多定制写法。在通用逻辑中需要去掉
-	print("……测试卡牌脚本")
+
 	var avgManager = GameInfo.get_node("AVGManager")
-	var plotSegment = GameInfo.plotSegment.values()[0]
-	avgManager.set_avg_now(plotSegment['avg_plot'])
-	for i in plotSegment['seat_list']:
-		var testCard = preload("res://scene/Seat/seat.tscn").instantiate() as Seat
-		$Event.add_child_item(testCard)
-		var card_type = testCard.search_seat_property(i)
-		testCard.set_seat_type([card_type])
-	$Event.arrange_children_bottom_up()
-	## 触发信号
-	avgManager.emit_signal("new_avg")
+	avgManager.set_plot_now(1)
+
+	avgManager.emit_signal("new_plot")
+
+	var placePannel = get_node('PlacePannel')
+
+	## TODO: 此处调用逻辑课写在专门函数中
+	#print("……测试卡牌脚本")
+	#var plotSegment = GameInfo.plotSegment.values()[0]
+	#avgManager.set_avg_now(plotSegment['avg_plot'])
+	#for i in plotSegment['seat_list']:
+	#	var testCard = preload("res://scene/Seat/seat.tscn").instantiate() as Seat
+	#	$Event.add_child_item(testCard)
+	#	var card_type = testCard.search_seat_property(i)
+	#	testCard.set_seat_type([card_type])
+	#$Event.arrange_children_bottom_up()
+	### 触发信号
+	#avgManager.emit_signal("new_avg")
 	pass # Replace with function body.
 
 

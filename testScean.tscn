@@ -29,4 +29,5 @@ layout_mode = 1
 place_count = 12
 
 [node name="Event" parent="." instance=ExtResource("5_bnhvc")]
+visible = false
 layout_mode = 1

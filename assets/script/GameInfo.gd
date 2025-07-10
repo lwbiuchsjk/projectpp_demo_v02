@@ -14,6 +14,12 @@ var avgPlot:Dictionary
 var pic_file_path = 'res://assets/data/pic.csv'
 var pic:Dictionary
 
+var place_file_path = 'res://assets/data/placeConfig.csv'
+var place:Dictionary
+
+var plot_file_path = 'res://assets/data/plotConfig.csv'
+var plot:Dictionary
+
 func _ready() -> void:
 	itemCard=read_csv_as_nested_dict(itemCard_file_path)
 	itemSeat = read_csv_as_nested_dict(itemSeat_file_path)
@@ -21,6 +27,8 @@ func _ready() -> void:
 	plotSegment_data_wash()
 	avgPlot = read_csv_as_nested_dict(avgPlot_file_path)
 	pic = read_csv_as_nested_dict(pic_file_path)
+	place = read_csv_as_nested_dict(place_file_path)
+	plot = read_csv_as_nested_dict(plot_file_path)
 
 	# 函数读取CSV文件并将其转换为嵌套字典
 func read_csv_as_nested_dict(path: String) -> Dictionary:
