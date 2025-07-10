@@ -1,5 +1,6 @@
-[gd_scene load_steps=2 format=3 uid="uid://13giel8terdq"]
+[gd_scene load_steps=3 format=3 uid="uid://13giel8terdq"]
 
+[ext_resource type="Script" uid="uid://bfa52bpx4u8xf" path="res://scene/place/normal_place.gd" id="1_kmpja"]
 [ext_resource type="Texture2D" uid="uid://fexoqmnw4eiq" path="res://assets/image/placeText.jpg" id="1_qcap3"]
 
 [node name="NormalPlace" type="Control"]
@@ -11,6 +12,7 @@ offset_right = -1620.0
 offset_bottom = -780.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_kmpja")
 
 [node name="TextureRect" type="TextureRect" parent="."]
 layout_mode = 0
@@ -20,3 +22,12 @@ texture = ExtResource("1_qcap3")
 expand_mode = 1
 stretch_mode = 6
 flip_h = true
+
+[node name="SelectButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 120.0
+offset_top = 220.0
+offset_right = 270.0
+offset_bottom = 270.0
+theme_override_font_sizes/font_size = 25
+text = "选择地点"

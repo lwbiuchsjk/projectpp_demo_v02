@@ -47,16 +47,7 @@ func _ready() -> void:
 
 	## TODO: 此处调用逻辑课写在专门函数中
 	#print("……测试卡牌脚本")
-	#var plotSegment = GameInfo.plotSegment.values()[0]
-	#avgManager.set_avg_now(plotSegment['avg_plot'])
-	#for i in plotSegment['seat_list']:
-	#	var testCard = preload("res://scene/Seat/seat.tscn").instantiate() as Seat
-	#	$Event.add_child_item(testCard)
-	#	var card_type = testCard.search_seat_property(i)
-	#	testCard.set_seat_type([card_type])
-	#$Event.arrange_children_bottom_up()
-	### 触发信号
-	#avgManager.emit_signal("new_avg")
+
 	pass # Replace with function body.
 
 

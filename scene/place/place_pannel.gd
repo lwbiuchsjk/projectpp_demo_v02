@@ -15,12 +15,12 @@ func _process(delta: float) -> void:
 
 func build_place():
 	var placeList:Array = avgManager.load_place_from_plot()
-	print("检测生成地点数量：",placeList.size())
-	for i in range(0,placeList.size()):
+	for placeConfig in placeList:
 		var place = preload("res://scene/place/NormalPlace.tscn").instantiate()
-		set_place_status()
+		set_place_status(place, placeConfig)
 		var content = $ScrollContainer
 		content.add_item(place)
 
-func set_place_status():
+func set_place_status(place, placeConfig):
+	place.set_placeID(placeConfig.ID)
 	pass

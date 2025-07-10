@@ -7,6 +7,7 @@ var nowPlot:String
 ## 信息改变信号
 signal new_avg()
 signal new_plot()
+signal select_place()
 
 func set_avg_now(ID):
 	nowAvgSegment = str(ID)
@@ -24,6 +25,7 @@ func load_avg_config():
 			var words = avg['words']
 			return words
 
+## 返回 place 的配置列表
 func load_place_from_plot() -> Array:
 	var output:Array
 	var tempPlot = load_plot_from_ID(nowPlot)
@@ -32,7 +34,6 @@ func load_place_from_plot() -> Array:
 		return output
 
 	var placeList = tempPlot['placeList'].split("/")
-	print("检测配置地点数量：", placeList)
 
 	for place in placeList:
 		var checkPlace = load_place_from_ID(place)
@@ -45,11 +46,34 @@ func load_place_from_ID(ID):
 	for place in GameInfo.place.values():
 		if place.ID == str(ID):
 			return place
-	return null
 
 func load_plot_from_ID(ID):
-	print("检测配置剧情ID：",ID)
 	for plot in GameInfo.plot.values():
 		if plot.ID == str(ID):
 			return plot
 	return null
+
+func load_plotSegment_from_ID(ID):
+	for segment in GameInfo.plotSegment.values():
+		if segment.ID == str(ID):
+			return segment
+	return null
+
+func build_event(placeID):
+	var place = load_place_from_ID(placeID)
+	if place == null:
+		return
+
+	var plotSegment = load_plotSegment_from_ID(place['plotSegment'])
+	print("检测成功: ", plotSegment.ID)
+
+	#avgManager.set_avg_now(plotSegment['avg_plot'])
+	#for i in plotSegment['seat_list']:
+	#	var testCard = preload("res://scene/Seat/seat.tscn").instantiate() as Seat
+	#	$Event.add_child_item(testCard)
+	#	var card_type = testCard.search_seat_property(i)
+	#	testCard.set_seat_type([card_type])
+	#$Event.arrange_children_bottom_up()
+	### 触发信号
+	#avgManager.emit_signal("new_avg")
+	pass
