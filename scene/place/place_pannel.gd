@@ -23,4 +23,8 @@ func build_place():
 
 func set_place_status(place, placeConfig):
 	place.set_placeID(placeConfig.ID)
+	var image2Load = place.get_node('TextureRect') as TextureRect
+	var imagePath = avgManager.load_picImagePath_from_ID(placeConfig['pic'])
+	print("资源路径：",imagePath)
+	image2Load.texture = load(imagePath)
 	pass

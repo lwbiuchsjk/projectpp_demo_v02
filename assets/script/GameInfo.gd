@@ -11,14 +11,15 @@ var plotSegment:Dictionary
 var avgPlot_file_path = 'res://assets/data/avgPlot.csv'
 var avgPlot:Dictionary
 
-var pic_file_path = 'res://assets/data/pic.csv'
-var pic:Dictionary
-
 var place_file_path = 'res://assets/data/placeConfig.csv'
 var place:Dictionary
 
 var plot_file_path = 'res://assets/data/plotConfig.csv'
 var plot:Dictionary
+
+var bgPic_file_path = 'res://assets/data/pic.csv'
+var bgPic:Dictionary
+var bgPic_base_resource_path = 'res://assets/image/'
 
 func _ready() -> void:
 	itemCard=read_csv_as_nested_dict(itemCard_file_path)
@@ -26,9 +27,10 @@ func _ready() -> void:
 	plotSegment = read_csv_as_nested_dict(plotSegment_file_path)
 	plotSegment_data_wash()
 	avgPlot = read_csv_as_nested_dict(avgPlot_file_path)
-	pic = read_csv_as_nested_dict(pic_file_path)
 	place = read_csv_as_nested_dict(place_file_path)
 	plot = read_csv_as_nested_dict(plot_file_path)
+	bgPic = read_csv_as_nested_dict(bgPic_file_path)
+	bgPic_data_wash()
 
 	# 函数读取CSV文件并将其转换为嵌套字典
 func read_csv_as_nested_dict(path: String) -> Dictionary:
@@ -64,4 +66,9 @@ func plotSegment_data_wash() -> void:
 		var seat_list = raw_seat_list.split("/")
 		segment['seat_list'] = seat_list
 
-
+## 对 bgPic 中的部分数据进行处理，将基础资源名拼接进去
+func bgPic_data_wash() -> void:
+	for pic in bgPic.values():
+		var raw_pic_resource = pic['resource']
+		var pic_resource = bgPic_base_resource_path + raw_pic_resource
+		pic['resource'] = pic_resource

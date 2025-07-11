@@ -70,6 +70,15 @@ func load_plotSegment_from_ID(ID):
 			break
 	return output
 
+
+func load_picImagePath_from_ID(ID):
+	var output
+	for pic in GameInfo.bgPic.values():
+		if pic.ID == ID:
+			output = pic['resource']
+			break
+	return output
+
 ## 信号激活函数。将会在配置的根节点上创建事件面板，并根据配置加载槽位，文字。
 func build_event(placeID):
 	var place = load_place_from_ID(placeID)
