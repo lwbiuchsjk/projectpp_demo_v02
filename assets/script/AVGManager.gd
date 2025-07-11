@@ -4,18 +4,27 @@ extends Node
 var nowAvgSegment:String
 var nowPlace:String
 var nowPlot:String
+
+## 面板调用节点配置
+@onready var rootNode:Node = get_tree().root.get_node("testScean")
 ## 信息改变信号
 signal new_avg()
 signal new_plot()
 signal select_place()
 
 func set_avg_now(ID):
+	if ID == null:
+		return
 	nowAvgSegment = str(ID)
 
 func set_place_now(ID):
+	if ID == null:
+		return
 	nowPlace = str(ID)
 
 func set_plot_now(ID):
+	if ID == null:
+		return
 	nowPlot = str(ID)
 
 
@@ -54,11 +63,14 @@ func load_plot_from_ID(ID):
 	return null
 
 func load_plotSegment_from_ID(ID):
+	var output
 	for segment in GameInfo.plotSegment.values():
 		if segment.ID == str(ID):
-			return segment
-	return null
+			output = segment
+			break
+	return output
 
+## 信号激活函数。将会在配置的根节点上创建事件面板，并根据配置加载槽位，文字。
 func build_event(placeID):
 	var place = load_place_from_ID(placeID)
 	if place == null:
@@ -67,13 +79,17 @@ func build_event(placeID):
 	var plotSegment = load_plotSegment_from_ID(place['plotSegment'])
 	print("检测成功: ", plotSegment.ID)
 
-	#avgManager.set_avg_now(plotSegment['avg_plot'])
-	#for i in plotSegment['seat_list']:
-	#	var testCard = preload("res://scene/Seat/seat.tscn").instantiate() as Seat
-	#	$Event.add_child_item(testCard)
-	#	var card_type = testCard.search_seat_property(i)
-	#	testCard.set_seat_type([card_type])
-	#$Event.arrange_children_bottom_up()
-	### 触发信号
-	#avgManager.emit_signal("new_avg")
+	## 根据参数设置加载事件节点
+	var eventNode = preload("res://scene/event/event.tscn").instantiate()
+	rootNode.add_child(eventNode)
+
+	set_avg_now(plotSegment['avg_plot'])
+	for i in plotSegment['seat_list']:
+		var testCard = preload("res://scene/Seat/seat.tscn").instantiate() as Seat
+		eventNode.add_child_item(testCard)
+		var card_type = testCard.search_seat_property(i)
+		testCard.set_seat_type([card_type])
+	eventNode.arrange_children_bottom_up()
+	## 触发信号
+	emit_signal("new_avg")
 	pass
