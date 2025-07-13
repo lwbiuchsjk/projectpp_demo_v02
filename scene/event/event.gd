@@ -15,12 +15,17 @@ func _process(delta: float) -> void:
 func add_child_item(child: Node) -> void:
 	$PicCardArea/CardArea/Container.add_child(child)
 	pass
-	
+
 func arrange_children_bottom_up() -> void:
 	$PicCardArea/CardArea/Container.arrange_children_bottom_up()
 	pass
 
 
 func _on_new_avg():
-	var segmentText = avgManager.load_avg_config()
-	$TextArea/ScrollContainer/Label.text = segmentText
+	var avg = avgManager.load_avg_config()
+	## 设置文字
+	var avgText = avg.words
+	## 设置图片
+	var avgBgPic = avgManager.load_picImagePath_from_ID(avg.backgroundPic)
+	$TextArea/ScrollContainer/Label.text = avgText
+	$PicCardArea/EventImage.texture = load(avgBgPic)

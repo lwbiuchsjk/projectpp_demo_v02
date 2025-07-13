@@ -31,8 +31,10 @@ func set_plot_now(ID):
 func load_avg_config():
 	for avg in GameInfo.avgPlot.values():
 		if nowAvgSegment == avg.ID:
-			var words = avg['words']
-			return words
+			return avg
+
+func load_avg_config_value(avg, key):
+	return avg[key]
 
 ## 返回 place 的配置列表
 func load_place_from_plot() -> Array:
