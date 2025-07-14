@@ -9,8 +9,14 @@ var nowPlot:String
 @onready var rootNode:Node = get_tree().root.get_node("testScean")
 ## 信息改变信号
 signal new_avg()
+signal clean_avg()
+signal next_avg()
 signal new_plot()
 signal select_place()
+
+func _ready() -> void:
+	connect("next_avg", set_next_avg)
+
 
 func set_avg_now(ID):
 	if ID == null:
@@ -102,5 +108,14 @@ func build_event(placeID):
 		testCard.set_seat_type([card_type])
 	eventNode.arrange_children_bottom_up()
 	## 触发信号
+	emit_signal("clean_avg")
+	await get_tree().create_timer(0.1).timeout
 	emit_signal("new_avg")
 	pass
+
+
+func set_next_avg():
+	var nowAvg = load_avg_config()
+	if nowAvg['nextID'] != null && nowAvg['nextID'] != "":
+		nowAvgSegment = nowAvg['nextID']
+		emit_signal("new_avg")
