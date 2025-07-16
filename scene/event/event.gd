@@ -5,6 +5,7 @@ var avgManager = GameInfo.get_node("AVGManager")
 func _ready() -> void:
 	avgManager.connect("new_avg", _on_new_avg)
 	avgManager.connect("clean_avg", _on_clean_avg)
+	avgManager.connect("close_avg", _on_close_avg)
 	$TextArea/NextAvgButton.pressed.connect(_check_next_avg)
 	pass # Replace with function body.
 
@@ -40,5 +41,14 @@ func _on_new_avg():
 	$PicCardArea/EventImage.texture = load(avgBgPic)
 
 func _check_next_avg():
-	avgManager.emit_signal("next_avg")
 	print("执行下一步AVG")
+	avgManager.emit_signal("next_avg")
+
+
+func _on_close_avg():
+	var parent = get_parent()
+	if parent:
+		print("尝试移除")
+		parent.remove_child(self)
+	queue_free()
+	pass

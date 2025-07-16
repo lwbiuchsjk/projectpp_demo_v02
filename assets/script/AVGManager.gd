@@ -11,6 +11,7 @@ var nowPlot:String
 signal new_avg()
 signal clean_avg()
 signal next_avg()
+signal close_avg()
 signal new_plot()
 signal select_place()
 
@@ -116,6 +117,9 @@ func build_event(placeID):
 
 func set_next_avg():
 	var nowAvg = load_avg_config()
-	if nowAvg['nextID'] != null && nowAvg['nextID'] != "":
+	print(nowAvg['nextID'] == "")
+	if nowAvg['nextID'] == null or nowAvg['nextID'] == "":
+		emit_signal("close_avg")
+	else:
 		nowAvgSegment = nowAvg['nextID']
 		emit_signal("new_avg")
