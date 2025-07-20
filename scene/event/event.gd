@@ -7,6 +7,7 @@ func _ready() -> void:
 	avgManager.connect("clean_avg", _on_clean_avg)
 	avgManager.connect("close_avg", _on_close_avg)
 	$TextArea/NextAvgButton.pressed.connect(_check_next_avg)
+	$SeatConfirmButton.pressed.connect(_confirm_seatSelect)
 	pass # Replace with function body.
 
 
@@ -17,6 +18,7 @@ func _process(delta: float) -> void:
 
 func add_child_item(child: Node) -> void:
 	$PicCardArea/CardArea/Container.add_child(child)
+	child.add_to_group("Seat")
 	pass
 
 func arrange_children_bottom_up() -> void:
@@ -54,4 +56,8 @@ func _on_close_avg():
 		print("尝试移除")
 		parent.remove_child(self)
 	queue_free()
+	pass
+
+func _confirm_seatSelect():
+	avgManager.emit_signal('seatSelect_confirm')
 	pass

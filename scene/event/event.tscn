@@ -96,3 +96,12 @@ theme_override_styles/disabled = SubResource("StyleBoxEmpty_gyara")
 theme_override_styles/hover = SubResource("StyleBoxEmpty_85rdd")
 theme_override_styles/pressed = SubResource("StyleBoxEmpty_ol0pm")
 theme_override_styles/normal = SubResource("StyleBoxEmpty_pcqei")
+
+[node name="SeatConfirmButton" type="Button" parent="."]
+visible = false
+layout_mode = 0
+offset_left = 750.0
+offset_top = 550.0
+offset_right = 870.0
+offset_bottom = 600.0
+text = "确定"

@@ -14,6 +14,7 @@ signal clean_avg()
 signal next_avg()
 signal close_avg()
 signal build_seat()
+signal seatSelect_confirm()
 ## 以下是剧情开始时调用的信号
 signal new_plot()
 signal select_place()
@@ -21,6 +22,7 @@ signal select_place()
 func _ready() -> void:
 	connect("next_avg", set_next_avg)
 	connect("build_seat", _on_build_seat)
+	connect("seatSelect_confirm", _on_seatSelect_confirm)
 
 
 func set_avg_now(ID):
@@ -122,7 +124,16 @@ func _on_build_seat(nowAvg):
 		var card_type = testCard.search_seat_property(preSeat)
 		testCard.set_seat_type([card_type])
 	eventNode.arrange_children_bottom_up()
+
+	## 如果作为列表不为空，那么显示确认按钮
+	if nowAvg['seatList'].size() > 0:
+		set_seatConfirmButton_status(true)
+
 	pass
+
+func set_seatConfirmButton_status(status:bool):
+	var button = rootNode.get_node('Event/SeatConfirmButton') as Button
+	button.visible = status
 
 
 func set_next_avg():
@@ -137,3 +148,19 @@ func set_next_avg():
 	else:
 		nowAvgSegment = nowAvg['nextID']
 		emit_signal("new_avg")
+
+func _on_seatSelect_confirm():
+	## 隐藏按钮
+	set_seatConfirmButton_status(false)
+
+	##TODO 设置卡牌数据变化
+
+	## 移除座位
+	var seatParentNode = rootNode.get_node('Event/PicCardArea/CardArea/Container')
+	for child in seatParentNode.get_children():
+		if child.is_in_group('Seat'):
+			child.remove_from_group('Seat')
+			seatParentNode.remove_child(child)
+
+	##TODO 触发检查条件，执行本组内下一段AVG
+	pass
