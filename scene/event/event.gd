@@ -40,6 +40,9 @@ func _on_new_avg():
 		$TextArea/ScrollContainer/Label.text = nowText + "\n\n" + avgText
 	$PicCardArea/EventImage.texture = load(avgBgPic)
 
+	print("buildSeats")
+	avgManager.emit_signal("build_seat", avg)
+
 func _check_next_avg():
 	print("执行下一步AVG")
 	avgManager.emit_signal("next_avg")

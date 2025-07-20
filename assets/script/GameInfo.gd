@@ -25,8 +25,8 @@ func _ready() -> void:
 	itemCard=read_csv_as_nested_dict(itemCard_file_path)
 	itemSeat = read_csv_as_nested_dict(itemSeat_file_path)
 	plotSegment = read_csv_as_nested_dict(plotSegment_file_path)
-	plotSegment_data_wash()
 	avgPlot = read_csv_as_nested_dict(avgPlot_file_path)
+	avgPlot_data_wash()
 	place = read_csv_as_nested_dict(place_file_path)
 	plot = read_csv_as_nested_dict(plot_file_path)
 	bgPic = read_csv_as_nested_dict(bgPic_file_path)
@@ -58,13 +58,16 @@ func search_card_from_cardName(cardName: String):
 			return checkCard
 	return itemCard[0]
 
-## 对 plotSegment 中的部分数据进行清理，确保生成数据实际可读
-func plotSegment_data_wash() -> void:
-	for segment in plotSegment.values():
+## 对 avgPlot 中的部分数据进行清理，确保生成数据实际可读
+func avgPlot_data_wash() -> void:
+	for segment in avgPlot.values():
 		## 处理 seat_list 的列表配置
-		var raw_seat_list:String = segment['seat_list']
+		var raw_seat_list:String = segment['seatList']
 		var seat_list = raw_seat_list.split("/")
-		segment['seat_list'] = seat_list
+		if seat_list[0] == "":
+			segment['seatList'] = []
+		else:
+			segment['seatList'] = seat_list
 
 ## 对 bgPic 中的部分数据进行处理，将基础资源名拼接进去
 func bgPic_data_wash() -> void:

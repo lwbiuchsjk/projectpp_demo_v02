@@ -8,15 +8,19 @@ var nowPlot:String
 ## 面板调用节点配置
 @onready var rootNode:Node = get_tree().root.get_node("testScean")
 ## 信息改变信号
+## 以下是avg开始时调用的信号
 signal new_avg()
 signal clean_avg()
 signal next_avg()
 signal close_avg()
+signal build_seat()
+## 以下是剧情开始时调用的信号
 signal new_plot()
 signal select_place()
 
 func _ready() -> void:
 	connect("next_avg", set_next_avg)
+	connect("build_seat", _on_build_seat)
 
 
 func set_avg_now(ID):
@@ -102,22 +106,32 @@ func build_event(placeID):
 	rootNode.add_child(eventNode)
 
 	set_avg_now(plotSegment['avg_plot'])
-	for i in plotSegment['seat_list']:
-		var testCard = preload("res://scene/Seat/seat.tscn").instantiate() as Seat
-		eventNode.add_child_item(testCard)
-		var card_type = testCard.search_seat_property(i)
-		testCard.set_seat_type([card_type])
-	eventNode.arrange_children_bottom_up()
+
 	## 触发信号
 	emit_signal("clean_avg")
 	await get_tree().create_timer(0.1).timeout
 	emit_signal("new_avg")
 	pass
 
+## 创建seat功能，允许外部单独调用
+func _on_build_seat(nowAvg):
+	var eventNode = rootNode.get_node('Event')
+	for preSeat in nowAvg['seatList']:
+		var testCard = preload("res://scene/Seat/seat.tscn").instantiate() as Seat
+		eventNode.add_child_item(testCard)
+		var card_type = testCard.search_seat_property(preSeat)
+		testCard.set_seat_type([card_type])
+	eventNode.arrange_children_bottom_up()
+	pass
+
 
 func set_next_avg():
 	var nowAvg = load_avg_config()
-	print(nowAvg['nextID'] == "")
+
+	if nowAvg['seatList'].size() > 0:
+		print("等待设置卡牌座位")
+		return
+
 	if nowAvg['nextID'] == null or nowAvg['nextID'] == "":
 		emit_signal("close_avg")
 	else:
