@@ -122,7 +122,7 @@ func build_event(placeID):
 	var plotSegmentGroup = load_plotSegmentGroup_from_ID(place['plotSegmentGroup'])
 	print("检测成功: ", plotSegmentGroup.ID)
 	##TODO 此处强制写死初始的 group 和 segment 后续需要处理
-	set_plotSegmentGroup_now(plotSegmentGroup.ID)
+	set_plotSegmentGroup_now(place['plotSegmentGroup'])
 	set_plotSegment_now(plotSegmentGroup['beginSegment'])
 
 	## 根据参数设置加载事件节点
