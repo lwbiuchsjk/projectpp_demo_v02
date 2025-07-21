@@ -1,9 +1,11 @@
 extends Node
 
 ## 用于标记AVG当前状态的参数
-var nowAvgSegment:String
+var nowAvgID:String
 var nowPlace:String
 var nowPlot:String
+var nowPlotSegmentID:String
+var nowPlotSegmentGroupID:String
 
 ## 面板调用节点配置
 @onready var rootNode:Node = get_tree().root.get_node("testScean")
@@ -28,7 +30,7 @@ func _ready() -> void:
 func set_avg_now(ID):
 	if ID == null:
 		return
-	nowAvgSegment = str(ID)
+	nowAvgID = str(ID)
 
 func set_place_now(ID):
 	if ID == null:
@@ -40,10 +42,19 @@ func set_plot_now(ID):
 		return
 	nowPlot = str(ID)
 
+func set_plotSegment_now(ID):
+	if ID == null:
+		return
+	nowPlotSegmentID = str(ID)
+
+func set_plotSegmentGroup_now(ID):
+	if ID == null:
+		return
+	nowPlotSegmentGroupID = str(ID)
 
 func load_avg_config():
 	for avg in GameInfo.avgPlot.values():
-		if nowAvgSegment == avg.ID:
+		if nowAvgID == avg.ID:
 			return avg
 
 func load_avg_config_value(avg, key):
@@ -102,6 +113,9 @@ func build_event(placeID):
 
 	var plotSegment = load_plotSegment_from_ID(place['plotSegment'])
 	print("检测成功: ", plotSegment.ID)
+	##TODO 此处强制写死初始的 group 和 segment 后续需要处理
+	set_plotSegmentGroup_now(1)
+	set_plotSegment_now(1)
 
 	## 根据参数设置加载事件节点
 	var eventNode = preload("res://scene/event/event.tscn").instantiate()
@@ -116,9 +130,9 @@ func build_event(placeID):
 	pass
 
 ## 创建seat功能，允许外部单独调用
-func _on_build_seat(nowAvg):
+func _on_build_seat(nowPlotSegment):
 	var eventNode = rootNode.get_node('Event')
-	for preSeat in nowAvg['seatList']:
+	for preSeat in nowPlotSegment['seatList']:
 		var testCard = preload("res://scene/Seat/seat.tscn").instantiate() as Seat
 		eventNode.add_child_item(testCard)
 		var card_type = testCard.search_seat_property(preSeat)
@@ -126,7 +140,7 @@ func _on_build_seat(nowAvg):
 	eventNode.arrange_children_bottom_up()
 
 	## 如果作为列表不为空，那么显示确认按钮
-	if nowAvg['seatList'].size() > 0:
+	if nowPlotSegment['seatList'].size() > 0:
 		set_seatConfirmButton_status(true)
 
 	pass
@@ -137,17 +151,13 @@ func set_seatConfirmButton_status(status:bool):
 
 
 func set_next_avg():
-	var nowAvg = load_avg_config()
-
-	if nowAvg['seatList'].size() > 0:
-		print("等待设置卡牌座位")
+	## 如果当前正在选择，那么阻断点击
+	if check_nowAvg_seating():
 		return
-
-	if nowAvg['nextID'] == null or nowAvg['nextID'] == "":
-		emit_signal("close_avg")
-	else:
-		nowAvgSegment = nowAvg['nextID']
-		emit_signal("new_avg")
+	## 否则触发新avg
+	var nowAvg = load_avg_config()
+	nowAvgID = nowAvg['nextID']
+	emit_signal("new_avg")
 
 func _on_seatSelect_confirm():
 	## 隐藏按钮
@@ -164,3 +174,12 @@ func _on_seatSelect_confirm():
 
 	##TODO 触发检查条件，执行本组内下一段AVG
 	pass
+
+func check_nowAvg_seating() -> bool:
+	var nowAvg = load_avg_config()
+	var nowPlotSegment = load_plotSegment_from_ID(nowPlotSegmentID)
+
+	if (nowAvg['nextID'] == null or nowAvg['nextID'] == "") and nowPlotSegment['seatList'].size() > 0:
+		return true
+	else:
+		return false
