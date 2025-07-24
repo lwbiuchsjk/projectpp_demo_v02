@@ -31,7 +31,6 @@ func _on_clean_avg():
 
 func _on_new_avg():
 	var avg = avgManager.load_avg_config()
-	var plotSegment = avgManager.load_plotSegment_from_ID(avgManager.nowPlotSegmentID)
 	## 设置文字
 	var avgText = avg.words
 	## 设置图片
@@ -41,14 +40,13 @@ func _on_new_avg():
 		$TextArea/ScrollContainer/Label.text = avgText
 	else:
 		$TextArea/ScrollContainer/Label.text = nowText + "\n\n" + avgText
-	$PicCardArea/EventImage.texture = load(avgBgPic)
 
-	if avg['nextID'] == null or avg['nextID'] == "":
-		if plotSegment['seatList'].size() > 0:
-			print("buildSeats")
-			avgManager.emit_signal("build_seat", plotSegment)
-		else:
-			avgManager.emit_signal("close_avg")
+	if avgBgPic != null:
+		$PicCardArea/EventImage.texture = load(avgBgPic)
+
+	if avg['seatList'].size() > 0:
+		print("创建座位，AVGID：" + avg.ID)
+		avgManager.emit_signal("build_seat", avg)
 
 
 func _check_next_avg():

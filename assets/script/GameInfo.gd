@@ -30,7 +30,7 @@ func _ready() -> void:
 	plotSegment = read_csv_as_nested_dict(plotSegment_file_path)
 	plotSegment_data_wash()
 	avgPlot = read_csv_as_nested_dict(avgPlot_file_path)
-	##avgPlot_data_wash()
+	avgPlot_data_wash()
 	place = read_csv_as_nested_dict(place_file_path)
 	plot = read_csv_as_nested_dict(plot_file_path)
 	bgPic = read_csv_as_nested_dict(bgPic_file_path)
@@ -65,10 +65,9 @@ func search_card_from_cardName(cardName: String):
 	return itemCard[0]
 
 ## 对 avgPlot 中的部分数据进行清理，确保生成数据实际可读
-## 废弃
 func avgPlot_data_wash() -> void:
 	for avg in avgPlot.values():
-		## 【废弃】处理 seat_list 的列表配置
+		## 处理 seat_list 的列表配置
 		var raw_seat_list:String = avg['seatList']
 		var seat_list = raw_seat_list.split("/")
 		if seat_list[0] == "":
@@ -101,15 +100,20 @@ func plotSegment_data_wash() -> void:
 	for segment in plotSegment.values():
 		## 处理 conditon
 		var raw_condition = segment['condition']
-		var real_condition =raw_condition.split("/")
-		if real_condition[0] == "":
-			segment['condition'] = []
-		else:
-			segment['condition'] = real_condition
-		## 处理 seatList
-		var raw_seat_list:String = segment['seatList']
-		var seat_list = raw_seat_list.split("/")
-		if seat_list[0] == "":
-			segment['seatList'] = []
-		else:
-			segment['seatList'] = seat_list
+		var real_condition = {}
+		var tmp_condition = raw_condition.split(",")
+		for tmp_item in tmp_condition:
+			## condition = -1，代表全空，用作特殊处理
+			if tmp_item == "-1":
+				real_condition = int(tmp_item)
+				break
+			var tmp_pair = tmp_item.split("/")
+			## 否则将条件读取为 key/value 的字典。其中 key = seatID, value = 卡牌类型
+			## 根据后续设置的 seat 和 卡牌 的匹配结果，来对应检查 condition 的得分。得分最高的 condition 视为匹配结果。
+			if tmp_pair.size() != 2:
+				continue
+			var tmp_key = str(int(tmp_pair[0]))
+			var tmp_value = int(tmp_pair[1])
+			real_condition[tmp_key] = tmp_value
+		## 将上述处理结果赋值回 condition
+		segment['condition'] = real_condition

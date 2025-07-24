@@ -1,5 +1,5 @@
-﻿ID,nextID,words,backgroundPic
-1,2,测试文字,2
-2,,猜猜我是谁,2
-3,,啥也没选,
-4,,选了一些,
+﻿ID,nextID,seatList,words,backgroundPic
+1,2,,测试文字,2
+2,,1/2/999,猜猜我是谁,2
+3,,,啥也没选,
+4,,,选了一些,

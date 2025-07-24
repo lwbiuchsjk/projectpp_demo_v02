@@ -4,7 +4,7 @@ class_name Seat
 @export var accepted_types: Array[GameType.CardType]  # 在检查器中设置允许的类型
 var card_can_drop:bool = false
 var seat_card
-
+var avgManager = GameInfo.get_node("AVGManager")
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -23,23 +23,26 @@ func is_type_match(type: GameType.CardType) -> bool:
 func add_card(cardToAdd)->void:
 	var cardBackground=preload("res://scene/cards/card_background.tscn").instantiate()
 	cardPoiDeck.add_child(cardBackground)
-	
+
 	var global_poi = cardToAdd.global_position  # 获取节点的全局位置
-	
+
 	if cardToAdd.get_parent():
 		cardToAdd.get_parent().remove_child(cardToAdd)
 	cardDeck.add_child(cardToAdd)
 	cardToAdd.global_position=global_poi
-	
+
 	cardToAdd.follow_target=cardBackground
-	
+
 	cardToAdd.preDeck=self
-	
+
 	cardToAdd.cardCurrentState=cardToAdd.cardState.following
 	update_weight()
 	trigger_deck_sort()
-	
+
 	seat_card = cardToAdd
+
+	##TODO 应当使用真实的 seat 数据和 card 数据
+	avgManager.set_seatPair("1", 1)
 
 func update_weight() -> void:
 	var nowWeight=0
@@ -64,7 +67,7 @@ func _on_area_entered(targetArea: Area2D):
 func _on_area_exited(targetCard: Area2D):
 	if targetCard.is_in_group("card"):
 		card_can_drop = false
-		
+
 func set_seat_type(typeList: Array) -> void:
 	accepted_types.clear()
 	for targetType in typeList:
