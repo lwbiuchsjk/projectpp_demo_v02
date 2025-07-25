@@ -33,6 +33,7 @@ func _ready() -> void:
 	avgPlot_data_wash()
 	place = read_csv_as_nested_dict(place_file_path)
 	plot = read_csv_as_nested_dict(plot_file_path)
+	plot_data_wash()
 	bgPic = read_csv_as_nested_dict(bgPic_file_path)
 	bgPic_data_wash()
 	plotSegmentGroup = read_csv_as_nested_dict(plotSegmentGroup_file_path)
@@ -117,3 +118,29 @@ func plotSegment_data_wash() -> void:
 			real_condition[tmp_key] = tmp_value
 		## 将上述处理结果赋值回 condition
 		segment['condition'] = real_condition
+
+func plot_data_wash() -> void:
+	for item in plot.values():
+		var raw_condition = item['condition']
+		var real_condition = {}
+		var tmp_condition = raw_condition.split(",")
+		for tmp_item in tmp_condition:
+			## 否则将条件读取为 key/value 的字典。其中 key = 功能枚举, value = 功能参数
+			var tmp_pair = tmp_item.split(":")
+			## 对输入参数进行检查，无法解析为键值对的参数被抛弃。特别的，如果只填写了一个功能枚举，也被认为通过
+			if tmp_pair.size() > 2:
+				continue
+			var tmp_key = tmp_pair[0]
+			## 跳过空输入
+			if tmp_key == "":
+				continue
+
+			## 解析 value 值
+			var tmp_value
+			if tmp_pair.size() == 2:
+				tmp_value = int(tmp_pair[1])
+			else:
+				tmp_value = 1
+			real_condition[tmp_key] = tmp_value
+		## 将上述处理结果赋值回 condition
+		item['condition'] = real_condition

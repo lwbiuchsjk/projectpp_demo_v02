@@ -17,10 +17,10 @@ func update_layout():
 	var children = $Content.get_children()
 	if children.is_empty():
 		return
-	
+
 	# 计算需要的列数
 	var columns = ceili(children.size() / float(rows))
-	
+
 	# 排列子节点（先从上到下，再从左到右）
 	for col in columns:
 		for row in rows:
@@ -31,12 +31,12 @@ func update_layout():
 			child.position = Vector2(
 				col * (item_size.x + spacing),
 				row * (item_size.y + spacing))
-	
+
 	# 更新 Content 容器大小（触发滚动）
 	$Content.custom_minimum_size = Vector2(
 		columns * (item_size.x + spacing),
 		rows * (item_size.y + spacing))
-	
+
 	# 根据子节点数量调整对齐
 	if children.size() <= content_count_control:
 		$Content.position.x = (size.x - $Content.custom_minimum_size.x) / 2  # 居中
@@ -48,3 +48,8 @@ func update_layout():
 		scroll_horizontal = true
 		#horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_SHOW_ALWAYS
 		#scroll_horizontal_enabled = true
+
+
+func clean_item():
+	for item in $Content.get_children():
+		$Content.remove_child(item)

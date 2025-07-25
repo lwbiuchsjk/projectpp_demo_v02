@@ -38,17 +38,10 @@ func _ready() -> void:
 		for _name in attribute_set.attributes_runtime_dict:
 			print(_name)
 
+	##TODO 正式功能中，下方就是调用新剧情段落的实现，需要按原样移动
 	var avgManager = GameInfo.get_node("AVGManager")
-	avgManager.set_plot_now(1)
-
 	avgManager.emit_signal("new_plot")
 
-	var placePannel = get_node('PlacePannel')
-
-	## TODO: 此处调用逻辑课写在专门函数中
-	#print("……测试卡牌脚本")
-
-	pass # Replace with function body.
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

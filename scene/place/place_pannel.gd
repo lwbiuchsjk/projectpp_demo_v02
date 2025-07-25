@@ -2,10 +2,13 @@ extends Control
 
 @export var place_count = 6
 var avgManager = GameInfo.get_node("AVGManager")
+@onready var content = $ScrollContainer
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	avgManager.connect('new_plot', build_place)
+	avgManager.connect('new_plot', _on_new_plot)
+	avgManager.connect('next_plot', _on_new_plot)
 	pass # Replace with function body.
 
 
@@ -18,7 +21,6 @@ func build_place():
 	for placeConfig in placeList:
 		var place = preload("res://scene/place/NormalPlace.tscn").instantiate()
 		set_place_status(place, placeConfig)
-		var content = $ScrollContainer
 		content.add_item(place)
 
 func set_place_status(place, placeConfig):
@@ -28,3 +30,17 @@ func set_place_status(place, placeConfig):
 	print("资源路径：",imagePath)
 	image2Load.texture = load(imagePath)
 	pass
+
+
+
+func clean_place():
+	content.clean_item()
+
+
+
+func _on_new_plot():
+	clean_place()
+	## 判断条件
+	avgManager.locate_nowPlot()
+	print("nowPlot: ", avgManager.nowPlot)
+	build_place()

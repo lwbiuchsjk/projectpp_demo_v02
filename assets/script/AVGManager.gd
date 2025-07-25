@@ -1,4 +1,5 @@
 extends Node
+class_name AVGManager
 
 ## 用于标记AVG当前状态的参数
 var nowAvgID:String
@@ -20,6 +21,7 @@ signal build_seat()
 signal seatSelect_confirm()
 ## 以下是剧情开始时调用的信号
 signal new_plot()
+signal next_plot()
 signal select_place()
 
 func _ready() -> void:
@@ -84,10 +86,12 @@ func load_place_from_ID(ID):
 			return place
 
 func load_plot_from_ID(ID):
+	var output
 	for plot in GameInfo.plot.values():
 		if plot.ID == str(ID):
-			return plot
-	return null
+			output = plot
+			break
+	return output
 
 func load_plotSegment_from_ID(ID):
 	var output
@@ -259,3 +263,39 @@ func _check_segment_condition_point_gen(condition) -> int:
 	if point != condition.size():
 		point = -999
 	return point
+
+
+## 检查满足条件的 plot.
+func locate_nowPlot():
+	## 首先检查 nowPlot 是否未被初始化。如果是，那么通过 prePlot = -1，定位第一个plot.
+	if nowPlot == "":
+		for plotItem in GameInfo.plot.values():
+			if plotItem['prePlot'] == "-1":
+				set_plot_now(plotItem.ID)
+				return
+
+	## 然后检查是否为最后一个Plot。通过检查 condition = END，定位最后一个plot.
+	if check_end_plot():
+		##TODO 此处需要对结束plot做后续前端表现处理
+		print("END PLOT")
+		return
+
+	## 通过上述检查后，正常执行 prePlot 和 condition 的检查，定位下一个 plot.
+	for plotItem in GameInfo.plot.values():
+		if plotItem['prePlot'] == nowPlot:
+			## 只有 prePlot 为当前 plot 并且通过 condition 检查的 plot，才会被设置，然后继续下去。
+			if check_plot_condition():
+				set_plot_now(plotItem.ID)
+				return
+
+
+func check_end_plot():
+	var plot = load_plot_from_ID(nowPlot)
+	for key in plot['condition'].keys():
+		if key == "END":
+			return true
+	return false
+
+##TODO 本方法为检查 plot conditon 的具体实现。需要根据需求细化。
+func check_plot_condition() -> bool:
+	return true

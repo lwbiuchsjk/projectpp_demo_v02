@@ -60,6 +60,7 @@ func _on_close_avg():
 		print("尝试移除")
 		parent.remove_child(self)
 	queue_free()
+	avgManager.emit_signal("next_plot")
 	pass
 
 func _confirm_seatSelect():
