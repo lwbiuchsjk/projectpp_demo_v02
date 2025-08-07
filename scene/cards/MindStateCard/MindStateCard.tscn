@@ -1,0 +1,40 @@
+[gd_scene load_steps=11 format=3 uid="uid://cdy3f6ovagdmq"]
+
+[ext_resource type="PackedScene" uid="uid://bmjqf30wl6ddi" path="res://scene/cards/card.tscn" id="1_uarrd"]
+[ext_resource type="Script" uid="uid://c4kny0id6wtjc" path="res://scene/cards/MindStateCard/MindStateCard_Attribute.gd" id="2_0y4oo"]
+[ext_resource type="Script" uid="uid://bw4kf70rvxlww" path="res://assets/script/AttributePrototype/Attribute.gd" id="2_8pbwu"]
+[ext_resource type="Script" uid="uid://cdcushggciuu1" path="res://assets/script/AttributePrototype/AttributeSet.gd" id="3_sf0id"]
+[ext_resource type="Script" uid="uid://cv1dyugotoumw" path="res://assets/script/Attribute/SpiritAttribute.gd" id="4_3ttrw"]
+[ext_resource type="Script" uid="uid://byfoak0mg8h02" path="res://assets/script/Attribute/HealthAttribute.gd" id="4_dgbeb"]
+
+[sub_resource type="Resource" id="Resource_a0cf6"]
+script = ExtResource("2_8pbwu")
+attribute_name = "max_health"
+base_value = 100.0
+metadata/_custom_type_script = "uid://bw4kf70rvxlww"
+
+[sub_resource type="Resource" id="Resource_nu1xd"]
+script = ExtResource("4_dgbeb")
+attribute_name = "health"
+base_value = 100.0
+metadata/_custom_type_script = "uid://byfoak0mg8h02"
+
+[sub_resource type="Resource" id="Resource_dgbeb"]
+script = ExtResource("4_3ttrw")
+attribute_name = "spirit"
+base_value = 100.0
+metadata/_custom_type_script = "uid://cv1dyugotoumw"
+
+[sub_resource type="Resource" id="Resource_3ttrw"]
+script = ExtResource("3_sf0id")
+attributes = Array[ExtResource("2_8pbwu")]([SubResource("Resource_a0cf6"), SubResource("Resource_nu1xd"), SubResource("Resource_dgbeb")])
+metadata/_custom_type_script = "uid://cdcushggciuu1"
+
+[node name="Control" instance=ExtResource("1_uarrd")]
+
+[node name="AttributeComponent" parent="." index="4"]
+attribute_set = SubResource("Resource_3ttrw")
+
+[node name="Attribute" type="Node" parent="." index="5"]
+script = ExtResource("2_0y4oo")
+metadata/_custom_type_script = "uid://dabqovygaswi1"

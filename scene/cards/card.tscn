@@ -1,7 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://bmjqf30wl6ddi"]
+[gd_scene load_steps=8 format=3 uid="uid://bmjqf30wl6ddi"]
 
 [ext_resource type="Texture2D" uid="uid://crmjnq75m3cxe" path="res://icon.svg" id="1_ivai2"]
 [ext_resource type="Script" uid="uid://cthb4d6c2kkxh" path="res://scene/cards/card.gd" id="1_nwofj"]
+[ext_resource type="PackedScene" uid="uid://drvhyyhnnfdym" path="res://assets/script/AttributeComponent/AttributeComponent.tscn" id="3_hhy1y"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nwofj"]
 draw_center = false
@@ -112,6 +113,9 @@ alignment = 0
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 position = Vector2(110, 160)
 shape = SubResource("RectangleShape2D_cbnd7")
+
+[node name="AttributeComponent" parent="." instance=ExtResource("3_hhy1y")]
+unique_name_in_owner = true
 
 [connection signal="button_down" from="Button" to="." method="_on_button_button_down"]
 [connection signal="button_up" from="Button" to="." method="_on_button_button_up"]
