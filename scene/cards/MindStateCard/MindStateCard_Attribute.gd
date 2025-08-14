@@ -5,24 +5,32 @@ extends Node
 #var attribute_component: AttributeComponent
 @onready var attribute_component: AttributeComponent = %AttributeComponent
 
-const MAX_HEALTH_ATTRIBUTE_NAME = "max_health"
-const HEALTH_ATTRIBUTE_NAME = "health"
-const ATTACK_ATTRIBUTE_NAME = "attack"
-const STRENGTH_ATTRIBUTE_NAME = "strength"
-const INTELL_ATTRIBUTE_NAME = "intell"
-const SPIRIT_ATTRIBUTE_NAME = "spirit"
+const HAPPY_ATTRIBUTE_NAME = "Happiness"
+const SADNESS_ATTRIBUTE_NAME = "Sadness"
+const ANGER_ATTRIBUTE_NAME = "Anger"
+const FEAR_ATTRIBUTE_NAME = "Fear"
+const DISGUST_ATTRIBUTE_NAME = "Disgust"
+const SURPRISE_ATTRIBUTE_NAME = "Surprise"
+const RARITY_ATTRIBUTE_NAME = "rarity"
 
+var happy
+var sad
+var anger
+var fear
+var disgust
+var surprise
+var rarity
 
 func _ready() -> void:
 	# 初始化信息显示
-	##_init_player_info()
+	_init_mindState_info()
 
 	print("设置卡牌属性")
 	# 绑定信息改变信号
 	_bind_attibute_signal()
 	pass
 
-
+##TODO 对AttributeSet的设置，还需要支持通过表格实现。当前是直接在场景中编辑，很不方便灵活。
 func get_attribute_set() -> AttributeSet:
 	return attribute_component.attribute_set
 
@@ -31,47 +39,65 @@ func get_attribute(_attribute_name: String) -> Attribute:
 	return attribute_component.find_attribute(_attribute_name)
 
 
-func _init_player_info() -> void:
+func _init_mindState_info() -> void:
 	var attribute_set = get_attribute_set() as AttributeSet
-	_set_health_info(attribute_set)
-	_set_spirit_info(attribute_set)
+
+	happy = attribute_set.attributes_runtime_dict[HAPPY_ATTRIBUTE_NAME] as MindStateAttribute
+	sad = attribute_set.attributes_runtime_dict[SADNESS_ATTRIBUTE_NAME] as MindStateAttribute
+	anger = attribute_set.attributes_runtime_dict[ANGER_ATTRIBUTE_NAME] as MindStateAttribute
+	fear = attribute_set.attributes_runtime_dict[FEAR_ATTRIBUTE_NAME] as MindStateAttribute
+	disgust = attribute_set.attributes_runtime_dict[DISGUST_ATTRIBUTE_NAME] as MindStateAttribute
+	surprise = attribute_set.attributes_runtime_dict[SURPRISE_ATTRIBUTE_NAME] as MindStateAttribute
+
+	rarity = attribute_set.attributes_runtime_dict[RARITY_ATTRIBUTE_NAME] as Attribute
+
+	_set_mindState_info(attribute_set)
+	_set_rarity_info(attribute_set)
 
 	pass
 
-func _set_health_info(attribute_set: AttributeSet) -> void:
-	var max_health = attribute_set.attributes_runtime_dict[MAX_HEALTH_ATTRIBUTE_NAME] as Attribute
-	var health = attribute_set.attributes_runtime_dict[HEALTH_ATTRIBUTE_NAME] as Attribute
-	#$HealthInfo/HealthBar.value = health.get_value() / max_health.get_value() * $HealthInfo/HealthBar.max_value
-	#$HealthInfo/HealthString.text = str(int(health.get_value())) + '/' + str(int(max_health.get_value()))
+func _set_mindState_info(attribute_set: AttributeSet) -> void:
+	#happy = attribute_set.attributes_runtime_dict[HAPPY_ATTRIBUTE_NAME] as Attribute
+	#sad = attribute_set.attributes_runtime_dict[SADNESS_ATTRIBUTE_NAME] as Attribute
+	#anger = attribute_set.attributes_runtime_dict[ANGER_ATTRIBUTE_NAME] as Attribute
+	#fear = attribute_set.attributes_runtime_dict[FEAR_ATTRIBUTE_NAME] as Attribute
+	#disgust = attribute_set.attributes_runtime_dict[DISGUST_ATTRIBUTE_NAME] as Attribute
+	#surprise = attribute_set.attributes_runtime_dict[SURPRISE_ATTRIBUTE_NAME] as Attribute
+
+
 	pass
 
-func _on_health_attribute_change() -> void:
+func _on_mindState_attribute_change() -> void:
 	var attribute_set = get_attribute_set() as AttributeSet
-	_set_health_info(attribute_set)
+	_set_mindState_info(attribute_set)
 	pass
 
-func _set_spirit_info(attribute_set: AttributeSet) -> void:
-	var spirit = attribute_set.attributes_runtime_dict[SPIRIT_ATTRIBUTE_NAME] as SpiritAttribute
+func _set_rarity_info(attribute_set: AttributeSet) -> void:
+	#rarity = attribute_set.attributes_runtime_dict[RARITY_ATTRIBUTE_NAME] as SpiritAttribute
 	#$SpiritInfo/SpiritBar.value = (spirit.get_value() - spirit.get_min_value()) / (spirit.get_max_value() - spirit.get_min_value()) * $SpiritInfo/SpiritBar.max_value
 	#$SpiritInfo/SpiritString.text = str(int(spirit.get_value()))
 	pass
 
-func _on_spirit_attribute_change() -> void:
+func _on_rarity_attribute_change() -> void:
 	var attribute_set = get_attribute_set() as AttributeSet
-	_set_spirit_info(attribute_set)
+	_set_rarity_info(attribute_set)
 	pass
 
 
 ## 信号绑定函数
 func _bind_attibute_signal() -> void:
-	var attribute_set = get_attribute_set() as AttributeSet
-	# 绑定生命属性函数
-	var heal_attribute = attribute_set.find_attribute(HEALTH_ATTRIBUTE_NAME) as Attribute
-	var max_heal_attribute = attribute_set.find_attribute(MAX_HEALTH_ATTRIBUTE_NAME) as Attribute
-	heal_attribute.attribute_changed.connect(_on_health_attribute_change)
-	max_heal_attribute.attribute_changed.connect(_on_health_attribute_change)
+	# 绑定精神状态属性函数
+	happy.attribute_changed.connect(_on_mindState_attribute_change)
+	sad.attribute_changed.connect(_on_mindState_attribute_change)
+	anger.attribute_changed.connect(_on_mindState_attribute_change)
+	fear.attribute_changed.connect(_on_mindState_attribute_change)
+	disgust.attribute_changed.connect(_on_mindState_attribute_change)
+	surprise.attribute_changed.connect(_on_mindState_attribute_change)
 
-	# 绑定精神属性函数
-	var spirit_attribute = attribute_set.find_attribute(SPIRIT_ATTRIBUTE_NAME) as Attribute
-	spirit_attribute.attribute_changed.connect(_on_spirit_attribute_change)
+	# 绑定稀有度属性函数
+	rarity.attribute_changed.connect(_on_rarity_attribute_change)
+
+	## 测试函数
+	print("HAPPY: ", happy.get_value())
+
 	pass
