@@ -4,6 +4,7 @@ extends Node
 
 #var attribute_component: AttributeComponent
 @onready var attribute_component: AttributeComponent = %AttributeComponent
+@onready var cardRoot = self.get_parent()
 
 const HAPPY_ATTRIBUTE_NAME = "Happiness"
 const SADNESS_ATTRIBUTE_NAME = "Sadness"
@@ -57,13 +58,12 @@ func _init_mindState_info() -> void:
 	pass
 
 func _set_mindState_info(attribute_set: AttributeSet) -> void:
-	#happy = attribute_set.attributes_runtime_dict[HAPPY_ATTRIBUTE_NAME] as Attribute
-	#sad = attribute_set.attributes_runtime_dict[SADNESS_ATTRIBUTE_NAME] as Attribute
-	#anger = attribute_set.attributes_runtime_dict[ANGER_ATTRIBUTE_NAME] as Attribute
-	#fear = attribute_set.attributes_runtime_dict[FEAR_ATTRIBUTE_NAME] as Attribute
-	#disgust = attribute_set.attributes_runtime_dict[DISGUST_ATTRIBUTE_NAME] as Attribute
-	#surprise = attribute_set.attributes_runtime_dict[SURPRISE_ATTRIBUTE_NAME] as Attribute
-
+	cardRoot.get_node("MindStateInfo/Happy/Label").text = str(int(happy.get_value()))
+	cardRoot.get_node("MindStateInfo/Sad/Label").text = str(int(sad.get_value()))
+	cardRoot.get_node("MindStateInfo/Anger/Label").text = str(int(anger.get_value()))
+	cardRoot.get_node("MindStateInfo/Fear/Label").text = str(int(fear.get_value()))
+	cardRoot.get_node("MindStateInfo/Disgust/Label").text = str(int(disgust.get_value()))
+	cardRoot.get_node("MindStateInfo/Surprise/Label").text = str(int(surprise.get_value()))
 
 	pass
 

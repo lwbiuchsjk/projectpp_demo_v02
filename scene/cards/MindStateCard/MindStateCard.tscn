@@ -67,3 +67,114 @@ attribute_set = SubResource("Resource_3ttrw")
 [node name="Attribute" type="Node" parent="." index="5"]
 script = ExtResource("2_0y4oo")
 metadata/_custom_type_script = "uid://dabqovygaswi1"
+
+[node name="MindStateInfo" type="VBoxContainer" parent="." index="6"]
+layout_mode = 0
+offset_left = -10.0
+offset_top = 80.0
+offset_right = 30.0
+offset_bottom = 280.0
+
+[node name="Happy" type="Control" parent="MindStateInfo" index="0"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="MindStateInfo/Happy" index="0"]
+layout_mode = 0
+offset_right = 30.0
+offset_bottom = 30.0
+color = Color(1, 0, 0, 1)
+
+[node name="Label" type="Label" parent="MindStateInfo/Happy" index="1"]
+layout_mode = 0
+offset_right = 30.0
+offset_bottom = 30.0
+theme_override_font_sizes/font_size = 21
+text = "99"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Sad" type="Control" parent="MindStateInfo" index="1"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="MindStateInfo/Sad" index="0"]
+offset_right = 30.0
+offset_bottom = 30.0
+color = Color(1, 0, 0, 1)
+
+[node name="Label" type="Label" parent="MindStateInfo/Sad" index="1"]
+offset_right = 30.0
+offset_bottom = 30.0
+theme_override_font_sizes/font_size = 21
+text = "99"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Anger" type="Control" parent="MindStateInfo" index="2"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="MindStateInfo/Anger" index="0"]
+offset_right = 30.0
+offset_bottom = 30.0
+color = Color(1, 0, 0, 1)
+
+[node name="Label" type="Label" parent="MindStateInfo/Anger" index="1"]
+offset_right = 30.0
+offset_bottom = 30.0
+theme_override_font_sizes/font_size = 21
+text = "99"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Fear" type="Control" parent="MindStateInfo" index="3"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="MindStateInfo/Fear" index="0"]
+offset_right = 30.0
+offset_bottom = 30.0
+color = Color(1, 0, 0, 1)
+
+[node name="Label" type="Label" parent="MindStateInfo/Fear" index="1"]
+offset_right = 30.0
+offset_bottom = 30.0
+theme_override_font_sizes/font_size = 21
+text = "99"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Disgust" type="Control" parent="MindStateInfo" index="4"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="MindStateInfo/Disgust" index="0"]
+offset_right = 30.0
+offset_bottom = 30.0
+color = Color(1, 0, 0, 1)
+
+[node name="Label" type="Label" parent="MindStateInfo/Disgust" index="1"]
+offset_right = 30.0
+offset_bottom = 30.0
+theme_override_font_sizes/font_size = 21
+text = "99"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Surprise" type="Control" parent="MindStateInfo" index="5"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="MindStateInfo/Surprise" index="0"]
+offset_right = 30.0
+offset_bottom = 30.0
+color = Color(1, 0, 0, 1)
+
+[node name="Label" type="Label" parent="MindStateInfo/Surprise" index="1"]
+offset_right = 30.0
+offset_bottom = 30.0
+theme_override_font_sizes/font_size = 21
+text = "99"
+horizontal_alignment = 1
+vertical_alignment = 1
