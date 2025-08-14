@@ -61,14 +61,7 @@ metadata/_custom_type_script = "uid://cdcushggciuu1"
 
 [node name="Control" instance=ExtResource("1_uarrd")]
 
-[node name="AttributeComponent" parent="." index="4"]
-attribute_set = SubResource("Resource_3ttrw")
-
-[node name="Attribute" type="Node" parent="." index="5"]
-script = ExtResource("2_0y4oo")
-metadata/_custom_type_script = "uid://dabqovygaswi1"
-
-[node name="MindStateInfo" type="VBoxContainer" parent="." index="6"]
+[node name="MindStateInfo" type="VBoxContainer" parent="." index="4"]
 layout_mode = 0
 offset_left = -10.0
 offset_top = 80.0
@@ -178,3 +171,10 @@ theme_override_font_sizes/font_size = 21
 text = "99"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="AttributeComponent" parent="." index="5"]
+attribute_set = SubResource("Resource_3ttrw")
+
+[node name="Attribute" type="Node" parent="." index="6"]
+script = ExtResource("2_0y4oo")
+metadata/_custom_type_script = "uid://dabqovygaswi1"
