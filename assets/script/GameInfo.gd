@@ -115,7 +115,7 @@ func plotSegment_data_wash() -> void:
 			if tmp_item == "-1":
 				real_condition = int(tmp_item)
 				break
-			var tmp_pair = tmp_item.split("/")
+			var tmp_pair = tmp_item.split(":")
 			## 否则将条件读取为 key/value 的字典。其中 key = seatID, value = 卡牌类型
 			## 根据后续设置的 seat 和 卡牌 的匹配结果，来对应检查 condition 的得分。得分最高的 condition 视为匹配结果。
 			if tmp_pair.size() != 2:
