@@ -24,6 +24,9 @@ var bgPic_base_resource_path = 'res://assets/image/'
 var plotSegmentGroup_file_path = 'res://assets/data/plotSegmentGroup.csv'
 var plotSegmentGroup:Dictionary
 
+var mindStateProperty_file_path = 'res://assets/data/mindStateProperty.csv'
+var mindStateProperty:Dictionary
+
 func _ready() -> void:
 	itemCard=read_csv_as_nested_dict(itemCard_file_path)
 	itemSeat = read_csv_as_nested_dict(itemSeat_file_path)
@@ -38,8 +41,12 @@ func _ready() -> void:
 	bgPic_data_wash()
 	plotSegmentGroup = read_csv_as_nested_dict(plotSegmentGroup_file_path)
 	plotSegmentGroup_data_wash()
+	mindStateProperty = read_csv_as_nested_dict(mindStateProperty_file_path)
 
-	# 函数读取CSV文件并将其转换为嵌套字典
+	# 基础配置读取完成后，将部分模板配置替换为实际配置
+	card_template_changer()
+
+# 函数读取CSV文件并将其转换为嵌套字典
 func read_csv_as_nested_dict(path: String) -> Dictionary:
 	var data = {}
 	var file = FileAccess.open(path,FileAccess.READ)
@@ -144,3 +151,23 @@ func plot_data_wash() -> void:
 			real_condition[tmp_key] = tmp_value
 		## 将上述处理结果赋值回 condition
 		item['condition'] = real_condition
+
+## 将属性模板ID替换为对应属性配置。方便不同类型进行扩展
+func card_template_changer() -> void:
+	for item in itemCard.values():
+		match item['property_type']:
+			"MindState":
+				var templateID = item['property_template']
+				_append_property_from_template(item, mindStateProperty[templateID])
+			_:
+				print("没有匹配到对应卡牌属性：", item['property_type'])
+				continue
+
+## 内部函数。用于将属性模板中的配置直接赋值给对应项。
+func _append_property_from_template(rawDic:Dictionary, templateProperty:Dictionary) -> void:
+	var passKey = ['ID', 'Remarks']
+	for key in templateProperty.keys():
+		if key in passKey:
+			continue
+		rawDic[key] = templateProperty[key]
+

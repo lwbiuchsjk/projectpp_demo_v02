@@ -55,6 +55,7 @@ base_value = 0.0
 metadata/_custom_type_script = "uid://bw4kf70rvxlww"
 
 [sub_resource type="Resource" id="Resource_3ttrw"]
+resource_local_to_scene = true
 script = ExtResource("3_sf0id")
 attributes = Array[ExtResource("2_8pbwu")]([SubResource("Resource_gh0n0"), SubResource("Resource_sf0id"), SubResource("Resource_dgbeb"), SubResource("Resource_a0cf6"), SubResource("Resource_nu1xd"), SubResource("Resource_xdb0a"), SubResource("Resource_1ior1")])
 metadata/_custom_type_script = "uid://cdcushggciuu1"
@@ -68,17 +69,17 @@ offset_top = 80.0
 offset_right = 30.0
 offset_bottom = 280.0
 
-[node name="Happy" type="Control" parent="MindStateInfo" index="0"]
+[node name="Happiness" type="Control" parent="MindStateInfo" index="0"]
 custom_minimum_size = Vector2(30, 30)
 layout_mode = 2
 
-[node name="ColorRect" type="ColorRect" parent="MindStateInfo/Happy" index="0"]
+[node name="ColorRect" type="ColorRect" parent="MindStateInfo/Happiness" index="0"]
 layout_mode = 0
 offset_right = 30.0
 offset_bottom = 30.0
 color = Color(1, 0, 0, 1)
 
-[node name="Label" type="Label" parent="MindStateInfo/Happy" index="1"]
+[node name="Label" type="Label" parent="MindStateInfo/Happiness" index="1"]
 layout_mode = 0
 offset_right = 30.0
 offset_bottom = 30.0
@@ -87,16 +88,18 @@ text = "99"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Sad" type="Control" parent="MindStateInfo" index="1"]
+[node name="Sadness" type="Control" parent="MindStateInfo" index="1"]
 custom_minimum_size = Vector2(30, 30)
 layout_mode = 2
 
-[node name="ColorRect" type="ColorRect" parent="MindStateInfo/Sad" index="0"]
+[node name="ColorRect" type="ColorRect" parent="MindStateInfo/Sadness" index="0"]
+layout_mode = 0
 offset_right = 30.0
 offset_bottom = 30.0
 color = Color(1, 0, 0, 1)
 
-[node name="Label" type="Label" parent="MindStateInfo/Sad" index="1"]
+[node name="Label" type="Label" parent="MindStateInfo/Sadness" index="1"]
+layout_mode = 0
 offset_right = 30.0
 offset_bottom = 30.0
 theme_override_font_sizes/font_size = 21
@@ -109,11 +112,13 @@ custom_minimum_size = Vector2(30, 30)
 layout_mode = 2
 
 [node name="ColorRect" type="ColorRect" parent="MindStateInfo/Anger" index="0"]
+layout_mode = 0
 offset_right = 30.0
 offset_bottom = 30.0
 color = Color(1, 0, 0, 1)
 
 [node name="Label" type="Label" parent="MindStateInfo/Anger" index="1"]
+layout_mode = 0
 offset_right = 30.0
 offset_bottom = 30.0
 theme_override_font_sizes/font_size = 21
@@ -126,11 +131,13 @@ custom_minimum_size = Vector2(30, 30)
 layout_mode = 2
 
 [node name="ColorRect" type="ColorRect" parent="MindStateInfo/Fear" index="0"]
+layout_mode = 0
 offset_right = 30.0
 offset_bottom = 30.0
 color = Color(1, 0, 0, 1)
 
 [node name="Label" type="Label" parent="MindStateInfo/Fear" index="1"]
+layout_mode = 0
 offset_right = 30.0
 offset_bottom = 30.0
 theme_override_font_sizes/font_size = 21
@@ -143,11 +150,13 @@ custom_minimum_size = Vector2(30, 30)
 layout_mode = 2
 
 [node name="ColorRect" type="ColorRect" parent="MindStateInfo/Disgust" index="0"]
+layout_mode = 0
 offset_right = 30.0
 offset_bottom = 30.0
 color = Color(1, 0, 0, 1)
 
 [node name="Label" type="Label" parent="MindStateInfo/Disgust" index="1"]
+layout_mode = 0
 offset_right = 30.0
 offset_bottom = 30.0
 theme_override_font_sizes/font_size = 21
@@ -160,11 +169,13 @@ custom_minimum_size = Vector2(30, 30)
 layout_mode = 2
 
 [node name="ColorRect" type="ColorRect" parent="MindStateInfo/Surprise" index="0"]
+layout_mode = 0
 offset_right = 30.0
 offset_bottom = 30.0
 color = Color(1, 0, 0, 1)
 
 [node name="Label" type="Label" parent="MindStateInfo/Surprise" index="1"]
+layout_mode = 0
 offset_right = 30.0
 offset_bottom = 30.0
 theme_override_font_sizes/font_size = 21
@@ -178,3 +189,5 @@ attribute_set = SubResource("Resource_3ttrw")
 [node name="Attribute" type="Node" parent="." index="6"]
 script = ExtResource("2_0y4oo")
 metadata/_custom_type_script = "uid://dabqovygaswi1"
+
+[editable path="AttributeComponent"]

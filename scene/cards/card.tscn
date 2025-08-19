@@ -121,3 +121,5 @@ unique_name_in_owner = true
 [connection signal="button_up" from="Button" to="." method="_on_button_button_up"]
 [connection signal="button_down" from="allButton" to="." method="_on_all_button_button_down"]
 [connection signal="button_up" from="allButton" to="." method="_on_button_button_up"]
+
+[editable path="AttributeComponent"]
