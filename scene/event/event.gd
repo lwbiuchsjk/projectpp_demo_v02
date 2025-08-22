@@ -17,12 +17,12 @@ func _process(delta: float) -> void:
 
 
 func add_child_item(child: Node) -> void:
-	$PicCardArea/CardArea/Container.add_child(child)
+	$CardArea/Container.add_child(child)
 	child.add_to_group("Seat")
 	pass
 
 func arrange_children_bottom_up() -> void:
-	$PicCardArea/CardArea/Container.arrange_children_bottom_up()
+	$CardArea/Container.arrange_children_bottom_up()
 	pass
 
 

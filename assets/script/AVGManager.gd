@@ -19,6 +19,7 @@ signal next_avg()
 signal close_avg()
 signal build_seat()
 signal seatSelect_confirm()
+signal draw_npc()
 ## 以下是剧情开始时调用的信号
 signal new_plot()
 signal next_plot()
@@ -198,7 +199,7 @@ func _on_seatSelect_confirm():
 	##TODO 设置卡牌数据变化
 
 	## 移除座位
-	var seatParentNode = rootNode.get_node('Event/PicCardArea/CardArea/Container')
+	var seatParentNode = rootNode.get_node('Event/CardArea/Container')
 	for child in seatParentNode.get_children():
 		if child.is_in_group('Seat'):
 			child.remove_from_group('Seat')
