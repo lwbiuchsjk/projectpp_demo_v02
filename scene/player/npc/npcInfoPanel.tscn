@@ -1,0 +1,85 @@
+[gd_scene load_steps=2 format=3 uid="uid://ciyt0j56bw73e"]
+
+[ext_resource type="Texture2D" uid="uid://b0nbdxwg8fp2h" path="res://scene/player/MainFemale_1_head_1.png" id="1_cvjk0"]
+
+[node name="NpcInfoPanel" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 0
+offset_right = 150.0
+offset_bottom = 150.0
+texture = ExtResource("1_cvjk0")
+expand_mode = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 0
+offset_left = 150.0
+offset_right = 190.0
+offset_bottom = 150.0
+alignment = 1
+
+[node name="Control" type="Control" parent="VBoxContainer"]
+custom_minimum_size = Vector2(50, 15)
+layout_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="VBoxContainer/Control"]
+layout_mode = 2
+offset_right = 40.0
+offset_bottom = 15.0
+color = Color(1, 0, 0, 1)
+
+[node name="Control2" type="Control" parent="VBoxContainer"]
+custom_minimum_size = Vector2(50, 15)
+layout_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="VBoxContainer/Control2"]
+layout_mode = 2
+offset_right = 40.0
+offset_bottom = 15.0
+color = Color(1, 0, 0, 1)
+
+[node name="Control3" type="Control" parent="VBoxContainer"]
+custom_minimum_size = Vector2(50, 15)
+layout_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="VBoxContainer/Control3"]
+layout_mode = 2
+offset_right = 40.0
+offset_bottom = 15.0
+color = Color(1, 0, 0, 1)
+
+[node name="Control4" type="Control" parent="VBoxContainer"]
+custom_minimum_size = Vector2(50, 15)
+layout_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="VBoxContainer/Control4"]
+layout_mode = 2
+offset_right = 40.0
+offset_bottom = 15.0
+color = Color(1, 0, 0, 1)
+
+[node name="Control5" type="Control" parent="VBoxContainer"]
+custom_minimum_size = Vector2(50, 15)
+layout_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="VBoxContainer/Control5"]
+layout_mode = 2
+offset_right = 40.0
+offset_bottom = 15.0
+color = Color(1, 0, 0, 1)
+
+[node name="Control6" type="Control" parent="VBoxContainer"]
+custom_minimum_size = Vector2(50, 15)
+layout_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="VBoxContainer/Control6"]
+layout_mode = 2
+offset_right = 40.0
+offset_bottom = 15.0
+color = Color(1, 0, 0, 1)

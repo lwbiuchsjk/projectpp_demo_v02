@@ -6,6 +6,7 @@ func _ready() -> void:
 	avgManager.connect("new_avg", _on_new_avg)
 	avgManager.connect("clean_avg", _on_clean_avg)
 	avgManager.connect("close_avg", _on_close_avg)
+	avgManager.connect("draw_npc", _set_npcInfo)
 	$TextArea/NextAvgButton.pressed.connect(_check_next_avg)
 	$SeatConfirmButton.pressed.connect(_confirm_seatSelect)
 	pass # Replace with function body.
@@ -65,4 +66,19 @@ func _on_close_avg():
 
 func _confirm_seatSelect():
 	avgManager.emit_signal('seatSelect_confirm')
+	pass
+
+
+func _set_npcInfo():
+	var npcParent = $NPCArea/HBoxContainer
+	## 先清理之前的节点
+	for item in npcParent.get_children():
+		npcParent.remove_child(item)
+	## 再加入新的节点
+	##TODO 加入新节点需要读入NPC数据，并做出一定前端表现
+	var avg = avgManager.load_avg_config()
+	var npcList: Array = avg['NPC']
+	for item in npcList:
+		var npcItem = preload("res://scene/player/npc/npcInfoPanel.tscn").instantiate()
+		npcParent.add_child(npcItem)
 	pass

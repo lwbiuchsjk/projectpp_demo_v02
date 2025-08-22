@@ -27,6 +27,9 @@ var plotSegmentGroup:Dictionary
 var mindStateProperty_file_path = 'res://assets/data/mindStateProperty.csv'
 var mindStateProperty:Dictionary
 
+var npcInfo_file_path = 'res://assets/data/npcInfo.csv'
+var npcInfo:Dictionary
+
 func _ready() -> void:
 	itemCard=read_csv_as_nested_dict(itemCard_file_path)
 	itemSeat = read_csv_as_nested_dict(itemSeat_file_path)
@@ -42,6 +45,8 @@ func _ready() -> void:
 	plotSegmentGroup = read_csv_as_nested_dict(plotSegmentGroup_file_path)
 	plotSegmentGroup_data_wash()
 	mindStateProperty = read_csv_as_nested_dict(mindStateProperty_file_path)
+	npcInfo = read_csv_as_nested_dict(npcInfo_file_path)
+
 
 	# 基础配置读取完成后，将部分模板配置替换为实际配置
 	card_template_changer()
@@ -82,6 +87,14 @@ func avgPlot_data_wash() -> void:
 			avg['seatList'] = []
 		else:
 			avg['seatList'] = seat_list
+
+		## 处理 NPC 的列表配置
+		var raw_npc_list:String = avg['NPC']
+		var npc_list = raw_npc_list.split("/")
+		if npc_list[0] == "":
+			avg['NPC'] = []
+		else:
+			avg['NPC'] = npc_list
 
 ## 对 bgPic 中的部分数据进行处理，将基础资源名拼接进去
 func bgPic_data_wash() -> void:
@@ -171,3 +184,8 @@ func _append_property_from_template(rawDic:Dictionary, templateProperty:Dictiona
 			continue
 		rawDic[key] = templateProperty[key]
 
+## 将属性模板ID替换为对应属性配置。方便不同类型进行扩展
+func npcInfo_template_changer() -> void:
+	for item in itemCard.values():
+		var mindStateTemplateID = item['MindStateTemplate']
+		_append_property_from_template(item, mindStateProperty[mindStateTemplateID])

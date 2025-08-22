@@ -186,6 +186,7 @@ func set_next_avg(nextAvgID = null):
 
 	if nowAvgID != null and nowAvgID != "":
 		emit_signal("new_avg")
+		emit_signal("draw_npc")
 		return
 
 	if nowAvg['nextID'] == null or nowAvg['nextID'] == "":

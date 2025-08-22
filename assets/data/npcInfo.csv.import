@@ -1,0 +1,17 @@
+[remap]
+
+importer="csv_translation"
+type="Translation"
+uid="uid://b8qhrdb2ld7c1"
+
+[deps]
+
+files=["res://assets/data/npcInfo.Name.translation", "res://assets/data/npcInfo.Image.translation", "res://assets/data/npcInfo.MindStateTemplate.translation"]
+
+source_file="res://assets/data/npcInfo.csv"
+dest_files=["res://assets/data/npcInfo.Name.translation", "res://assets/data/npcInfo.Image.translation", "res://assets/data/npcInfo.MindStateTemplate.translation"]
+
+[params]
+
+compress=true
+delimiter=0
