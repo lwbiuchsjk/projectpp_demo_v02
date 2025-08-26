@@ -46,7 +46,7 @@ func _ready() -> void:
 	plotSegmentGroup_data_wash()
 	mindStateProperty = read_csv_as_nested_dict(mindStateProperty_file_path)
 	npcInfo = read_csv_as_nested_dict(npcInfo_file_path)
-
+	npcInfo_template_changer()
 
 	# 基础配置读取完成后，将部分模板配置替换为实际配置
 	card_template_changer()
@@ -90,7 +90,7 @@ func avgPlot_data_wash() -> void:
 
 		## 处理 NPC 的列表配置
 		var raw_npc_list:String = avg['NPC']
-		var npc_list = raw_npc_list.split("/")
+		var npc_list = raw_npc_list.replace(" ","").split("/")
 		if npc_list[0] == "":
 			avg['NPC'] = []
 		else:
@@ -186,6 +186,6 @@ func _append_property_from_template(rawDic:Dictionary, templateProperty:Dictiona
 
 ## 将属性模板ID替换为对应属性配置。方便不同类型进行扩展
 func npcInfo_template_changer() -> void:
-	for item in cardInfo.values():
+	for item in npcInfo.values():
 		var mindStateTemplateID = item['MindStateTemplate']
 		_append_property_from_template(item, mindStateProperty[mindStateTemplateID])

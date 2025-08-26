@@ -78,7 +78,8 @@ func _set_npcInfo():
 	##TODO 加入新节点需要读入NPC数据，并做出一定前端表现
 	var avg = avgManager.load_avg_config()
 	var npcList: Array = avg['NPC']
-	for item in npcList:
+	for npcID in npcList:
 		var npcItem = preload("res://scene/player/npc/npcInfoPanel.tscn").instantiate()
+		npcItem.set_npc_data(str(npcID))
 		npcParent.add_child(npcItem)
 	pass
