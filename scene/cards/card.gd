@@ -35,19 +35,19 @@ func _process(delta: float) -> void:
 	match  cardCurrentState:
 		cardState.dragging:
 			follow(get_global_mouse_position()-size/2,delta)
-			
+
 			var mouse_position = get_global_mouse_position()
 			var nodes = get_tree().get_nodes_in_group("cardDropable")
 			for node in nodes:
 				if node.get_global_rect().has_point(mouse_position)&&node.visible==true:
 					whichDeckMouseIn=node
-			
+
 		cardState.following:
 			if follow_target!=null:
 				follow(follow_target.global_position,delta)
 		cardState.vfs:
 			follow(get_global_mouse_position()-size/2,delta)
-				
+
 func follow(target_position:Vector2,delta:float):
 		var displacement = target_position - global_position
 		var force = displacement * stiffness
@@ -87,7 +87,7 @@ func _on_button_button_down() -> void:
 		elif follow_target!=null:
 			follow_target.queue_free()
 		_update_deck_weight()
-		
+
 		pass # Replace with function body.
 
 func _update_deck_weight() -> void:
@@ -97,7 +97,7 @@ func _update_deck_weight() -> void:
 func _on_button_button_up() -> void:
 	if dup!=null:
 		dup.queue_free()
-	
+
 	if check_deck_dropable(whichDeckMouseIn):
 		whichDeckMouseIn.add_card(self)
 	else:
@@ -105,9 +105,9 @@ func _on_button_button_up() -> void:
 			preDeck.add_card(self)
 		else:
 			print("有一张卡牌没有preDeck，也没有whichDeckMouseIn，一般是由于点的太快导致的")
-			
+
 	cardCurrentState = cardState.following
-		
+
 	pass # Replace with function body.
 
 func check_deck_dropable(node: deck) -> bool:
@@ -120,7 +120,7 @@ func check_deck_dropable(node: deck) -> bool:
 	return false
 
 func initCard(Nm) -> void:
-	cardInfo=GameInfo.itemCard[Nm]
+	cardInfo=GameInfo.cardInfo[Nm]
 	cardWeight=float(cardInfo["base_cardWeight"])
 	cardClass=cardInfo["base_cardClass"]
 	cardName=cardInfo["base_cardName"]
@@ -131,7 +131,7 @@ func initCard(Nm) -> void:
 
 
 func paintCard():
-	
+
 	#print(cardInfo)
 	pickButton=$Button
 	var imgPath="res://assets/image/cardImg/"+str(cardName)+".png"
@@ -146,7 +146,7 @@ func _on_all_button_button_down() -> void:
 	dup.cardCurrentState=cardState.vfs
 	cardCurrentState = cardState.dragging
 	if follow_target!=null:
-		follow_target.queue_free()	
+		follow_target.queue_free()
 	pass # Replace with function body.
 
 
@@ -154,7 +154,7 @@ func is_card_following() -> bool:
 	if cardCurrentState == cardState.following:
 		return true
 	return false
-	
+
 func _on_button_mouse_entered() -> void:
 	if dup == null:
 		dup=self.duplicate() as card
@@ -163,15 +163,15 @@ func _on_button_mouse_entered() -> void:
 		dup.cardCurrentState=cardState.focus
 		dup.scale = Vector2(1.2, 1.2)
 	pass
-	
+
 func _on_button_mouse_exited() -> void:
 	if dup!=null:
 		dup.queue_free()
 	pass
-	
+
 func get_card_type() -> GameType.CardType:
 	return cardType
 	pass
-	
+
 func set_card_type(setType: GameType.CardType) -> void:
 	cardType = setType

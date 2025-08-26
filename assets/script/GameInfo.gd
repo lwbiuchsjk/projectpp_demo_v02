@@ -1,6 +1,6 @@
 extends Node
-var itemCard_file_path="res://assets/data/cardsInfo.CSV"
-var itemCard:Dictionary
+var cardInfo_file_path="res://assets/data/cardsInfo.CSV"
+var cardInfo:Dictionary
 
 var itemSeat_file_path = 'res://assets/data/seatsInfo.csv'
 var itemSeat:Dictionary
@@ -31,7 +31,7 @@ var npcInfo_file_path = 'res://assets/data/npcInfo.csv'
 var npcInfo:Dictionary
 
 func _ready() -> void:
-	itemCard=read_csv_as_nested_dict(itemCard_file_path)
+	cardInfo=read_csv_as_nested_dict(cardInfo_file_path)
 	itemSeat = read_csv_as_nested_dict(itemSeat_file_path)
 	plotSegment = read_csv_as_nested_dict(plotSegment_file_path)
 	plotSegment_data_wash()
@@ -72,10 +72,10 @@ func read_csv_as_nested_dict(path: String) -> Dictionary:
 	return data
 
 func search_card_from_cardName(cardName: String):
-	for checkCard in itemCard.values():
+	for checkCard in cardInfo.values():
 		if checkCard['base_cardName'] == cardName:
 			return checkCard
-	return itemCard[0]
+	return cardInfo[0]
 
 ## 对 avgPlot 中的部分数据进行清理，确保生成数据实际可读
 func avgPlot_data_wash() -> void:
@@ -167,7 +167,7 @@ func plot_data_wash() -> void:
 
 ## 将属性模板ID替换为对应属性配置。方便不同类型进行扩展
 func card_template_changer() -> void:
-	for item in itemCard.values():
+	for item in cardInfo.values():
 		match item['property_type']:
 			"MindState":
 				var templateID = item['property_template']
@@ -186,6 +186,6 @@ func _append_property_from_template(rawDic:Dictionary, templateProperty:Dictiona
 
 ## 将属性模板ID替换为对应属性配置。方便不同类型进行扩展
 func npcInfo_template_changer() -> void:
-	for item in itemCard.values():
+	for item in cardInfo.values():
 		var mindStateTemplateID = item['MindStateTemplate']
 		_append_property_from_template(item, mindStateProperty[mindStateTemplateID])
