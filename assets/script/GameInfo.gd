@@ -30,6 +30,9 @@ var mindStateProperty:Dictionary
 var npcInfo_file_path = 'res://assets/data/npcInfo.csv'
 var npcInfo:Dictionary
 
+var const_file_path = "res://assets/data/const.csv"
+var constInfo:Dictionary
+
 func _ready() -> void:
 	cardInfo=read_csv_as_nested_dict(cardInfo_file_path)
 	itemSeat = read_csv_as_nested_dict(itemSeat_file_path)
@@ -47,6 +50,7 @@ func _ready() -> void:
 	mindStateProperty = read_csv_as_nested_dict(mindStateProperty_file_path)
 	npcInfo = read_csv_as_nested_dict(npcInfo_file_path)
 	npcInfo_template_changer()
+	constInfo = read_csv_as_nested_dict(const_file_path)
 
 	# 基础配置读取完成后，将部分模板配置替换为实际配置
 	card_template_changer()
@@ -189,3 +193,10 @@ func npcInfo_template_changer() -> void:
 	for item in npcInfo.values():
 		var mindStateTemplateID = item['MindStateTemplate']
 		_append_property_from_template(item, mindStateProperty[mindStateTemplateID])
+
+## 根据传入的 key 检索 const 中的对应值。注意，返回的是整行数据，具体如何使用值应当根据业务具体确定。
+func search_const_value(searchKey:String) -> Dictionary:
+	for key in constInfo.keys():
+		if key == searchKey:
+			return constInfo[key]
+	return {}

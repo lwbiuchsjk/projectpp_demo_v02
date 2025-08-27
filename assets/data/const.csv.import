@@ -1,0 +1,15 @@
+[remap]
+
+importer="csv_translation"
+type="Translation"
+uid="uid://co8803re226ko"
+valid=false
+
+[deps]
+
+source_file="res://assets/data/const.csv"
+
+[params]
+
+compress=true
+delimiter=0

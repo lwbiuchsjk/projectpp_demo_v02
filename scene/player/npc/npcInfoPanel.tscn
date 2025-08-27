@@ -26,61 +26,61 @@ offset_right = 190.0
 offset_bottom = 150.0
 alignment = 1
 
-[node name="Control" type="Control" parent="VBoxContainer"]
+[node name="Happiness" type="Control" parent="VBoxContainer"]
 custom_minimum_size = Vector2(50, 15)
 layout_mode = 2
 
-[node name="ColorRect" type="ColorRect" parent="VBoxContainer/Control"]
+[node name="ColorRect" type="ColorRect" parent="VBoxContainer/Happiness"]
 layout_mode = 2
 offset_right = 40.0
 offset_bottom = 15.0
 color = Color(1, 0, 0, 1)
 
-[node name="Control2" type="Control" parent="VBoxContainer"]
+[node name="Sadness" type="Control" parent="VBoxContainer"]
 custom_minimum_size = Vector2(50, 15)
 layout_mode = 2
 
-[node name="ColorRect" type="ColorRect" parent="VBoxContainer/Control2"]
+[node name="ColorRect" type="ColorRect" parent="VBoxContainer/Sadness"]
 layout_mode = 2
 offset_right = 40.0
 offset_bottom = 15.0
 color = Color(1, 0, 0, 1)
 
-[node name="Control3" type="Control" parent="VBoxContainer"]
+[node name="Anger" type="Control" parent="VBoxContainer"]
 custom_minimum_size = Vector2(50, 15)
 layout_mode = 2
 
-[node name="ColorRect" type="ColorRect" parent="VBoxContainer/Control3"]
+[node name="ColorRect" type="ColorRect" parent="VBoxContainer/Anger"]
 layout_mode = 2
 offset_right = 40.0
 offset_bottom = 15.0
 color = Color(1, 0, 0, 1)
 
-[node name="Control4" type="Control" parent="VBoxContainer"]
+[node name="Fear" type="Control" parent="VBoxContainer"]
 custom_minimum_size = Vector2(50, 15)
 layout_mode = 2
 
-[node name="ColorRect" type="ColorRect" parent="VBoxContainer/Control4"]
+[node name="ColorRect" type="ColorRect" parent="VBoxContainer/Fear"]
 layout_mode = 2
 offset_right = 40.0
 offset_bottom = 15.0
 color = Color(1, 0, 0, 1)
 
-[node name="Control5" type="Control" parent="VBoxContainer"]
+[node name="Disgust" type="Control" parent="VBoxContainer"]
 custom_minimum_size = Vector2(50, 15)
 layout_mode = 2
 
-[node name="ColorRect" type="ColorRect" parent="VBoxContainer/Control5"]
+[node name="ColorRect" type="ColorRect" parent="VBoxContainer/Disgust"]
 layout_mode = 2
 offset_right = 40.0
 offset_bottom = 15.0
 color = Color(1, 0, 0, 1)
 
-[node name="Control6" type="Control" parent="VBoxContainer"]
+[node name="Surprise" type="Control" parent="VBoxContainer"]
 custom_minimum_size = Vector2(50, 15)
 layout_mode = 2
 
-[node name="ColorRect" type="ColorRect" parent="VBoxContainer/Control6"]
+[node name="ColorRect" type="ColorRect" parent="VBoxContainer/Surprise"]
 layout_mode = 2
 offset_right = 40.0
 offset_bottom = 15.0

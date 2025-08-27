@@ -81,5 +81,6 @@ func _set_npcInfo():
 	for npcID in npcList:
 		var npcItem = preload("res://scene/player/npc/npcInfoPanel.tscn").instantiate()
 		npcItem.set_npc_data(str(npcID))
+		npcItem.show_npc_mindState()
 		npcParent.add_child(npcItem)
 	pass

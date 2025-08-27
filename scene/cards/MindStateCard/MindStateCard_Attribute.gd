@@ -21,6 +21,7 @@ func _ready() -> void:
 	_bind_attibute_signal()
 
 	# 初始化信息显示
+	_show_mindState_info()
 	_init_mindState_info()
 
 	print("设置卡牌属性")
@@ -49,6 +50,16 @@ func _init_mindState_info() -> void:
 		_set_mindState_info(property)
 	_set_rarity_info(attribute_set)
 
+	pass
+
+## 用于对卡牌相关的 mindState 外显进行设置
+func _show_mindState_info() -> void:
+	for key in propertyList:
+		## 设置颜色，颜色由 const 配置决定
+		var colorCode = GameInfo.search_const_value(key + "Color")['valueString']
+		var colorRectNode = cardRoot.get_node("MindStateInfo/" + key + "/ColorRect") as ColorRect
+		colorRectNode.color = Color(colorCode)
+		print(key, colorCode)
 	pass
 
 func _set_mindState_info(propertyName: String) -> void:
