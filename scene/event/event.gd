@@ -8,8 +8,8 @@ func _ready() -> void:
 	avgManager.connect("close_avg", _on_close_avg)
 	avgManager.connect("draw_npc", _set_npcInfo)
 	$TextArea/NextAvgButton.pressed.connect(_check_next_avg)
-	$CardBriefPanel/SeatConfirmButton.pressed.connect(_confirm_seatSelect)
-	pass # Replace with function body.
+	$SeatBriefPanel/SeatConfirmButton.pressed.connect(_confirm_seatSelect)
+	$SeatBriefPanel/SeatPanelTriggerButton.pressed.connect(_on_seatPanelTrigger)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -18,12 +18,12 @@ func _process(delta: float) -> void:
 
 
 func add_child_item(child: Node) -> void:
-	$CardArea/Container.add_child(child)
+	$SeatPanel/CardArea/Container.add_child(child)
 	child.add_to_group("Seat")
 	pass
 
 func arrange_children_bottom_up() -> void:
-	$CardArea/Container.arrange_children_bottom_up()
+	$SeatPanel/CardArea/Container.arrange_children_bottom_up()
 	pass
 
 
@@ -64,10 +64,26 @@ func _on_close_avg():
 	avgManager.emit_signal("next_plot")
 	pass
 
+## 卡牌与座位匹配确认按钮
 func _confirm_seatSelect():
+	## 关闭 SeatPanel
+	var seatPanel = get_node('SeatPanel') as Control
+	seatPanel.visible = false
+	## 移除座位
+	var seatParentNode = $SeatPanel/CardArea/Container
+	for child in seatParentNode.get_children():
+		if child.is_in_group('Seat'):
+			child.remove_from_group('Seat')
+			seatParentNode.remove_child(child)
+	## 触发确认逻辑
 	avgManager.emit_signal('seatSelect_confirm')
 	pass
 
+## 呼出 SeatPanel 面板。面板常驻，只是调整其是否显示。
+func _on_seatPanelTrigger():
+	print("触发")
+	var seatPanel = get_node('SeatPanel') as Control
+	seatPanel.visible = !seatPanel.visible
 
 func _set_npcInfo():
 	var npcParent = $NPCArea/Container

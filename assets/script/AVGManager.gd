@@ -168,7 +168,7 @@ func set_seatPair(key:String, value):
 	seatPair[key] = value
 
 func set_seatConfirmButton_status(status:bool):
-	var briefPanel = rootNode.get_node('Event/CardBriefPanel') as Control
+	var briefPanel = rootNode.get_node('Event/SeatBriefPanel') as Control
 	briefPanel.visible = status
 
 
@@ -198,13 +198,6 @@ func _on_seatSelect_confirm():
 	set_seatConfirmButton_status(false)
 
 	##TODO 设置卡牌数据变化
-
-	## 移除座位
-	var seatParentNode = rootNode.get_node('Event/CardArea/Container')
-	for child in seatParentNode.get_children():
-		if child.is_in_group('Seat'):
-			child.remove_from_group('Seat')
-			seatParentNode.remove_child(child)
 
 	## 触发检查条件，执行本组内下一段AVG。AVG跳转分支功能在函数内部实现。
 	check_next_segment_condition()

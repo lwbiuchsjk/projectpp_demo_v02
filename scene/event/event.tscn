@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://dd8yf04nq7y51"]
+[gd_scene load_steps=15 format=3 uid="uid://dd8yf04nq7y51"]
 
 [ext_resource type="Texture2D" uid="uid://fexoqmnw4eiq" path="res://assets/image/placeText.jpg" id="1_la730"]
 [ext_resource type="Script" uid="uid://kpabxofifrvt" path="res://scene/event/event.gd" id="1_luj7y"]
@@ -14,6 +14,16 @@
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ol0pm"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_pcqei"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_lhdrf"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_nr5st"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_gjjya"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_himui"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_hwxy0"]
 
 [node name="Event" type="Control"]
 layout_mode = 3
@@ -82,22 +92,6 @@ theme_override_styles/hover = SubResource("StyleBoxEmpty_85rdd")
 theme_override_styles/pressed = SubResource("StyleBoxEmpty_ol0pm")
 theme_override_styles/normal = SubResource("StyleBoxEmpty_pcqei")
 
-[node name="CardArea" type="Control" parent="."]
-anchors_preset = 0
-offset_left = 1200.0
-offset_top = 400.0
-offset_right = 1900.0
-offset_bottom = 700.0
-
-[node name="Container" type="Container" parent="CardArea"]
-layout_mode = 1
-anchors_preset = -1
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_vertical = 0
-script = ExtResource("2_fv7qv")
-spacing = Vector2(10, 30)
-
 [node name="NPCArea" type="Control" parent="."]
 anchors_preset = 0
 offset_left = 20.0
@@ -111,7 +105,40 @@ offset_right = 200.0
 offset_bottom = 600.0
 theme_override_constants/separation = 200
 
-[node name="CardBriefPanel" type="Control" parent="."]
+[node name="SeatPanel" type="Control" parent="."]
+visible = false
+anchors_preset = 0
+offset_left = 450.0
+offset_top = 150.0
+offset_right = 1450.0
+offset_bottom = 650.0
+
+[node name="ColorRect" type="ColorRect" parent="SeatPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.784314)
+
+[node name="CardArea" type="Control" parent="SeatPanel"]
+anchors_preset = 0
+offset_left = 150.0
+offset_top = 100.0
+offset_right = 850.0
+offset_bottom = 400.0
+
+[node name="Container" type="Container" parent="SeatPanel/CardArea"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_vertical = 0
+script = ExtResource("2_fv7qv")
+spacing = Vector2(10, 30)
+
+[node name="SeatBriefPanel" type="Control" parent="."]
 visible = false
 anchors_preset = 0
 offset_left = 750.0
@@ -119,13 +146,26 @@ offset_top = 550.0
 offset_right = 1150.0
 offset_bottom = 650.0
 
-[node name="ColorRect" type="ColorRect" parent="CardBriefPanel"]
+[node name="ColorRect" type="ColorRect" parent="SeatBriefPanel"]
 layout_mode = 0
 offset_right = 400.0
 offset_bottom = 100.0
 color = Color(0, 0, 0, 0.470588)
 
-[node name="SeatConfirmButton" type="Button" parent="CardBriefPanel"]
+[node name="SeatPanelTriggerButton" type="Button" parent="SeatBriefPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/focus = SubResource("StyleBoxEmpty_lhdrf")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_nr5st")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_gjjya")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_himui")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_hwxy0")
+
+[node name="SeatConfirmButton" type="Button" parent="SeatBriefPanel"]
 layout_mode = 0
 offset_left = 280.0
 offset_top = 25.0
