@@ -168,8 +168,8 @@ func set_seatPair(key:String, value):
 	seatPair[key] = value
 
 func set_seatConfirmButton_status(status:bool):
-	var button = rootNode.get_node('Event/SeatConfirmButton') as Button
-	button.visible = status
+	var briefPanel = rootNode.get_node('Event/CardBriefPanel') as Control
+	briefPanel.visible = status
 
 
 func set_next_avg(nextAvgID = null):

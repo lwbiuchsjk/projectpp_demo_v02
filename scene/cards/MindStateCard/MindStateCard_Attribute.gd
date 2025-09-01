@@ -59,7 +59,6 @@ func _show_mindState_info() -> void:
 		var colorCode = GameInfo.search_const_value(key + "Color")['valueString']
 		var colorRectNode = cardRoot.get_node("MindStateInfo/" + key + "/ColorRect") as ColorRect
 		colorRectNode.color = Color(colorCode)
-		print(key, colorCode)
 	pass
 
 func _set_mindState_info(propertyName: String) -> void:

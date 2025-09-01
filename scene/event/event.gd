@@ -8,7 +8,7 @@ func _ready() -> void:
 	avgManager.connect("close_avg", _on_close_avg)
 	avgManager.connect("draw_npc", _set_npcInfo)
 	$TextArea/NextAvgButton.pressed.connect(_check_next_avg)
-	$SeatConfirmButton.pressed.connect(_confirm_seatSelect)
+	$CardBriefPanel/SeatConfirmButton.pressed.connect(_confirm_seatSelect)
 	pass # Replace with function body.
 
 
@@ -70,7 +70,7 @@ func _confirm_seatSelect():
 
 
 func _set_npcInfo():
-	var npcParent = $NPCArea/HBoxContainer
+	var npcParent = $NPCArea/Container
 	## 先清理之前的节点
 	for item in npcParent.get_children():
 		npcParent.remove_child(item)
