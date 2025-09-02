@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://dd8yf04nq7y51"]
+[gd_scene load_steps=15 format=3 uid="uid://dmbq200ef0pti"]
 
 [ext_resource type="Texture2D" uid="uid://fexoqmnw4eiq" path="res://assets/image/placeText.jpg" id="1_la730"]
 [ext_resource type="Script" uid="uid://kpabxofifrvt" path="res://scene/event/event.gd" id="1_luj7y"]
@@ -151,6 +151,15 @@ layout_mode = 0
 offset_right = 400.0
 offset_bottom = 100.0
 color = Color(0, 0, 0, 0.470588)
+
+[node name="SeatBriefList" type="HBoxContainer" parent="SeatBriefPanel/ColorRect"]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 25.0
+offset_right = 260.0
+offset_bottom = 75.0
+theme_override_constants/separation = 60
+alignment = 1
 
 [node name="SeatPanelTriggerButton" type="Button" parent="SeatBriefPanel"]
 layout_mode = 1

@@ -147,6 +147,7 @@ func build_event(placeID):
 func _on_build_seat(avg):
 	var eventNode = rootNode.get_node('Event')
 	var raw_seatPair = {}
+	## 在 SeatPanel 创建 Seat 实例
 	for preSeat in avg['seatList']:
 		var testCard = preload("res://scene/Seat/seat.tscn").instantiate() as Seat
 		eventNode.add_child_item(testCard)
@@ -156,6 +157,11 @@ func _on_build_seat(avg):
 		raw_seatPair[preSeat] = -1
 	eventNode.arrange_children_bottom_up()
 	seatPair = raw_seatPair
+
+	## 在 SeatBriefPanel 创建 SeatBrief 实例
+	for preSeat in avg['seatList']:
+		var testCard = preload("res://scene/Seat/SeatBrief/SeatBrief.tscn").instantiate()
+		eventNode.get_node("SeatBriefPanel/ColorRect/SeatBriefList").add_child(testCard)
 
 	## 如果作为列表不为空，那么显示确认按钮
 	if avg['seatList'].size() > 0:

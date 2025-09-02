@@ -75,13 +75,16 @@ func _confirm_seatSelect():
 		if child.is_in_group('Seat'):
 			child.remove_from_group('Seat')
 			seatParentNode.remove_child(child)
+	## 移除 SeatBriefPanel 中的 SeatBrief 实例
+	var seatBriefListNode = $SeatBriefPanel/ColorRect/SeatBriefList
+	for child in seatBriefListNode.get_children():
+		seatBriefListNode.remove_child(child)
 	## 触发确认逻辑
 	avgManager.emit_signal('seatSelect_confirm')
 	pass
 
 ## 呼出 SeatPanel 面板。面板常驻，只是调整其是否显示。
 func _on_seatPanelTrigger():
-	print("触发")
 	var seatPanel = get_node('SeatPanel') as Control
 	seatPanel.visible = !seatPanel.visible
 
