@@ -1,12 +1,15 @@
 extends Control
 var avgManager = GameInfo.get_node("AVGManager")
 
+signal show_seat_brief_status()
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	avgManager.connect("new_avg", _on_new_avg)
 	avgManager.connect("clean_avg", _on_clean_avg)
 	avgManager.connect("close_avg", _on_close_avg)
 	avgManager.connect("draw_npc", _set_npcInfo)
+	connect("show_seat_brief_status", set_seat_brief_status)
 	$TextArea/NextAvgButton.pressed.connect(_check_next_avg)
 	$SeatBriefPanel/SeatConfirmButton.pressed.connect(_confirm_seatSelect)
 	$SeatBriefPanel/SeatPanelTriggerButton.pressed.connect(_on_seatPanelTrigger)
@@ -103,3 +106,12 @@ func _set_npcInfo():
 		npcItem.show_npc_mindState()
 		npcParent.add_child(npcItem)
 	pass
+
+## 设置 seat_brief 相关状态
+func set_seat_brief_status(index: int, status: bool) -> void:
+	var seat_brief_rootNode = $SeatBriefPanel/ColorRect/SeatBriefList
+	var seat_brief_node = seat_brief_rootNode.get_child(index)
+	print(index)
+	print(seat_brief_rootNode)
+	print(seat_brief_node)
+	seat_brief_node.emit_signal("change_seat_brief_status", status)

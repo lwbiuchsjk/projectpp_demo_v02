@@ -24,11 +24,13 @@ signal draw_npc()
 signal new_plot()
 signal next_plot()
 signal select_place()
+signal show_seat_brief_status()
 
 func _ready() -> void:
 	connect("next_avg", set_next_avg)
 	connect("build_seat", _on_build_seat)
 	connect("seatSelect_confirm", _on_seatSelect_confirm)
+	connect("show_seat_brief_status", set_seat_brief_status)
 
 
 func set_avg_now(ID):
@@ -148,11 +150,16 @@ func _on_build_seat(avg):
 	var eventNode = rootNode.get_node('Event')
 	var raw_seatPair = {}
 	## 在 SeatPanel 创建 Seat 实例
+	var seatIndex = 0
 	for preSeat in avg['seatList']:
 		var testCard = preload("res://scene/Seat/seat.tscn").instantiate() as Seat
 		eventNode.add_child_item(testCard)
 		var card_type = testCard.search_seat_property(preSeat)
 		testCard.set_seat_type([card_type])
+		## 将 seat 属性传入 seat 实例
+		testCard.set_seat_data(seatIndex, preSeat)
+		#eventNode.emit_signal("show_seat_brief_status", seatIndex, false)
+		seatIndex += 1
 		## 将座位数据提取出来，制作字典，用于检查匹配情况
 		raw_seatPair[preSeat] = -1
 	eventNode.arrange_children_bottom_up()
@@ -300,3 +307,8 @@ func check_end_plot():
 ##TODO 本方法为检查 plot conditon 的具体实现。需要根据需求细化。
 func check_plot_condition() -> bool:
 	return true
+
+## 设置 seat_brief 相关状态
+func set_seat_brief_status(index: int, status: bool) -> void:
+	var eventNode = rootNode.get_node('Event')
+	eventNode.emit_signal("show_seat_brief_status", index, status)

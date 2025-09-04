@@ -20,7 +20,7 @@ var cardType:GameType.CardType
 var dup
 var num = 1
 
-
+var avgManager = GameInfo.get_node("AVGManager")
 
 enum cardState{following,dragging,vfs,fake,focus}
 @export var cardCurrentState=cardState.following
@@ -86,6 +86,11 @@ func _on_button_button_down() -> void:
 			c.paintCard()
 		elif follow_target!=null:
 			follow_target.queue_free()
+
+		if preDeck != null and preDeck is Seat:
+			var target = preDeck as Seat
+			target.clean_seat_card()
+			avgManager.emit_signal("show_seat_brief_status", target.seat_index, false)
 		_update_deck_weight()
 
 		pass # Replace with function body.
