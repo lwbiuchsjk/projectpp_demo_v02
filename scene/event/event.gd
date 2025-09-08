@@ -9,10 +9,12 @@ func _ready() -> void:
 	avgManager.connect("clean_avg", _on_clean_avg)
 	avgManager.connect("close_avg", _on_close_avg)
 	avgManager.connect("draw_npc", _set_npcInfo)
+	avgManager.connect("show_event_result", open_card_result_panel)
 	connect("show_seat_brief_status", set_seat_brief_status)
 	$TextArea/NextAvgButton.pressed.connect(_check_next_avg)
 	$SeatBriefPanel/SeatConfirmButton.pressed.connect(_confirm_seatSelect)
 	$SeatBriefPanel/SeatPanelTriggerButton.pressed.connect(_on_seatPanelTrigger)
+	$EventResult/CollectCardButton.pressed.connect(close_card_result_panel)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -55,7 +57,7 @@ func _on_new_avg():
 
 func _check_next_avg():
 	print("执行下一步AVG")
-	avgManager.emit_signal("next_avg")
+	avgManager.emit_signal("trigger_avg_control")
 
 
 func _on_close_avg():
@@ -115,3 +117,15 @@ func set_seat_brief_status(index: int, status: bool) -> void:
 	print(seat_brief_rootNode)
 	print(seat_brief_node)
 	seat_brief_node.emit_signal("change_seat_brief_status", status)
+
+## 关闭展示弹板
+func close_card_result_panel() -> void:
+	if $EventResult.visible == true:
+		$EventResult.visible = false
+	avgManager.emit_signal("simple_show_next_avg")
+
+
+## 打开展示弹板
+func open_card_result_panel() -> void:
+	if $EventResult.visible == false:
+		$EventResult.visible = true

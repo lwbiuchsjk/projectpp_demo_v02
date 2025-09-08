@@ -15,7 +15,8 @@ var seatPair:Dictionary
 ## 以下是avg开始时调用的信号
 signal new_avg()
 signal clean_avg()
-signal next_avg()
+signal trigger_avg_control()
+signal simple_show_next_avg()
 signal close_avg()
 signal build_seat()
 signal seatSelect_confirm()
@@ -25,9 +26,12 @@ signal new_plot()
 signal next_plot()
 signal select_place()
 signal show_seat_brief_status()
+## 以下是其他界面流程控制用面板
+signal show_event_result()
 
 func _ready() -> void:
-	connect("next_avg", set_next_avg)
+	connect("trigger_avg_control", avg_control)
+	connect("simple_show_next_avg", set_next_avg)
 	connect("build_seat", _on_build_seat)
 	connect("seatSelect_confirm", _on_seatSelect_confirm)
 	connect("show_seat_brief_status", set_seat_brief_status)
@@ -185,11 +189,21 @@ func set_seatConfirmButton_status(status:bool):
 	briefPanel.visible = status
 
 
-func set_next_avg(nextAvgID = null):
+func avg_control(nextAvgID = null):
 	## 如果当前正在选择，那么阻断点击
 	if nextAvgID == null and check_nowAvg_seating():
 		return
+
+	## 如果当前正在显示事件结果，那么弹出事件结果面板
+	if check_nowAvg_showEventResult():
+		emit_signal("show_event_result")
+		return
+
 	## 否则触发新avg
+	set_next_avg(nextAvgID)
+
+
+func set_next_avg(nextAvgID = null) -> void:
 	var nowAvg = load_avg_config()
 
 	if nextAvgID == null:
@@ -205,7 +219,6 @@ func set_next_avg(nextAvgID = null):
 	if nowAvg['nextID'] == null or nowAvg['nextID'] == "":
 		emit_signal("close_avg")
 
-
 func _on_seatSelect_confirm():
 	## 隐藏按钮
 	set_seatConfirmButton_status(false)
@@ -220,6 +233,14 @@ func check_nowAvg_seating() -> bool:
 	var nowAvg = load_avg_config()
 
 	if (nowAvg['nextID'] == null or nowAvg['nextID'] == "") and nowAvg['seatList'].size() > 0:
+		return true
+	else:
+		return false
+
+func check_nowAvg_showEventResult() -> bool:
+	var nowAvg = load_avg_config()
+
+	if nowAvg['showEventResult'] == "1":
 		return true
 	else:
 		return false
@@ -246,7 +267,7 @@ func check_next_segment_condition():
 		nextSegment = load_plotSegment_from_ID(maxPoint_segmentID)
 	else:
 		nextSegment = load_plotSegment_from_ID(blank_segmentID)
-	emit_signal("next_avg", nextSegment['avg_plot'])
+	emit_signal("trigger_avg_control", nextSegment['avg_plot'])
 	pass
 
 ## 条件计分函数。通过最终得分，来给condition的匹配情况进行评价。分数越高，评价结果越好。正常 condition 的得分都会大于 0 。
