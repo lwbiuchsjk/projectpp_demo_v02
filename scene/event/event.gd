@@ -1,15 +1,14 @@
 extends Control
-var avgManager = GameInfo.get_node("AVGManager")
 
 signal show_seat_brief_status()
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	avgManager.connect("new_avg", _on_new_avg)
-	avgManager.connect("clean_avg", _on_clean_avg)
-	avgManager.connect("close_avg", _on_close_avg)
-	avgManager.connect("draw_npc", _set_npcInfo)
-	avgManager.connect("show_event_result", open_card_result_panel)
+	GameInfo.avgManager.connect("new_avg", _on_new_avg)
+	GameInfo.avgManager.connect("clean_avg", _on_clean_avg)
+	GameInfo.avgManager.connect("close_avg", _on_close_avg)
+	GameInfo.avgManager.connect("draw_npc", _set_npcInfo)
+	GameInfo.avgManager.connect("show_event_result", open_card_result_panel)
 	connect("show_seat_brief_status", set_seat_brief_status)
 	$TextArea/NextAvgButton.pressed.connect(_check_next_avg)
 	$SeatBriefPanel/SeatConfirmButton.pressed.connect(_confirm_seatSelect)
@@ -36,11 +35,11 @@ func _on_clean_avg():
 	$TextArea/ScrollContainer/Label.text = ""
 
 func _on_new_avg():
-	var avg = avgManager.load_avg_config()
+	var avg = GameInfo.avgManager.load_avg_config()
 	## 设置文字
 	var avgText = avg.words
 	## 设置图片
-	var avgBgPic = avgManager.load_picImagePath_from_ID(avg.backgroundPic)
+	var avgBgPic = GameInfo.avgManager.load_picImagePath_from_ID(avg.backgroundPic)
 	var nowText = $TextArea/ScrollContainer/Label.text
 	if nowText == "":
 		$TextArea/ScrollContainer/Label.text = avgText
@@ -52,21 +51,20 @@ func _on_new_avg():
 
 	if avg['seatList'].size() > 0:
 		print("创建座位，AVGID：" + avg.ID)
-		avgManager.emit_signal("build_seat", avg)
+		GameInfo.avgManager.emit_signal("build_seat", avg)
 
 
 func _check_next_avg():
 	print("执行下一步AVG")
-	avgManager.emit_signal("trigger_avg_control")
+	GameInfo.avgManager.emit_signal("trigger_avg_control")
 
 
 func _on_close_avg():
 	var parent = get_parent()
 	if parent:
-		print("尝试移除")
 		parent.remove_child(self)
 	queue_free()
-	avgManager.emit_signal("next_plot")
+	GameInfo.avgManager.emit_signal("next_plot")
 	pass
 
 ## 卡牌与座位匹配确认按钮
@@ -85,7 +83,7 @@ func _confirm_seatSelect():
 	for child in seatBriefListNode.get_children():
 		seatBriefListNode.remove_child(child)
 	## 触发确认逻辑
-	avgManager.emit_signal('seatSelect_confirm')
+	GameInfo.avgManager.emit_signal('seatSelect_confirm')
 	pass
 
 ## 呼出 SeatPanel 面板。面板常驻，只是调整其是否显示。
@@ -100,7 +98,7 @@ func _set_npcInfo():
 		npcParent.remove_child(item)
 	## 再加入新的节点
 	##TODO 加入新节点需要读入NPC数据，并做出一定前端表现
-	var avg = avgManager.load_avg_config()
+	var avg = GameInfo.avgManager.load_avg_config()
 	var npcList: Array = avg['NPC']
 	for npcID in npcList:
 		var npcItem = preload("res://scene/player/npc/npcInfoPanel.tscn").instantiate()
@@ -113,16 +111,18 @@ func _set_npcInfo():
 func set_seat_brief_status(index: int, status: bool) -> void:
 	var seat_brief_rootNode = $SeatBriefPanel/ColorRect/SeatBriefList
 	var seat_brief_node = seat_brief_rootNode.get_child(index)
-	print(index)
-	print(seat_brief_rootNode)
-	print(seat_brief_node)
 	seat_brief_node.emit_signal("change_seat_brief_status", status)
 
 ## 关闭展示弹板
 func close_card_result_panel() -> void:
 	if $EventResult.visible == true:
 		$EventResult.visible = false
-	avgManager.emit_signal("simple_show_next_avg")
+
+	print("检测到关闭结果弹板|before: ", GameInfo.cardDataManager.seatedCardList)
+	GameInfo.cardDataManager.CleanSeatedCardList()
+	GameInfo.avgManager.emit_signal("simple_show_next_avg")
+
+
 
 
 ## 打开展示弹板

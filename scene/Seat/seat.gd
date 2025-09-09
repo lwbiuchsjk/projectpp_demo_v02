@@ -4,7 +4,6 @@ class_name Seat
 @export var accepted_types: Array[GameType.CardType]  # 在检查器中设置允许的类型
 var card_can_drop:bool = false
 var seat_card
-var avgManager = GameInfo.get_node("AVGManager")
 var seat_index: int
 var seatID
 
@@ -42,8 +41,8 @@ func add_card(cardToAdd)->void:
 	trigger_deck_sort()
 
 	_set_seat_card(cardToAdd)
-	avgManager.set_seatPair(seatID, 1)
-	avgManager.emit_signal("show_seat_brief_status", seat_index, true)
+	GameInfo.avgManager.set_seatPair(seatID, 1)
+	GameInfo.avgManager.emit_signal("show_seat_brief_status", seat_index, true)
 
 func update_weight() -> void:
 	var nowWeight=0
@@ -82,10 +81,12 @@ func search_seat_property(ID: String):
 
 func _set_seat_card(target: card) -> void:
 	seat_card = target
+	GameInfo.cardDataManager.SetCardToListFromIndex(seat_index, target)
+	print(GameInfo.cardDataManager.seatedCardList[seat_index])
 
 func clean_seat_card() -> void:
 	_set_seat_card(null)
-	avgManager.set_seatPair(seatID, -1)
+	GameInfo.avgManager.set_seatPair(seatID, -1)
 
 func set_seat_data(index: int, ID: String) -> void:
 	seat_index = index

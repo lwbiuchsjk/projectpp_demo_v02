@@ -33,6 +33,10 @@ var npcInfo:Dictionary
 var const_file_path = "res://assets/data/const.csv"
 var constInfo:Dictionary
 
+## 子节点结构
+var cardDataManager: CardDataManager
+var avgManager: AVGManager
+
 func _ready() -> void:
 	cardInfo=read_csv_as_nested_dict(cardInfo_file_path)
 	itemSeat = read_csv_as_nested_dict(itemSeat_file_path)
@@ -54,6 +58,10 @@ func _ready() -> void:
 
 	# 基础配置读取完成后，将部分模板配置替换为实际配置
 	card_template_changer()
+
+	## 子节点结构
+	cardDataManager = $CardDataManager as CardDataManager
+	avgManager = $AVGManager as AVGManager
 
 # 函数读取CSV文件并将其转换为嵌套字典
 func read_csv_as_nested_dict(path: String) -> Dictionary:

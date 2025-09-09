@@ -169,6 +169,9 @@ func _on_build_seat(avg):
 	eventNode.arrange_children_bottom_up()
 	seatPair = raw_seatPair
 
+	## 根据配置重置 seatedCardList
+	GameInfo.cardDataManager.InitSeatedCardList(seatIndex)
+
 	## 在 SeatBriefPanel 创建 SeatBrief 实例
 	for preSeat in avg['seatList']:
 		var testCard = preload("res://scene/Seat/SeatBrief/SeatBrief.tscn").instantiate()
