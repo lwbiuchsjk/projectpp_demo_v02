@@ -2,6 +2,9 @@ extends Control
 
 signal show_seat_brief_status()
 
+@onready var resultDeckRoot = $EventResult/ResultCardList
+var resultCardList: Array
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	GameInfo.avgManager.connect("new_avg", _on_new_avg)
@@ -115,17 +118,45 @@ func set_seat_brief_status(index: int, status: bool) -> void:
 
 ## 关闭展示弹板
 func close_card_result_panel() -> void:
+	## 隐藏弹板
 	if $EventResult.visible == true:
 		$EventResult.visible = false
-
-	print("检测到关闭结果弹板|before: ", GameInfo.cardDataManager.seatedCardList)
+	## 将弹板中未收回的卡牌，收回至牌库
+	## TODO 需要适配多牌库的情况
+	for target in resultDeckRoot.get_node("ResultDeck/cardDcek").get_children():
+		GameInfo.cardDataManager.emit_signal("trans_card_to_handDeck", target)
+		print("检查弹板中卡牌：", target)
+	## 清理工作
+	# 清理结果弹板
+	for target in resultDeckRoot.get_children():
+		resultDeckRoot.remove_child(target)
+		target.queue_free()
+	# 清理数据管理器重的座位卡牌数据
 	GameInfo.cardDataManager.CleanSeatedCardList()
+	## 触发后续AVG流程
 	GameInfo.avgManager.emit_signal("simple_show_next_avg")
-
-
-
 
 ## 打开展示弹板
 func open_card_result_panel() -> void:
 	if $EventResult.visible == false:
 		$EventResult.visible = true
+
+		var resultDeck = preload("res://scene/deck/ResultDeck/ResultDeck.tscn").instantiate()
+		resultDeckRoot.add_child(resultDeck)
+		_gen_result_card()
+		print("检查到弹板展示：", resultCardList)
+		_show_result_card()
+
+## TODO 此处应当支持调用外部函数，根据规则生成实际的卡牌结果
+func _gen_result_card() -> void:
+	resultCardList.clear()
+	for targetCard in GameInfo.cardDataManager.seatedCardList:
+		if targetCard != null:
+			resultCardList.append(targetCard)
+
+func _show_result_card() -> void:
+	for resultCard in resultCardList:
+		var targetDeck = resultDeckRoot.get_node("ResultDeck") as deck
+		targetDeck.add_card(resultCard)
+		#var targetCard = PlayerInfo.add_new_card(resultCard.cardName, resultDeckRoot.get_node("ResultDeck"))
+		#targetCard.paintCard()

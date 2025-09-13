@@ -150,6 +150,7 @@ func build_event(placeID):
 	pass
 
 ## 创建seat功能，允许外部单独调用
+## TODO 此处应当仅处理数据逻辑，外显相关应当通过信号在 eventNode 中实现
 func _on_build_seat(avg):
 	var eventNode = rootNode.get_node('Event')
 	var raw_seatPair = {}
@@ -180,6 +181,9 @@ func _on_build_seat(avg):
 	## 如果作为列表不为空，那么显示确认按钮
 	if avg['seatList'].size() > 0:
 		set_seatConfirmButton_status(true)
+
+	## 同时显示 SeatPannel
+	eventNode._on_seatPanelTrigger()
 
 	pass
 

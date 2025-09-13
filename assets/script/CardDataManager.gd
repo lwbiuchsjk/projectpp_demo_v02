@@ -2,6 +2,12 @@ extends Node
 class_name CardDataManager
 
 var seatedCardList:Array
+signal trans_card_to_handDeck()
+
+@onready var handDeck:deck = get_tree().root.get_node("testScean/site1/handDeck")
+
+func _ready() -> void:
+	connect("trans_card_to_handDeck", card_to_handDeck)
 
 ## 跟剧传入 index 的情况，处理作为列表
 func CleanSeatedCardList(index:int = -1) -> void:
@@ -30,3 +36,7 @@ func SetCardToListFromIndex(index:int, target) -> void:
 		return
 
 	seatedCardList[index] = target
+
+
+func card_to_handDeck(cardToAdd) -> void:
+	handDeck.add_card(cardToAdd)
