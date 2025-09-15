@@ -18,7 +18,6 @@ signal clean_avg()
 signal trigger_avg_control()
 signal simple_show_next_avg()
 signal close_avg()
-signal build_seat()
 signal seatSelect_confirm()
 signal draw_npc()
 ## 以下是剧情开始时调用的信号
@@ -32,7 +31,6 @@ signal show_event_result()
 func _ready() -> void:
 	connect("trigger_avg_control", avg_control)
 	connect("simple_show_next_avg", set_next_avg)
-	connect("build_seat", _on_build_seat)
 	connect("seatSelect_confirm", _on_seatSelect_confirm)
 	connect("show_seat_brief_status", set_seat_brief_status)
 
@@ -149,56 +147,16 @@ func build_event(placeID):
 	emit_signal("new_avg")
 	pass
 
-## 创建seat功能，允许外部单独调用
-## TODO 此处应当仅处理数据逻辑，外显相关应当通过信号在 eventNode 中实现
-func _on_build_seat(avg):
-	var eventNode = rootNode.get_node('Event')
-	var raw_seatPair = {}
-	## 在 SeatPanel 创建 Seat 实例
-	var seatIndex = 0
-	for preSeat in avg['seatList']:
-		var testCard = preload("res://scene/Seat/seat.tscn").instantiate() as Seat
-		eventNode.add_child_item(testCard)
-		var card_type = testCard.search_seat_property(preSeat)
-		testCard.set_seat_type([card_type])
-		## 将 seat 属性传入 seat 实例
-		testCard.set_seat_data(seatIndex, preSeat)
-		#eventNode.emit_signal("show_seat_brief_status", seatIndex, false)
-		seatIndex += 1
-		## 将座位数据提取出来，制作字典，用于检查匹配情况
-		raw_seatPair[preSeat] = -1
-	eventNode.arrange_children_bottom_up()
-	seatPair = raw_seatPair
-
-	## 根据配置重置 seatedCardList
-	GameInfo.cardDataManager.InitSeatedCardList(seatIndex)
-
-	## 在 SeatBriefPanel 创建 SeatBrief 实例
-	for preSeat in avg['seatList']:
-		var testCard = preload("res://scene/Seat/SeatBrief/SeatBrief.tscn").instantiate()
-		eventNode.get_node("SeatBriefPanel/ColorRect/SeatBriefList").add_child(testCard)
-
-	## 如果作为列表不为空，那么显示确认按钮
-	if avg['seatList'].size() > 0:
-		set_seatConfirmButton_status(true)
-
-	## 同时显示 SeatPannel
-	eventNode._on_seatPanelTrigger()
-
-	pass
 
 ## 设置 seatPair
 func set_seatPair(key:String, value):
 	seatPair[key] = value
 
-func set_seatConfirmButton_status(status:bool):
-	var briefPanel = rootNode.get_node('Event/SeatBriefPanel') as Control
-	briefPanel.visible = status
-
-
 func avg_control(nextAvgID = null):
 	## 如果当前正在选择，那么阻断点击
 	if nextAvgID == null and check_nowAvg_seating():
+		var eventNode = rootNode.get_node('Event')
+		eventNode.emit_signal("build_seat")
 		return
 
 	## 如果当前正在显示事件结果，那么弹出事件结果面板
@@ -228,7 +186,8 @@ func set_next_avg(nextAvgID = null) -> void:
 
 func _on_seatSelect_confirm():
 	## 隐藏按钮
-	set_seatConfirmButton_status(false)
+	var eventNode = rootNode.get_node('Event')
+	eventNode.set_seatConfirmButton_status(false)
 
 	##TODO 设置卡牌数据变化
 
