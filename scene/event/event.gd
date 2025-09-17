@@ -184,6 +184,8 @@ func open_card_result_panel() -> void:
 
 		var resultDeck = preload("res://scene/deck/ResultDeck/ResultDeck.tscn").instantiate()
 		resultDeckRoot.add_child(resultDeck)
+		#resultDeck.position = resultDeckRoot.size / 2
+		resultDeck.position.x = - resultDeck.size.x / 2 + resultDeckRoot.size.x / 2
 		_gen_result_card()
 		print("检查到弹板展示：", resultCardList)
 		_show_result_card()

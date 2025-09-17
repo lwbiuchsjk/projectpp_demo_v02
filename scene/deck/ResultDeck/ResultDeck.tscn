@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://bbj5dijtm7hgy" path="res://scene/deck/hand_deck.gd" id="1_erb8b"]
 
 [node name="ResultDeck" type="Panel" groups=["cardDeck", "cardDropable"]]
-offset_right = 1565.0
+offset_right = 1200.0
 offset_bottom = 320.0
 script = ExtResource("1_erb8b")
 
@@ -36,6 +36,7 @@ value = 17.05
 fill_mode = 3
 
 [node name="weight" type="Label" parent="."]
+visible = false
 layout_mode = 0
 offset_left = -96.0
 offset_top = 4.0

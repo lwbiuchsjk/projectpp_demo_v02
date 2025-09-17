@@ -33,11 +33,15 @@ var npcInfo:Dictionary
 var const_file_path = "res://assets/data/const.csv"
 var constInfo:Dictionary
 
+var eventCardsInfo_file_path = "res://assets/data/eventCardsInfo.csv"
+var eventCardsInfo:Dictionary
+
 ## 子节点结构
 var cardDataManager: CardDataManager
 var avgManager: AVGManager
 
 func _ready() -> void:
+	eventCardsInfo = read_csv_as_nested_dict(eventCardsInfo_file_path)
 	cardInfo=read_csv_as_nested_dict(cardInfo_file_path)
 	itemSeat = read_csv_as_nested_dict(itemSeat_file_path)
 	plotSegment = read_csv_as_nested_dict(plotSegment_file_path)
@@ -92,6 +96,16 @@ func search_card_from_cardName(cardName: String):
 ## 对 avgPlot 中的部分数据进行清理，确保生成数据实际可读
 func avgPlot_data_wash() -> void:
 	for avg in avgPlot.values():
+		## 处理 eventCards 的列表配置
+		print(avg)
+		var eventCardsInfoID = avg['eventCardsInfo']
+		print(eventCardsInfoID)
+		if eventCardsInfoID == "":
+			## ID = -1 的是默认为空的配置引用。其他配置全部为空。此处理是为了功能正常。
+			_append_property_from_template(avg, eventCardsInfo["-1"])
+		else:
+			_append_property_from_template(avg, eventCardsInfo[eventCardsInfoID])
+
 		## 处理 seat_list 的列表配置
 		var raw_seat_list:String = avg['seatList']
 		var seat_list = raw_seat_list.split("/")
@@ -190,6 +204,7 @@ func card_template_changer() -> void:
 
 ## 内部函数。用于将属性模板中的配置直接赋值给对应项。
 func _append_property_from_template(rawDic:Dictionary, templateProperty:Dictionary) -> void:
+
 	var passKey = ['ID', 'Remarks']
 	for key in templateProperty.keys():
 		if key in passKey:
