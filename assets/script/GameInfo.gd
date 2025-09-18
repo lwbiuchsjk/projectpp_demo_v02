@@ -107,20 +107,22 @@ func avgPlot_data_wash() -> void:
 			_append_property_from_template(avg, eventCardsInfo[eventCardsInfoID])
 
 		## 处理 seat_list 的列表配置
-		var raw_seat_list:String = avg['seatList']
-		var seat_list = raw_seat_list.split("/")
-		if seat_list[0] == "":
-			avg['seatList'] = []
-		else:
-			avg['seatList'] = seat_list
+		avg['seatList'] = _split_slash_list(avg['seatList'] )
 
 		## 处理 NPC 的列表配置
-		var raw_npc_list:String = avg['NPC']
-		var npc_list = raw_npc_list.replace(" ","").split("/")
-		if npc_list[0] == "":
-			avg['NPC'] = []
-		else:
-			avg['NPC'] = npc_list
+		avg['NPC'] = _split_slash_list(avg['NPC'])
+
+		## 处理 resultCondition 的列表配置
+		avg['resultCondition'] = _split_slash_list(avg['resultCondition'])
+
+## 内部方法，用于将 '/' 列表配置分离为真正的列表
+func _split_slash_list(input:String) -> Array:
+	var tmp = input.replace(" ","")
+	var output = tmp.split("/")
+	if output[0] == "":
+		return []
+	else:
+		return output
 
 ## 对 bgPic 中的部分数据进行处理，将基础资源名拼接进去
 func bgPic_data_wash() -> void:
@@ -133,12 +135,7 @@ func bgPic_data_wash() -> void:
 func plotSegmentGroup_data_wash() -> void:
 	for group in plotSegmentGroup.values():
 		## 处理 segmentList
-		var raw_list = group['segmentList']
-		var real_list =raw_list.split("/")
-		if real_list[0] == "":
-			group['segmentList'] = []
-		else:
-			group['segmentList'] = real_list
+		group['segmentList'] = _split_slash_list(group['segmentList'])
 		##TODO 处理 group 的 condition
 
 

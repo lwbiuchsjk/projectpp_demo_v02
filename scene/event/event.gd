@@ -79,8 +79,9 @@ func on_build_seat():
 		arrange_children_bottom_up()
 		GameInfo.avgManager.seatPair = raw_seatPair
 
-		## 根据配置重置 seatedCardList
+		## 根据配置重置 seatedCardList 等数据信息
 		GameInfo.cardDataManager.InitSeatedCardList(seatIndex)
+		GameInfo.cardDataManager.set_eventResultCondition(avg['resultCondition'])
 
 		## 在 SeatBriefPanel 创建 SeatBrief 实例
 		for preSeat in avg['seatList']:
@@ -128,6 +129,7 @@ func _confirm_seatSelect():
 	set_seatBuild_status(false)
 	## 触发确认逻辑
 	GameInfo.avgManager.emit_signal('seatSelect_confirm')
+	GameInfo.cardDataManager.emit_signal('gen_result_index')
 	pass
 
 ## 呼出 SeatPanel 面板。面板常驻，只是调整其是否显示。
@@ -174,6 +176,8 @@ func close_card_result_panel() -> void:
 		target.queue_free()
 	# 清理数据管理器重的座位卡牌数据
 	GameInfo.cardDataManager.CleanSeatedCardList()
+	GameInfo.cardDataManager.set_eventResultCondition()
+	GameInfo.cardDataManager.emit_signal("gen_result_index", true)
 	## 触发后续AVG流程
 	GameInfo.avgManager.emit_signal("simple_show_next_avg")
 
@@ -184,25 +188,20 @@ func open_card_result_panel() -> void:
 
 		var resultDeck = preload("res://scene/deck/ResultDeck/ResultDeck.tscn").instantiate()
 		resultDeckRoot.add_child(resultDeck)
-		#resultDeck.position = resultDeckRoot.size / 2
 		resultDeck.position.x = - resultDeck.size.x / 2 + resultDeckRoot.size.x / 2
 		_gen_result_card()
 		print("检查到弹板展示：", resultCardList)
 		_show_result_card()
 
-## TODO 此处应当支持调用外部函数，根据规则生成实际的卡牌结果
+## 重置卡牌列表，根据规则生成实际的卡牌结果
 func _gen_result_card() -> void:
 	resultCardList.clear()
-	for targetCard in GameInfo.cardDataManager.seatedCardList:
-		if targetCard != null:
-			resultCardList.append(targetCard)
+	resultCardList = GameInfo.cardDataManager.gen_card_from_eventResult()
 
 func _show_result_card() -> void:
 	for resultCard in resultCardList:
 		var targetDeck = resultDeckRoot.get_node("ResultDeck") as deck
 		targetDeck.add_card(resultCard)
-		#var targetCard = PlayerInfo.add_new_card(resultCard.cardName, resultDeckRoot.get_node("ResultDeck"))
-		#targetCard.paintCard()
 
 
 func set_seatConfirmButton_status(status:bool):
