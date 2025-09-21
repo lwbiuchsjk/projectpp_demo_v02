@@ -1,4 +1,5 @@
 ﻿ID,condition,result
-201,"1:Card:1,-1","Property:1:201,AddCard:2"
-202,"1:Type:SKILL,2:Card:2,-1",
-203,1:Typeof:SKILL,
+201,CardEqual:0:1,"Property:1:201,AddCard:2"
+202,"TypeEqual:0:SKILL,CardEqual:2:2",
+203,Typeof:1:SKILL,
+209,,"Property:1:201,AddCard:3"
