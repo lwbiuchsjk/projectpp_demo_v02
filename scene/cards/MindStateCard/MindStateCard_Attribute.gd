@@ -1,4 +1,5 @@
 extends Node
+class_name MindStateCardAttribute
 
 @export var character_name: String
 

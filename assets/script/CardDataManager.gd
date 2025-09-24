@@ -203,6 +203,9 @@ func gen_card_from_eventResult() -> Array:
 			## TODO 属性相关设计，之后统一处理
 			propertyFunc:
 				print(propertyFunc)
+				var addedCard = _setProperty_to_result(config)
+				if addedCard != null:
+					output.append(addedCard)
 			addCardFunc:
 				print(addCardFunc)
 				var addedCard = _addCard_to_result(config[1])
@@ -213,10 +216,6 @@ func gen_card_from_eventResult() -> Array:
 				print(genFromMindSwarnFunc)
 			_:
 				print("完成")
-	## TODO 上述正式功能完成后，此处应当被删除
-	for targetCard in seatedCardList:
-		if targetCard != null:
-			output.append(targetCard)
 
 	return output
 
@@ -230,3 +229,50 @@ func _addCard_to_result(cardID:String) -> card:
 	## TODO 这样添加的卡牌，收回至手牌时，位置会发生变化。
 	var searchCard = PlayerInfo.add_new_card(targetCard['base_cardName'],handDeck,)
 	return searchCard
+
+func _setProperty_to_result(config:Array) -> card:
+	## 检查参数配置
+	if config.size() != 4:
+		print("result = property 参数数量错误：%s"%[config.size()])
+		return
+
+	var seatIndex = config[1]
+	var cardType = config[2]
+	var mindStatePropertyTemplate = config[3]
+
+	if not seatIndex.is_valid_int():
+		print("result = property 座位索引配置非法：%s"%[seatIndex])
+		return
+	seatIndex = seatIndex.to_int()
+	if seatIndex >= seatedCardList.size():
+		print("result = property 座位长度 = %s，索引配置 = %s"%[seatedCardList.size(), seatIndex])
+		return
+	if not cardType in GameType.CardType:
+		print("result = property 检测卡牌类型配置错误，%s"%[cardType])
+		return
+	if not mindStatePropertyTemplate in GameInfo.mindStateProperty.keys():
+		print("result = property 配置 MindStateProperty 模板 ID 错误，%s"%[mindStatePropertyTemplate])
+		return
+
+	## 正式功能
+	var targetCard = seatedCardList[seatIndex] as card
+	if targetCard == null:
+		print("result = property，座位中没有检测到卡牌，index = %s"%[seatIndex])
+		return
+
+	var property = GameInfo.mindStateProperty[mindStatePropertyTemplate]
+	_mindStateAttribute_changer(targetCard, property)
+	print(targetCard.cardInfo)
+
+	return targetCard
+
+## 实际属性改变功能函数。对 targetCard 进行 property 对应的修改。
+func _mindStateAttribute_changer(targetCard:card, property:Dictionary) -> void:
+	var attribute =  targetCard.get_node("Attribute") as MindStateCardAttribute
+	for item in attribute.propertyList:
+		if not item in property.keys():
+			continue
+		var targetAttribute = attribute.attribute_component.find_attribute(item)
+		targetAttribute.add(property[item].to_int())
+		targetCard.cardInfo[item] = str(targetAttribute.get_value())
+	pass

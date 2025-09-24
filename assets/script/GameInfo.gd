@@ -94,7 +94,7 @@ func read_csv_as_nested_dict(path: String) -> Dictionary:
 func search_card_from_cardName(cardName: String):
 	for checkCard in cardInfo.values():
 		if checkCard['base_cardName'] == cardName:
-			return checkCard
+			return checkCard.duplicate()
 	return cardInfo[0]
 
 ## 对 avgPlot 中的部分数据进行清理，确保生成数据实际可读

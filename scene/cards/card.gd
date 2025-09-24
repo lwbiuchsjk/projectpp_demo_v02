@@ -124,8 +124,8 @@ func check_deck_dropable(node: deck) -> bool:
 			return true
 	return false
 
-func initCard(Nm) -> void:
-	cardInfo=GameInfo.cardInfo[Nm]
+func initCard(_cardInfo) -> void:
+	cardInfo = _cardInfo
 	cardWeight=float(cardInfo["base_cardWeight"])
 	cardClass=cardInfo["base_cardClass"]
 	cardName=cardInfo["base_cardName"]
