@@ -22,12 +22,12 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	if cardDeck.get_child_count()!=0:
 		trigger_deck_sort()
-		
+
 func trigger_deck_sort() -> void:
 	var children = cardDeck.get_children()
 	sort_nodes_by_position(children)
 	# 排序后重新绘制卡牌
-		
+
 func sort_nodes_by_position(children):
 	children.sort_custom(sort_by_position)
 	for i in range(children.size()):
@@ -37,32 +37,32 @@ func sort_nodes_by_position(children):
 
 func sort_by_position(a, b):
 	return a.position.x < b.position.x
-	
+
 func add_card(cardToAdd)->void:
-	if currentWeight+cardToAdd.cardWeight<=maxWeight:
+	if cardToAdd.cardInfo['stackFlag'] and currentWeight+cardToAdd.cardWeight<=maxWeight:
 		if card_is_stacked(cardToAdd):
 			return
-	
+
 	var index=cardToAdd.z_index
 	var cardBackground=preload("res://scene/cards/card_background.tscn").instantiate()
 	cardPoiDeck.add_child(cardBackground)
-	
-	
+
+
 	if index<=cardPoiDeck.get_child_count():
 		cardPoiDeck.move_child(cardBackground,index)
 	else:
 		cardPoiDeck.move_child(cardBackground,-1)
 	var global_poi = cardToAdd.global_position  # 获取节点的全局位置
-	
+
 	if cardToAdd.get_parent():
 		cardToAdd.get_parent().remove_child(cardToAdd)
 	cardDeck.add_child(cardToAdd)
 	cardToAdd.global_position=global_poi
-	
+
 	cardToAdd.follow_target=cardBackground
-	
+
 	cardToAdd.preDeck=self
-	
+
 	cardToAdd.cardCurrentState=cardToAdd.cardState.following
 	update_weight()
 	trigger_deck_sort()
@@ -91,8 +91,8 @@ func card_is_stacked(cardToStack)->bool:
 				update_weight()
 				return true
 	return false
-	
-	
+
+
 func fake_card_move(cardTofake):
 	var fakeCard=cardTofake.duplicate()
 	fakeCard.z_index=1000
@@ -120,9 +120,9 @@ func storCard():
 	var path = str(get_path())
 	var savePath = path
 	PlayerInfo.save.decks[savePath] = saver
-	
-	
-	
+
+
+
 
 func loadCards():
 	clear_children($ScrollContainer/cardPoiDeck)
@@ -138,8 +138,8 @@ func loadCards():
 	else :
 		for i in defultCards:
 			PlayerInfo.nowScene.add_new_card(i,self)
-	
-	
+
+
 func clear_children(node: Node):
 	for child in node.get_children():
 		node.remove_child(child)

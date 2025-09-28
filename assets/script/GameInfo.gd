@@ -46,6 +46,7 @@ var avgManager: AVGManager
 func _ready() -> void:
 	eventCardsInfo = read_csv_as_nested_dict(eventCardsInfo_file_path)
 	cardInfo=read_csv_as_nested_dict(cardInfo_file_path)
+	card_data_wash()
 	itemSeat = read_csv_as_nested_dict(itemSeat_file_path)
 	plotSegment = read_csv_as_nested_dict(plotSegment_file_path)
 	plotSegment_data_wash()
@@ -224,3 +225,18 @@ func search_const_value(searchKey:String) -> Dictionary:
 		if key == searchKey:
 			return constInfo[key]
 	return {}
+
+## 将 cardInfo 的部分配置规范化处理
+func card_data_wash() -> void:
+	for config in cardInfo.values():
+		## 处理 stackFlag，规范化为 true/false
+		if config['stackFlag'].is_empty():
+			config['stackFlag'] = false
+		elif not config['stackFlag'].is_valid_int():
+			config['stackFlag'] = false
+		else:
+			var flag = config['stackFlag'].to_int()
+			if flag >= 1:
+				config['stackFlag'] = true
+			else:
+				config['stackFlag'] = false
