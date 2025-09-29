@@ -48,6 +48,10 @@ func _process(delta: float) -> void:
 		cardState.vfs:
 			follow(get_global_mouse_position()-size/2,delta)
 
+	## 对于不可堆叠的卡牌，不显示其 allButton 按钮
+	if not cardInfo['stackFlag']:
+		$allButton.visible = false
+
 func follow(target_position:Vector2,delta:float):
 		var displacement = target_position - global_position
 		var force = displacement * stiffness
