@@ -189,6 +189,7 @@ func open_card_result_panel() -> void:
 		var resultDeck = preload("res://scene/deck/ResultDeck/ResultDeck.tscn").instantiate()
 		resultDeckRoot.add_child(resultDeck)
 		resultDeck.position.x = - resultDeck.size.x / 2 + resultDeckRoot.size.x / 2
+		GameInfo.cardDataManager.set_resultDeck(resultDeck)
 		_gen_result_card()
 		print("检查到弹板展示：", resultCardList)
 		_show_result_card()
@@ -199,9 +200,10 @@ func _gen_result_card() -> void:
 	resultCardList = GameInfo.cardDataManager.gen_card_from_eventResult()
 
 func _show_result_card() -> void:
+	var targetDeck = resultDeckRoot.get_node("ResultDeck") as deck
 	for resultCard in resultCardList:
-		var targetDeck = resultDeckRoot.get_node("ResultDeck") as deck
-		targetDeck.add_card(resultCard)
+		if not resultCard in targetDeck.cardDeck.get_children():
+			targetDeck.add_card(resultCard)
 
 
 func set_seatConfirmButton_status(status:bool):

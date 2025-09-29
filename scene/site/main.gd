@@ -12,13 +12,13 @@ extends Node2D
 
 @onready var hand_deck: Control = $handDeck
 
-	
+
 #写一个随机生成几张卡片的函数，首先从给定的随机最大值和最小值之间生成卡牌数量，然后根据卡牌数量从可选择的卡牌中根据卡牌出现概率选择生成的卡牌并执行生成函数，可选择的卡牌以字典的形式储存，键名为卡牌名，键值为出现概率，概率为0到100
-func get_some_card():	
+func get_some_card():
 	var num_cards = randi() % (maxRandomItemNum - minRandomItemNum + 1) + minRandomItemNum
 	var total_weight = get_total_weight(siteItems)
 	var selected_cards = []
-	
+
 	for i in range(num_cards):
 		var random_num = randi() % total_weight
 		var cumulative_weight = 0
@@ -30,19 +30,19 @@ func get_some_card():
 
 	for c in selected_cards:
 		#var randomDeck = get_tree().get_nodes_in_group("cardDeck")[randi_range(0,0)]
-		var handDeck = $handDeck
+		#var handDeck = $handDeck
 		await get_tree().create_timer(0.1).timeout
 		var searchCard = GameInfo.search_card_from_cardName(c)
-		PlayerInfo.add_new_card(searchCard['base_cardName'],handDeck,$Button)
-	
-	
+		PlayerInfo.add_new_card(searchCard['base_cardName'],hand_deck,$Button)
+
+
 # 计算权重总和
 func get_total_weight(card_dict):
 	var total_weight = 0
 	for weight in card_dict.values():
 		total_weight += weight
 	return total_weight
-	
+
 func _ready() -> void:
 	hand_deck.maxWeight = PlayerInfo.save.handMax
 	hand_deck.loadCards()

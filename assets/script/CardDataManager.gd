@@ -225,10 +225,15 @@ func _addCard_to_result(cardID:String) -> card:
 		print("不存在对应的卡牌。ID: %s"%[cardID])
 		return null
 	var targetCard = GameInfo.cardInfo[cardID]
-	#var searchCard = GameInfo.search_card_from_cardName(targetCard['base_cardName'])
+
+	## 下方方法，尝试不通过 playerInfo 来添加卡牌，但是会导致主界面的抽取按钮点击时报错
+	#var searchCardData = GameInfo.search_card_from_cardName(targetCard['base_cardName'])
+	#var sCard = preload("res://scene/cards/MindStateCard/MindStateCard.tscn").instantiate() as card
+	#sCard.initCard(searchCardData)
+
 	## TODO 这样添加的卡牌，收回至手牌时，位置会发生变化。
-	var searchCard = PlayerInfo.add_new_card(targetCard['base_cardName'],handDeck,)
-	return searchCard
+	var sCard = PlayerInfo.add_new_card(targetCard['base_cardName'],resultDeck,resultDeck)
+	return sCard
 
 func _setProperty_to_result(config:Array) -> card:
 	## 检查参数配置
@@ -276,3 +281,7 @@ func _mindStateAttribute_changer(targetCard:card, property:Dictionary) -> void:
 		targetAttribute.add(property[item].to_int())
 		targetCard.cardInfo[item] = str(targetAttribute.get_value())
 	pass
+
+## 外部创建 resultDeck 后，需要将其传入，用于展示
+func set_resultDeck(targetDeck:deck = null) -> void:
+	resultDeck = targetDeck
