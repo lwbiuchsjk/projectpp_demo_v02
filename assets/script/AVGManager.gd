@@ -5,8 +5,7 @@ class_name AVGManager
 var nowAvgID:String
 var nowPlace:String
 var nowPlot:String
-var nowPlotSegmentID:String
-var nowPlotSegmentGroupID:String
+var nowEventID:String
 var seatPair:Dictionary
 
 ## 面板调用节点配置
@@ -50,15 +49,10 @@ func set_plot_now(ID):
 		return
 	nowPlot = str(ID)
 
-func set_plotSegment_now(ID):
+func set_eventConfig_now(ID):
 	if ID == null:
 		return
-	nowPlotSegmentID = str(ID)
-
-func set_plotSegmentGroup_now(ID):
-	if ID == null:
-		return
-	nowPlotSegmentGroupID = str(ID)
+	nowEventID = str(ID)
 
 func load_avg_config():
 	for avg in GameInfo.avgPlot.values():
@@ -98,22 +92,13 @@ func load_plot_from_ID(ID):
 			break
 	return output
 
-func load_plotSegment_from_ID(ID):
+func load_event_from_ID(ID):
 	var output
-	for segment in GameInfo.plotSegment.values():
-		if segment.ID == str(ID):
-			output = segment
+	for event in GameInfo.eventConfig.values():
+		if event.ID == str(ID):
+			output = event
 			break
 	return output
-
-func load_plotSegmentGroup_from_ID(ID):
-	var output
-	for group in GameInfo.plotSegmentGroup.values():
-		if group.ID == str(ID):
-			output = group
-			break
-	return output
-
 
 func load_picImagePath_from_ID(ID):
 	var output
@@ -129,17 +114,15 @@ func build_event(placeID):
 	if place == null:
 		return
 
-	var plotSegmentGroup = load_plotSegmentGroup_from_ID(place['plotSegmentGroup'])
-	##TODO 此处强制写死初始的 group 和 segment 后续需要处理
-	set_plotSegmentGroup_now(place['plotSegmentGroup'])
-	set_plotSegment_now(plotSegmentGroup['beginSegment'])
+	##TODO 此处强制写死初始的 group 和 event 后续需要处理
+	set_eventConfig_now(place['eventConfigID'])
 
 	## 根据参数设置加载事件节点
 	var eventNode = preload("res://scene/event/event.tscn").instantiate()
 	rootNode.add_child(eventNode)
 
-	var nowPlotSegment = load_plotSegment_from_ID(nowPlotSegmentID)
-	set_avg_now(nowPlotSegment['avg_plot'])
+	var nowEvent = load_event_from_ID(nowEventID)
+	set_avg_now(nowEvent['avg_plot'])
 
 	## 触发信号
 	emit_signal("clean_avg")
@@ -192,7 +175,7 @@ func _on_seatSelect_confirm():
 	##TODO 设置卡牌数据变化
 
 	## 触发检查条件，执行本组内下一段AVG。AVG跳转分支功能在函数内部实现。
-	check_next_segment_condition()
+	check_next_event_condition()
 	pass
 
 func check_nowAvg_seating() -> bool:
@@ -211,35 +194,35 @@ func check_nowAvg_showEventResult() -> bool:
 	else:
 		return false
 
-## 根据当前座位设置条件，判断下一个执行的segment
-func check_next_segment_condition():
-	var blank_segmentID
-	var maxPoint_segmentID
+## 根据当前座位设置条件，判断下一个执行的event
+func check_next_event_condition():
+	var blank_eventID
+	var maxPoint_eventID
 	var now_maxPoint = 0
-	for segment in GameInfo.plotSegment.values():
-		if segment['group'] == nowPlotSegmentGroupID:
-			var condition_point = _check_segment_condition_point_gen(segment['condition'])
-			if condition_point == -1:
-				blank_segmentID = segment.ID
-				continue
-			if condition_point >= now_maxPoint:
-				maxPoint_segmentID = segment.ID
-				continue
+	for event in GameInfo.eventConfig.values():
+		var condition_point = _check_event_condition_point_gen(event['condition'])
+		if condition_point == -1:
+			blank_eventID = event.ID
+			continue
+		if condition_point >= now_maxPoint:
+			maxPoint_eventID = event.ID
+			continue
 
-	print("检查到全空的AVG跳转ID: ", blank_segmentID)
-	print("检查到当前最匹配的AVG跳转ID: ", maxPoint_segmentID)
-	var nextSegment
-	if maxPoint_segmentID != null:
-		nextSegment = load_plotSegment_from_ID(maxPoint_segmentID)
+
+	print("检查到全空的AVG跳转ID: ", blank_eventID)
+	print("检查到当前最匹配的AVG跳转ID: ", maxPoint_eventID)
+	var nextEvent
+	if maxPoint_eventID != null:
+		nextEvent = load_event_from_ID(maxPoint_eventID)
 	else:
-		nextSegment = load_plotSegment_from_ID(blank_segmentID)
-	emit_signal("trigger_avg_control", nextSegment['avg_plot'])
+		nextEvent = load_event_from_ID(blank_eventID)
+	emit_signal("trigger_avg_control", nextEvent['avg_plot'])
 	pass
 
 ## 条件计分函数。通过最终得分，来给condition的匹配情况进行评价。分数越高，评价结果越好。正常 condition 的得分都会大于 0 。
 ## 但特别的，condition 只有全部被满足，才会得分，否则计分为 -999。
 ## 特别的，对于【全空条件】，计分自动为 -1。
-func _check_segment_condition_point_gen(condition) -> int:
+func _check_event_condition_point_gen(condition) -> int:
 	## 如果是全空的结果，那么得分为 -1
 	if typeof(condition) == TYPE_INT and condition == -1:
 		return condition

@@ -5,8 +5,8 @@ var cardInfo:Dictionary
 var itemSeat_file_path = 'res://assets/data/seatsInfo.csv'
 var itemSeat:Dictionary
 
-var plotSegment_file_path = 'res://assets/data/plotSegment.csv'
-var plotSegment:Dictionary
+var eventConfig_file_path = 'res://assets/data/eventConfig.csv'
+var eventConfig:Dictionary
 
 var avgPlot_file_path = 'res://assets/data/avgPlot.csv'
 var avgPlot:Dictionary
@@ -20,9 +20,6 @@ var plot:Dictionary
 var bgPic_file_path = 'res://assets/data/pic.csv'
 var bgPic:Dictionary
 var bgPic_base_resource_path = 'res://assets/image/'
-
-var plotSegmentGroup_file_path = 'res://assets/data/plotSegmentGroup.csv'
-var plotSegmentGroup:Dictionary
 
 var mindStateProperty_file_path = 'res://assets/data/mindStateProperty.csv'
 var mindStateProperty:Dictionary
@@ -48,8 +45,8 @@ func _ready() -> void:
 	cardInfo=read_csv_as_nested_dict(cardInfo_file_path)
 	card_data_wash()
 	itemSeat = read_csv_as_nested_dict(itemSeat_file_path)
-	plotSegment = read_csv_as_nested_dict(plotSegment_file_path)
-	plotSegment_data_wash()
+	eventConfig = read_csv_as_nested_dict(eventConfig_file_path)
+	eventConfig_data_wash()
 	avgPlot = read_csv_as_nested_dict(avgPlot_file_path)
 	avgPlot_data_wash()
 	place = read_csv_as_nested_dict(place_file_path)
@@ -57,8 +54,6 @@ func _ready() -> void:
 	plot_data_wash()
 	bgPic = read_csv_as_nested_dict(bgPic_file_path)
 	bgPic_data_wash()
-	plotSegmentGroup = read_csv_as_nested_dict(plotSegmentGroup_file_path)
-	plotSegmentGroup_data_wash()
 	mindStateProperty = read_csv_as_nested_dict(mindStateProperty_file_path)
 	npcInfo = read_csv_as_nested_dict(npcInfo_file_path)
 	npcInfo_template_changer()
@@ -136,19 +131,11 @@ func bgPic_data_wash() -> void:
 		var pic_resource = bgPic_base_resource_path + raw_pic_resource
 		pic['resource'] = pic_resource
 
-## 对 plotSegmentGroup 中部分数据进行清理，将 segmentList 进行数据拆分
-func plotSegmentGroup_data_wash() -> void:
-	for group in plotSegmentGroup.values():
-		## 处理 segmentList
-		group['segmentList'] = _split_slash_list(group['segmentList'])
-		##TODO 处理 group 的 condition
-
-
-## 对 plotSegment 中部分数据进行清理，将列表进行数据拆分
-func plotSegment_data_wash() -> void:
-	for segment in plotSegment.values():
+## 对 eventConfig 中部分数据进行清理，将列表进行数据拆分
+func eventConfig_data_wash() -> void:
+	for event in eventConfig.values():
 		## 处理 conditon
-		var raw_condition = segment['condition']
+		var raw_condition = event['condition']
 		var real_condition = {}
 		var tmp_condition = raw_condition.split(",")
 		for tmp_item in tmp_condition:
@@ -165,7 +152,7 @@ func plotSegment_data_wash() -> void:
 			var tmp_value = int(tmp_pair[1])
 			real_condition[tmp_key] = tmp_value
 		## 将上述处理结果赋值回 condition
-		segment['condition'] = real_condition
+		event['condition'] = real_condition
 
 func plot_data_wash() -> void:
 	for item in plot.values():
