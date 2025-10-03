@@ -41,6 +41,7 @@ func clean_place():
 func _on_new_plot():
 	clean_place()
 	## 判断条件
-	avgManager.locate_nowPlot()
-	print("nowPlot: ", avgManager.nowPlot)
-	build_place()
+	if avgManager.locate_nowPlot():
+		print("nowPlot: ", avgManager.nowPlot)
+		build_place()
+

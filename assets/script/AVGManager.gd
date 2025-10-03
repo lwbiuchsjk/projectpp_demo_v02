@@ -243,20 +243,20 @@ func _check_event_condition_point_gen(condition) -> int:
 	return point
 
 
-## 检查满足条件的 plot.
-func locate_nowPlot():
+## 检查满足条件的 plot。如果检查到，则返回 true，否则返回 false。特别的，如果当前是最后一个 plot，那么也返回 false。
+func locate_nowPlot() -> bool:
 	## 首先检查 nowPlot 是否未被初始化。如果是，那么通过 prePlot = -1，定位第一个plot.
 	if nowPlot == "":
 		for plotItem in GameInfo.plot.values():
 			if plotItem['prePlot'] == "-1":
 				set_plot_now(plotItem.ID)
-				return
+				return true
 
 	## 然后检查是否为最后一个Plot。通过检查 condition = END，定位最后一个plot.
 	if check_end_plot():
 		##TODO 此处需要对结束plot做后续前端表现处理
 		print("END PLOT")
-		return
+		return false
 
 	## 通过上述检查后，正常执行 prePlot 和 condition 的检查，定位下一个 plot.
 	for plotItem in GameInfo.plot.values():
@@ -264,7 +264,10 @@ func locate_nowPlot():
 			## 只有 prePlot 为当前 plot 并且通过 condition 检查的 plot，才会被设置，然后继续下去。
 			if check_plot_condition():
 				set_plot_now(plotItem.ID)
-				return
+				return true
+
+	## 最终返回 false，代表未通过验证
+	return false
 
 
 func check_end_plot():
