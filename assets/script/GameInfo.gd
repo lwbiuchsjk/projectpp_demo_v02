@@ -36,6 +36,9 @@ var eventCardsInfo:Dictionary
 var eventResultInfo_file_path = "res://assets/data/eventResultInfo.csv"
 var eventResultInfo:Dictionary
 
+var mindStateSwarm_file_path = "res://assets/data/mindStateSwarm.csv"
+var mindStateSwarm:Dictionary
+
 ## 子节点结构
 var cardDataManager: CardDataManager
 var avgManager: AVGManager
@@ -59,6 +62,8 @@ func _ready() -> void:
 	npcInfo_template_changer()
 	constInfo = read_csv_as_nested_dict(const_file_path)
 	eventResultInfo = read_csv_as_nested_dict(eventResultInfo_file_path)
+	mindStateSwarm = read_csv_as_nested_dict(mindStateSwarm_file_path)
+	mindStateSwarm_data_wash()
 
 	# 基础配置读取完成后，将部分模板配置替换为实际配置
 	card_template_changer()
@@ -66,6 +71,9 @@ func _ready() -> void:
 	## 子节点结构
 	cardDataManager = $CardDataManager as CardDataManager
 	avgManager = $AVGManager as AVGManager
+
+	## 读入 mindStateSwarm，并将其保存为实时数据，方便改变
+	cardDataManager.init_MindStateSwarm()
 
 # 函数读取CSV文件并将其转换为嵌套字典
 func read_csv_as_nested_dict(path: String) -> Dictionary:
@@ -97,9 +105,7 @@ func search_card_from_cardName(cardName: String):
 func avgPlot_data_wash() -> void:
 	for avg in avgPlot.values():
 		## 处理 eventCards 的列表配置
-		print(avg)
 		var eventCardsInfoID = avg['eventCardsInfo']
-		print(eventCardsInfoID)
 		if eventCardsInfoID == "":
 			## ID = -1 的是默认为空的配置引用。其他配置全部为空。此处理是为了功能正常。
 			_append_property_from_template(avg, eventCardsInfo["-1"])
@@ -227,3 +233,15 @@ func card_data_wash() -> void:
 				config['stackFlag'] = true
 			else:
 				config['stackFlag'] = false
+
+## 将 MindStateSwarm 的部分配置规范化处理
+func mindStateSwarm_data_wash() -> void:
+	for config in mindStateSwarm.values():
+		## 处理 cardsInfo
+		var inputValue = config['CardsInfo'].replace(" ", "").split("/")
+		var outputValue = []
+		for value in inputValue:
+			if value.is_valid_int():
+				var swarmCardInfo = cardInfo[value]
+				outputValue.append(swarmCardInfo)
+		config['CardsInfo'] = outputValue

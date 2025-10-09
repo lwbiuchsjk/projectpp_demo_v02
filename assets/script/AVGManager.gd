@@ -285,3 +285,10 @@ func check_plot_condition() -> bool:
 func set_seat_brief_status(index: int, status: bool) -> void:
 	var eventNode = rootNode.get_node('Event')
 	eventNode.emit_signal("show_seat_brief_status", index, status)
+
+## 外部函数，检测当前是否为 MindStateSwarm 节点
+func check_mindStateSwarm() -> bool:
+	var plotInfo = load_plot_from_ID(nowPlot)
+	if plotInfo['plotType'] == "MindSwarn":
+		return true
+	return false

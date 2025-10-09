@@ -4,6 +4,8 @@ class_name CardDataManager
 var seatedCardList:Array
 var eventResultCondition:Array = []
 var nextResultIndex:int = -1
+var nowMindStateSwarm:Dictionary
+
 signal trans_card_to_handDeck()
 signal gen_result_index()
 
@@ -26,6 +28,7 @@ func _ready() -> void:
 	## 将 genResult 写入 genResultEnum，方便外部调用
 	for key in genResult:
 		genResultEnum.append(key)
+
 
 ## 跟剧传入 index 的情况，处理作为列表
 func CleanSeatedCardList(index:int = -1) -> void:
@@ -273,6 +276,7 @@ func _setProperty_to_result(config:Array) -> card:
 
 ## 实际属性改变功能函数。对 targetCard 进行 property 对应的修改。
 func _mindStateAttribute_changer(targetCard:card, property:Dictionary) -> void:
+	print("卡牌属性变化，检测到当前 MindStateSwarm: %s"%[nowMindStateSwarm])
 	var attribute =  targetCard.get_node("Attribute") as MindStateCardAttribute
 	for item in attribute.propertyList:
 		if not item in property.keys():
@@ -285,3 +289,11 @@ func _mindStateAttribute_changer(targetCard:card, property:Dictionary) -> void:
 ## 外部创建 resultDeck 后，需要将其传入，用于展示
 func set_resultDeck(targetDeck:deck = null) -> void:
 	resultDeck = targetDeck
+
+
+## 外部函数，将 MindStateSwarm 初始化。可能通过配置表读入，也可能通过存档读入（暂未实现），也可能通过其他机制读入（暂未实现）
+func init_MindStateSwarm() -> void:
+	##TODO 此处 MindStateSwarm 的初始化是直接写死ID，实际需要通过 player 数据来读取ID
+	nowMindStateSwarm = GameInfo.mindStateSwarm["1"].duplicate()
+	nowMindStateSwarm['PlotInfo'] = '3'
+
