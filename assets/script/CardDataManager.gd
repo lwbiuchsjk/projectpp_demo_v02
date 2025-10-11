@@ -16,7 +16,7 @@ const eventResultConditionScore: Dictionary =  {
 }
 const blankConditionScore = -10
 
-enum genResult{Property, AddCard, GenFromMindSwarn}
+enum genResult{Property, AddCard, GenFromMindSwarn, AddSeatIndex}
 var genResultEnum = []
 
 @onready var handDeck:deck = get_tree().root.get_node("testScean/site1/handDeck")
@@ -199,6 +199,7 @@ func gen_card_from_eventResult() -> Array:
 	var propertyFunc = genResultEnum[0]
 	var addCardFunc = genResultEnum[1]
 	var genFromMindSwarnFunc = genResultEnum[2]
+	var addSeatIndexFunc = genResultEnum[3]
 	var output = []
 	for result in resultList:
 		var config = result.split(":")
@@ -212,6 +213,11 @@ func gen_card_from_eventResult() -> Array:
 			addCardFunc:
 				print(addCardFunc)
 				var addedCard = _addCard_to_result(config[1])
+				if addedCard != null:
+					output.append(addedCard)
+			addSeatIndexFunc:
+				print(addSeatIndexFunc)
+				var addedCard = _set_seatedCard_to_resultList_from_index(config[1])
 				if addedCard != null:
 					output.append(addedCard)
 			## TODO 临时占位。对于从心相世界生成卡牌规则，之后与属性统一处理。
@@ -270,12 +276,12 @@ func _setProperty_to_result(config:Array) -> card:
 
 	var property = GameInfo.mindStateProperty[mindStatePropertyTemplate]
 	_mindStateAttribute_changer(targetCard, property)
-	print(targetCard.cardInfo)
 
 	return targetCard
 
 ## 实际属性改变功能函数。对 targetCard 进行 property 对应的修改。
 func _mindStateAttribute_changer(targetCard:card, property:Dictionary) -> void:
+	## TODO 此处应当添加对 MindStateSwarm 的相关变化功能
 	print("卡牌属性变化，检测到当前 MindStateSwarm: %s"%[nowMindStateSwarm])
 	var attribute =  targetCard.get_node("Attribute") as MindStateCardAttribute
 	for item in attribute.propertyList:
@@ -297,3 +303,20 @@ func init_MindStateSwarm() -> void:
 	nowMindStateSwarm = GameInfo.mindStateSwarm["1"].duplicate()
 	nowMindStateSwarm['PlotInfo'] = '3'
 
+## 内部函数，用于将 seatedCardList 中指定 index 的卡牌，添加回 resultList
+func _set_seatedCard_to_resultList_from_index(seatIndex:String) -> card:
+	if not seatIndex.is_valid_int():
+		print("result = AddSeatIndex 座位索引配置非法：%s"%[seatIndex])
+		return
+	var realIndex = seatIndex.to_int()
+	if realIndex >= seatedCardList.size():
+		print("result = AddSeatIndex 座位长度 = %s，索引配置 = %s"%[seatedCardList.size(), seatIndex])
+		return
+
+	## 正式功能
+	var targetCard = seatedCardList[realIndex] as card
+	if targetCard == null:
+		print("result = AddSeatIndex，座位中没有检测到卡牌，index = %s"%[seatIndex])
+		return
+
+	return targetCard

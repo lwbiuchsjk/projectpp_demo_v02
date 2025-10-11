@@ -83,7 +83,6 @@ func set_value(_value: float):
 func add(_value: float):
 	var operated_value = AttributeModifier.add(_value).operate(computed_value)
 	computed_value = _compute_value(operated_value)
-	print(computed_value)
 
 
 func sub(_value: float):

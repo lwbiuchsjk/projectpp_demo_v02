@@ -221,6 +221,7 @@ func check_next_event_condition():
 
 ## 条件计分函数。通过最终得分，来给condition的匹配情况进行评价。分数越高，评价结果越好。正常 condition 的得分都会大于 0 。
 ## 但特别的，condition 只有全部被满足，才会得分，否则计分为 -999。
+## TODO 对于 eventConfig 中的 condition 判断与参数编写，需要进行优化，以支持更多可能性。例如 condition 支持宽匹配。
 ## 特别的，对于【全空条件】，计分自动为 -1。
 func _check_event_condition_point_gen(condition) -> int:
 	## 如果是全空的结果，那么得分为 -1
