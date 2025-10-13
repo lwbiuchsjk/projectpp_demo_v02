@@ -1,4 +1,4 @@
-﻿ID,base_cardType,base_displayName,base_description
-1,SKILL,冰,不仅能降温，还能当成临时冰淇淋。
-2,ITEM,石头,看似平凡，却是太空飞船的基础材料。
-999,,空,占位
+﻿ID,base_cardType,base_cardClass,base_displayName,base_description
+1,MindState,item,冰,不仅能降温，还能当成临时冰淇淋。
+2,MindState,item,石头,看似平凡，却是太空飞船的基础材料。
+999,,,空,占位

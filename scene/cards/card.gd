@@ -178,9 +178,5 @@ func _on_button_mouse_exited() -> void:
 		dup.queue_free()
 	pass
 
-func get_card_type() -> GameType.CardType:
-	return cardType
-	pass
-
 func set_card_type(setType: GameType.CardType) -> void:
 	cardType = setType

@@ -1,7 +1,8 @@
 extends deck
 class_name Seat
 
-@export var accepted_types: Array[GameType.CardType]  # 在检查器中设置允许的类型
+var accepted_class: Array[GameType.CardClass]  # 在检查器中设置允许的类型
+var seatType
 var card_can_drop:bool = false
 var seat_card
 var seat_index: int
@@ -17,9 +18,15 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	pass
 
-
-func is_type_match(type: GameType.CardType) -> bool:
-	return type in accepted_types  # 检查卡牌类型是否匹配
+## 内部函数。检查卡牌类型是否匹配。根据传入的卡牌数据，判断 type 完全相当，并且 class 包含卡牌。
+func _is_type_match(targetCard: card) -> bool:
+	var cardData = targetCard.cardInfo
+	var cardType = GameType.get_cardType(cardData['base_cardType'])
+	var nowSeatType = GameType.get_cardType(seatType)
+	var cardClass = GameType.get_cardClass(cardData['base_cardClass'])
+	if cardType != GameType.CardType.NONE and cardType == nowSeatType and cardClass in accepted_class:
+		return true
+	return false
 
 func add_card(cardToAdd)->void:
 	var cardBackground=preload("res://scene/cards/card_background.tscn").instantiate()
@@ -61,18 +68,19 @@ func check_seat_can_drop() -> bool:
 func _on_area_entered(targetArea: Area2D):
 	var targetCard = targetArea.get_parent() as card
 	card_can_drop = false
-	if targetCard.is_in_group("card") and is_type_match(targetCard.get_card_type()):
+	if targetCard.is_in_group("card") and _is_type_match(targetCard):
 		card_can_drop = true
 
 func _on_area_exited(targetCard: Area2D):
 	if targetCard.is_in_group("card"):
 		card_can_drop = false
 
-func set_seat_type(typeList: Array) -> void:
-	accepted_types.clear()
-	for targetType in typeList:
-		if targetType != GameType.CardType.NONE:
-			accepted_types.append(targetType)
+## 内部函数。用于通过配置来设置 seat 的 class 数据。
+func _set_seat_class(config: String) -> void:
+	accepted_class.clear()
+	var targetType = GameType.get_cardClass(config)
+	if targetType != GameType.CardClass.NONE:
+		accepted_class.append(targetType)
 
 func search_seat_property(ID: String):
 	for seatInfo in GameInfo.itemSeat.values():
@@ -88,6 +96,15 @@ func clean_seat_card() -> void:
 	_set_seat_card(null)
 	GameInfo.avgManager.set_seatPair(seatID, -1)
 
+## 外部函数。用于初始化本 seat 的数据
 func set_seat_data(index: int, ID: String) -> void:
 	seat_index = index
 	seatID = ID
+
+	var seatClassConfig
+	for seatInfo in GameInfo.itemSeat.values():
+		if seatInfo.ID == seatID:
+			seatType = seatInfo['base_cardType']
+			seatClassConfig = seatInfo['base_cardClass']
+			break
+	_set_seat_class(seatClassConfig)

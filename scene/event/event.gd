@@ -68,8 +68,6 @@ func on_build_seat():
 		for preSeat in event['seatList']:
 			var seatInstance = preload("res://scene/Seat/seat.tscn").instantiate() as Seat
 			add_child_item(seatInstance)
-			var card_type = seatInstance.search_seat_property(preSeat)
-			seatInstance.set_seat_type([card_type])
 			## 将 seat 属性传入 seat 实例
 			seatInstance.set_seat_data(seatIndex, preSeat)
 			#eventNode.emit_signal("show_seat_brief_status", seatIndex, false)
