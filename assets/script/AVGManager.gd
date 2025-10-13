@@ -8,6 +8,9 @@ var nowPlot:String
 var nowEventID:String
 var seatPair:Dictionary
 
+enum finishFunc{Seat, EventResult, Battle, Choice}
+var finishFuncEnum = []
+
 ## 面板调用节点配置
 @onready var rootNode:Node = get_tree().root.get_node("testScean")
 ## 信息改变信号
@@ -33,6 +36,9 @@ func _ready() -> void:
 	connect("seatSelect_confirm", _on_seatSelect_confirm)
 	connect("show_seat_brief_status", set_seat_brief_status)
 
+	## 将 finishFunc 写入 finishFuncEnum，方便外部调用
+	for key in finishFunc:
+		finishFuncEnum.append(key)
 
 func set_avg_now(ID):
 	if ID == null:
@@ -135,29 +141,30 @@ func build_event(placeID):
 func set_seatPair(key:String, value):
 	seatPair[key] = value
 
-func avg_control(nextAvgID = null):
+func avg_control(nextEvent = null):
+	## 如果当前正在显示事件结果，那么弹出事件结果面板
+	if _check_nowAvg_showEventResult():
+		emit_signal("show_event_result")
+		return
+
 	## 如果当前正在选择，那么阻断点击
-	if nextAvgID == null and check_nowAvg_seating():
+	if _check_nowAvg_seating(nextEvent):
 		var eventNode = rootNode.get_node('Event')
 		eventNode.emit_signal("build_seat")
 		return
 
-	## 如果当前正在显示事件结果，那么弹出事件结果面板
-	if check_nowAvg_showEventResult():
-		emit_signal("show_event_result")
-		return
-
 	## 否则触发新avg
-	set_next_avg(nextAvgID)
+	set_next_avg(nextEvent)
 
 
-func set_next_avg(nextAvgID = null) -> void:
+func set_next_avg(nextEvent = null) -> void:
 	var nowAvg = load_avg_config()
 
-	if nextAvgID == null:
+	if nextEvent == null:
 		nowAvgID = nowAvg['nextID']
 	else:
-		nowAvgID = nextAvgID
+		nowEventID = nextEvent.ID
+		nowAvgID = nextEvent['avg_plot']
 
 	if nowAvgID != null and nowAvgID != "":
 		emit_signal("new_avg")
@@ -172,27 +179,34 @@ func _on_seatSelect_confirm():
 	var eventNode = rootNode.get_node('Event')
 	eventNode.set_seatConfirmButton_status(false)
 
-	##TODO 设置卡牌数据变化
-
 	## 触发检查条件，执行本组内下一段AVG。AVG跳转分支功能在函数内部实现。
 	check_next_event_condition()
 	pass
 
-func check_nowAvg_seating() -> bool:
+## 内部函数，用于检测是否打开 seatPanel。传入的 checkEvent 用于流程控制。如果其 checkEvent = null，则代表当前没有开启新的 event，因此可以在 AVG 结束时打开 seatPanel
+func _check_nowAvg_seating(checkEvent) -> bool:
 	var nowAvg = load_avg_config()
+	var nowEvent = load_event_from_ID(nowEventID)
 
-	if (nowAvg['nextID'] == null or nowAvg['nextID'] == "") and nowAvg['seatList'].size() > 0:
+	if checkEvent == null and (nowAvg['nextID'] == null or nowAvg['nextID'] == "") and nowEvent['seatList'].size() > 0:
 		return true
 	else:
 		return false
 
-func check_nowAvg_showEventResult() -> bool:
+func _check_nowAvg_showEventResult() -> bool:
 	var nowAvg = load_avg_config()
 
-	if nowAvg['showEventResult'] == "1":
+	if (nowAvg['nextID'] == null or nowAvg['nextID'] == "") and _check_nowEvent_finishFunc(finishFunc.EventResult):
 		return true
 	else:
 		return false
+
+## 内部函数，用于判断当前事件的 finishFunc 类型。类型作为参数传入
+func _check_nowEvent_finishFunc(funcIndex: int) -> bool:
+	var nowEvent = load_event_from_ID(nowEventID)
+	if nowEvent['plot_finish_func'] == finishFuncEnum[funcIndex]:
+		return true
+	return false
 
 ## 根据当前座位设置条件，判断下一个执行的event
 func check_next_event_condition():
@@ -216,7 +230,7 @@ func check_next_event_condition():
 		nextEvent = load_event_from_ID(maxPoint_eventID)
 	else:
 		nextEvent = load_event_from_ID(blank_eventID)
-	emit_signal("trigger_avg_control", nextEvent['avg_plot'])
+	emit_signal("trigger_avg_control", nextEvent)
 	pass
 
 ## 条件计分函数。通过最终得分，来给condition的匹配情况进行评价。分数越高，评价结果越好。正常 condition 的得分都会大于 0 。
@@ -293,3 +307,27 @@ func check_mindStateSwarm() -> bool:
 	if plotInfo['plotType'] == "MindSwarn":
 		return true
 	return false
+
+## 外部函数。用于修正 eventConfig 中部分需要处理的功能与参数
+func eventConfig_data_wash() -> void:
+	var seatFunc = finishFuncEnum[0]
+	var eventResultFunc = finishFuncEnum[1]
+	var battleFunc = finishFuncEnum[2]
+	var choiceFunc = finishFuncEnum[3]
+
+	for event in GameInfo.eventConfig.values():
+		match event['plot_finish_func']:
+			seatFunc:
+				print(seatFunc)
+				var seatConfigID = event['plot_finish_func_param']
+				GameInfo.append_property_from_template(event, GameInfo.eventSeatsInfo[seatConfigID])
+
+				## 处理 seat_list 的列表配置
+				event['seatList'] = GameInfo.split_slash_list(event['seatList'] )
+				## 处理 resultCondition 的列表配置
+				event['resultCondition'] = GameInfo.split_slash_list(event['resultCondition'])
+			## TODO 后续扩展其他功能
+			eventResultFunc:
+				print(eventResultFunc)
+			_:
+				print("未匹配")

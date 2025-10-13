@@ -3,13 +3,11 @@
 importer="csv_translation"
 type="Translation"
 uid="uid://bqaxp8qte4ndk"
+valid=false
 
 [deps]
 
-files=["res://assets/data/eventConfig.group.translation", "res://assets/data/eventConfig.avg.translation", "res://assets/data/eventConfig.condition.translation", "res://assets/data/eventConfig.base.translation"]
-
 source_file="res://assets/data/eventConfig.csv"
-dest_files=["res://assets/data/eventConfig.group.translation", "res://assets/data/eventConfig.avg.translation", "res://assets/data/eventConfig.condition.translation", "res://assets/data/eventConfig.base.translation"]
 
 [params]
 

@@ -30,8 +30,8 @@ var npcInfo:Dictionary
 var const_file_path = "res://assets/data/const.csv"
 var constInfo:Dictionary
 
-var eventCardsInfo_file_path = "res://assets/data/eventCardsInfo.csv"
-var eventCardsInfo:Dictionary
+var eventSeatsInfo_file_path = "res://assets/data/eventSeatsInfo.csv"
+var eventSeatsInfo:Dictionary
 
 var eventResultInfo_file_path = "res://assets/data/eventResultInfo.csv"
 var eventResultInfo:Dictionary
@@ -44,7 +44,7 @@ var cardDataManager: CardDataManager
 var avgManager: AVGManager
 
 func _ready() -> void:
-	eventCardsInfo = read_csv_as_nested_dict(eventCardsInfo_file_path)
+	eventSeatsInfo = read_csv_as_nested_dict(eventSeatsInfo_file_path)
 	cardInfo=read_csv_as_nested_dict(cardInfo_file_path)
 	card_data_wash()
 	itemSeat = read_csv_as_nested_dict(itemSeat_file_path)
@@ -74,6 +74,7 @@ func _ready() -> void:
 
 	## 读入 mindStateSwarm，并将其保存为实时数据，方便改变
 	cardDataManager.init_MindStateSwarm()
+	avgManager.eventConfig_data_wash()
 
 # 函数读取CSV文件并将其转换为嵌套字典
 func read_csv_as_nested_dict(path: String) -> Dictionary:
@@ -104,25 +105,11 @@ func search_card_from_cardName(cardName: String):
 ## 对 avgPlot 中的部分数据进行清理，确保生成数据实际可读
 func avgPlot_data_wash() -> void:
 	for avg in avgPlot.values():
-		## 处理 eventCards 的列表配置
-		var eventCardsInfoID = avg['eventCardsInfo']
-		if eventCardsInfoID == "":
-			## ID = -1 的是默认为空的配置引用。其他配置全部为空。此处理是为了功能正常。
-			_append_property_from_template(avg, eventCardsInfo["-1"])
-		else:
-			_append_property_from_template(avg, eventCardsInfo[eventCardsInfoID])
-
-		## 处理 seat_list 的列表配置
-		avg['seatList'] = _split_slash_list(avg['seatList'] )
-
 		## 处理 NPC 的列表配置
-		avg['NPC'] = _split_slash_list(avg['NPC'])
+		avg['NPC'] = split_slash_list(avg['NPC'])
 
-		## 处理 resultCondition 的列表配置
-		avg['resultCondition'] = _split_slash_list(avg['resultCondition'])
-
-## 内部方法，用于将 '/' 列表配置分离为真正的列表
-func _split_slash_list(input:String) -> Array:
+## 通用方法，用于将 '/' 列表配置分离为真正的列表
+func split_slash_list(input:String) -> Array:
 	var tmp = input.replace(" ","")
 	var output = tmp.split("/")
 	if output[0] == "":
@@ -192,13 +179,13 @@ func card_template_changer() -> void:
 		match item['property_type']:
 			"MindState":
 				var templateID = item['property_template']
-				_append_property_from_template(item, mindStateProperty[templateID])
+				append_property_from_template(item, mindStateProperty[templateID])
 			_:
 				print("没有匹配到对应卡牌属性：", item['property_type'])
 				continue
 
-## 内部函数。用于将属性模板中的配置直接赋值给对应项。
-func _append_property_from_template(rawDic:Dictionary, templateProperty:Dictionary) -> void:
+## 通用函数。用于将属性模板中的配置直接赋值给对应项。
+func append_property_from_template(rawDic:Dictionary, templateProperty:Dictionary) -> void:
 
 	var passKey = ['ID', 'Remarks']
 	for key in templateProperty.keys():
@@ -210,7 +197,7 @@ func _append_property_from_template(rawDic:Dictionary, templateProperty:Dictiona
 func npcInfo_template_changer() -> void:
 	for item in npcInfo.values():
 		var mindStateTemplateID = item['MindStateTemplate']
-		_append_property_from_template(item, mindStateProperty[mindStateTemplateID])
+		append_property_from_template(item, mindStateProperty[mindStateTemplateID])
 
 ## 根据传入的 key 检索 const 中的对应值。注意，返回的是整行数据，具体如何使用值应当根据业务具体确定。
 func search_const_value(searchKey:String) -> Dictionary:

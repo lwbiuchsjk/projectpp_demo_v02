@@ -58,14 +58,14 @@ func _on_new_avg():
 
 
 func on_build_seat():
-	var avg = GameInfo.avgManager.load_avg_config()
-	if avg['seatList'].size() > 0 and !_isSeatBuild:
-		print("创建座位，AVGID：" + avg.ID)
+	var event = GameInfo.avgManager.load_event_from_ID(GameInfo.avgManager.nowEventID)
+	if event['seatList'].size() > 0 and !_isSeatBuild:
+		print("创建座位，eventID：" + event.ID)
 
 		var raw_seatPair = {}
 		## 在 SeatPanel 创建 Seat 实例
 		var seatIndex = 0
-		for preSeat in avg['seatList']:
+		for preSeat in event['seatList']:
 			var seatInstance = preload("res://scene/Seat/seat.tscn").instantiate() as Seat
 			add_child_item(seatInstance)
 			var card_type = seatInstance.search_seat_property(preSeat)
@@ -81,15 +81,15 @@ func on_build_seat():
 
 		## 根据配置重置 seatedCardList 等数据信息
 		GameInfo.cardDataManager.InitSeatedCardList(seatIndex)
-		GameInfo.cardDataManager.set_eventResultCondition(avg['resultCondition'])
+		GameInfo.cardDataManager.set_eventResultCondition(event['resultCondition'])
 
 		## 在 SeatBriefPanel 创建 SeatBrief 实例
-		for preSeat in avg['seatList']:
+		for preSeat in event['seatList']:
 			var seatBriefInstance = preload("res://scene/Seat/SeatBrief/SeatBrief.tscn").instantiate()
 			$SeatBriefPanel/ColorRect/SeatBriefList.add_child(seatBriefInstance)
 
 		## 如果作为列表不为空，那么显示确认按钮
-		if avg['seatList'].size() > 0:
+		if event['seatList'].size() > 0:
 			set_seatConfirmButton_status(true)
 
 		## 同时显示 SeatPannel

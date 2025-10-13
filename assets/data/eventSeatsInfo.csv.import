@@ -1,0 +1,17 @@
+[remap]
+
+importer="csv_translation"
+type="Translation"
+uid="uid://duvi6gl3h8k7g"
+
+[deps]
+
+files=["res://assets/data/eventSeatsInfo.seatList.translation", "res://assets/data/eventSeatsInfo.Remarks.translation", "res://assets/data/eventSeatsInfo.resultCondition.translation"]
+
+source_file="res://assets/data/eventSeatsInfo.csv"
+dest_files=["res://assets/data/eventSeatsInfo.seatList.translation", "res://assets/data/eventSeatsInfo.Remarks.translation", "res://assets/data/eventSeatsInfo.resultCondition.translation"]
+
+[params]
+
+compress=true
+delimiter=0

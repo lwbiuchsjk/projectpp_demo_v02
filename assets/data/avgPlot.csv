@@ -1,5 +1,5 @@
-﻿ID,nextID,eventCardsInfo,words,backgroundPic,NPC,showEventResult
-1,2,2,测试文字,2,,
-2,,2,猜猜我是谁,2, 1/2,
-3,,,啥也没选,,2,1
-4,,,选了一些,,1,1
+﻿ID,nextID,words,backgroundPic,NPC
+1,2,测试文字,2,
+2,,猜猜我是谁,2, 1/2
+3,,啥也没选,,2
+4,,选了一些,,1
