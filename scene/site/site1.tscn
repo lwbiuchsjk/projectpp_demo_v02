@@ -9,7 +9,7 @@
 script = ExtResource("1_6j1h7")
 scene_1 = NodePath("deck")
 scene_2 = NodePath("deck2")
-scene_3 = NodePath("handDeck")
+scene_3 = NodePath("MindState_handDeck")
 maxRandomItemNum = 1
 minRandomItemNum = 4
 siteItems = {
@@ -36,11 +36,56 @@ offset_top = 360.0
 offset_right = 1920.0
 offset_bottom = 720.0
 
-[node name="handDeck" parent="." instance=ExtResource("3_34a6l")]
+[node name="MindState_handDeck" parent="." instance=ExtResource("3_34a6l")]
+visible = false
 offset_left = 355.0
 offset_top = 760.0
 offset_right = 1920.0
 offset_bottom = 1080.0
+deckType = 4
+
+[node name="Memory_handDeck" parent="." instance=ExtResource("3_34a6l")]
+visible = false
+offset_left = 355.0
+offset_top = 760.0
+offset_right = 1920.0
+offset_bottom = 1080.0
+deckType = 3
+
+[node name="deckSelectButtonList" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 255.0
+offset_top = 760.0
+offset_right = 355.0
+offset_bottom = 1080.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="deckSelectButtonList"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MindState_SelectButton" type="Button" parent="deckSelectButtonList/VBoxContainer"]
+custom_minimum_size = Vector2(50, 70)
+layout_mode = 2
+theme_override_colors/font_pressed_color = Color(0.6178153, 0.7128843, 0, 1)
+theme_override_colors/icon_pressed_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 25
+toggle_mode = true
+keep_pressed_outside = true
+text = "心绪"
+
+[node name="Memory_SelectButton" type="Button" parent="deckSelectButtonList/VBoxContainer"]
+custom_minimum_size = Vector2(50, 70)
+layout_mode = 2
+theme_override_colors/font_pressed_color = Color(0.61960787, 0.7137255, 0, 1)
+theme_override_font_sizes/font_size = 25
+toggle_mode = true
+keep_pressed_outside = true
+text = "记忆"
 
 [node name="Button" type="Button" parent="."]
 offset_left = 1688.0

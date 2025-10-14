@@ -19,8 +19,8 @@ const blankConditionScore = -10
 enum genResult{Property, AddCard, GenFromMindSwarn, AddSeatIndex}
 var genResultEnum = []
 
-@onready var handDeck:deck = get_tree().root.get_node("testScean/site1/handDeck")
-@onready var resultDeck:deck = get_tree().root.get_node("testScean/site1/handDeck")
+var deckList:Dictionary
+@onready var resultDeck:deck
 
 func _ready() -> void:
 	connect("trans_card_to_handDeck", card_to_handDeck)
@@ -59,8 +59,13 @@ func SetCardToListFromIndex(index:int, target) -> void:
 	seatedCardList[index] = target
 
 
-func card_to_handDeck(cardToAdd) -> void:
-	handDeck.add_card(cardToAdd)
+func card_to_handDeck(cardToAdd: card) -> void:
+	var targetCard = get_targetDeck_from_card(cardToAdd.cardInfo)
+	targetCard.add_card(cardToAdd)
+
+## 通用函数。根据 cardData 来返回对应的 deck 。通过 'base_cardType' 字段检索
+func get_targetDeck_from_card(cardData: Dictionary) -> deck:
+	return deckList[GameType.get_cardType(cardData['base_cardType'])]
 
 ## 将 eventResultCondition 设置为指定列表，通常被 avg 设置调用。参数默认为空列表。
 func set_eventResultCondition(condition:Array = []) -> void:
@@ -320,3 +325,7 @@ func _set_seatedCard_to_resultList_from_index(seatIndex:String) -> card:
 		return
 
 	return targetCard
+
+## 外部函数，用于初始化 deckList
+func init_deckList(input:Dictionary) -> void:
+	deckList = input

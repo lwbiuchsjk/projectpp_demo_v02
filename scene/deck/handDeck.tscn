@@ -27,6 +27,7 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="ProgressBar" type="ProgressBar" parent="."]
+visible = false
 layout_mode = 0
 offset_left = -36.0
 offset_right = -3.0
@@ -35,6 +36,7 @@ value = 17.05
 fill_mode = 3
 
 [node name="weight" type="Label" parent="."]
+visible = false
 layout_mode = 0
 offset_left = -96.0
 offset_top = 4.0
