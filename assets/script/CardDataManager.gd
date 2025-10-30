@@ -329,3 +329,32 @@ func _set_seatedCard_to_resultList_from_index(seatIndex:String) -> card:
 ## 外部函数，用于初始化 deckList
 func init_deckList(input:Dictionary) -> void:
 	deckList = input
+
+## 用于根据 ID 来检索 mindStateTemplate 结构。不常用
+func get_mindStateTemplate_from_ID(ID:String) -> Dictionary:
+	for value in GameInfo.mindStateTemplate.values():
+		if value.ID == ID:
+			return value
+	return {}
+
+## 用于根据 typeName 来检索 mindStateTemplate 结构。常用
+func get_mindStateTemplate_from_name(typeName:String) -> Dictionary:
+	for value in GameInfo.mindStateTemplate.values():
+		if value['TypeName'] == typeName:
+			return value
+	return {}
+
+## 将检索得到的 mindStateTemplate 结构，返回为通用的 configStructure 数组。
+## 数组长度为对应的 configStructure 规定配置长度。对应为 [F, H]。其中 F = 主属性，H = 受限制的副属性。此时要求 H 代表对应数值【不低于】F 对应数值的一半。
+## 返回数组中包含 mindState 的属性名称，index = 0 对应 F，index = 1 对应 H。
+## TODO 如果[F, H]结构改变，那么此处返回值也应当改变。
+func get_mindStateTemplate_configStructure(template:Dictionary) -> Array:
+	var output = []
+	output.resize(2)
+	for index in len(template.values()):
+		if template.values()[index] == 'F':
+			output[0] = template.keys()[index]
+		if template.values()[index] == 'H':
+			output[1] = template.keys()[index]
+
+	return output

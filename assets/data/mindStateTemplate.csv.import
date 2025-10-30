@@ -1,0 +1,15 @@
+[remap]
+
+importer="csv_translation"
+type="Translation"
+uid="uid://i8bo61pfhbdx"
+valid=false
+
+[deps]
+
+source_file="res://assets/data/mindStateTemplate.csv"
+
+[params]
+
+compress=true
+delimiter=0

@@ -39,6 +39,9 @@ var eventResultInfo:Dictionary
 var mindStateSwarm_file_path = "res://assets/data/mindStateSwarm.csv"
 var mindStateSwarm:Dictionary
 
+var mindStateTemplate_file_path = 'res://assets/data/mindStateTemplate.csv'
+var mindStateTemplate:Dictionary
+
 ## 子节点结构
 var cardDataManager: CardDataManager
 var avgManager: AVGManager
@@ -64,6 +67,7 @@ func _ready() -> void:
 	eventResultInfo = read_csv_as_nested_dict(eventResultInfo_file_path)
 	mindStateSwarm = read_csv_as_nested_dict(mindStateSwarm_file_path)
 	mindStateSwarm_data_wash()
+	mindStateTemplate = read_csv_as_nested_dict(mindStateTemplate_file_path)
 
 	# 基础配置读取完成后，将部分模板配置替换为实际配置
 	card_template_changer()
