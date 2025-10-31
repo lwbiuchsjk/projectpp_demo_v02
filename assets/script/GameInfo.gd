@@ -45,6 +45,7 @@ var mindStateTemplate:Dictionary
 ## 子节点结构
 var cardDataManager: CardDataManager
 var avgManager: AVGManager
+var mindStateManager: MindStateManager
 
 func _ready() -> void:
 	eventSeatsInfo = read_csv_as_nested_dict(eventSeatsInfo_file_path)
@@ -75,6 +76,7 @@ func _ready() -> void:
 	## 子节点结构
 	cardDataManager = $CardDataManager as CardDataManager
 	avgManager = $AVGManager as AVGManager
+	mindStateManager = $MindStateManager as MindStateManager
 
 	## 读入 mindStateSwarm，并将其保存为实时数据，方便改变
 	cardDataManager.init_MindStateSwarm()

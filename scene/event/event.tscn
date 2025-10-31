@@ -5,25 +5,25 @@
 [ext_resource type="Texture2D" uid="uid://dv70kq5qlxcv5" path="res://assets/image/background.png" id="2_5pdwc"]
 [ext_resource type="Script" uid="uid://db0lxuumvxkwf" path="res://scene/event/CardContainer.gd" id="2_fv7qv"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_luj7y"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_gyara"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_85rdd"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_pcqei"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ol0pm"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_pcqei"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_85rdd"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_lhdrf"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_gyara"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_nr5st"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_luj7y"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_gjjya"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_hwxy0"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_himui"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_hwxy0"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_gjjya"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_nr5st"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_lhdrf"]
 
 [node name="Event" type="Control"]
 layout_mode = 3
@@ -86,11 +86,11 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_styles/focus = SubResource("StyleBoxEmpty_luj7y")
-theme_override_styles/disabled = SubResource("StyleBoxEmpty_gyara")
-theme_override_styles/hover = SubResource("StyleBoxEmpty_85rdd")
-theme_override_styles/pressed = SubResource("StyleBoxEmpty_ol0pm")
 theme_override_styles/normal = SubResource("StyleBoxEmpty_pcqei")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_ol0pm")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_85rdd")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_gyara")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_luj7y")
 
 [node name="NPCArea" type="Control" parent="."]
 anchors_preset = 0
@@ -168,11 +168,11 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_styles/focus = SubResource("StyleBoxEmpty_lhdrf")
-theme_override_styles/disabled = SubResource("StyleBoxEmpty_nr5st")
-theme_override_styles/hover = SubResource("StyleBoxEmpty_gjjya")
-theme_override_styles/pressed = SubResource("StyleBoxEmpty_himui")
 theme_override_styles/normal = SubResource("StyleBoxEmpty_hwxy0")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_himui")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_gjjya")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_nr5st")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_lhdrf")
 
 [node name="SeatConfirmButton" type="Button" parent="SeatBriefPanel"]
 layout_mode = 0
@@ -222,3 +222,8 @@ offset_right = 1850.0
 offset_bottom = 380.0
 theme_override_font_sizes/font_size = 28
 text = "收 取"
+
+[node name="MindStateBattleRoot" type="Control" parent="."]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0

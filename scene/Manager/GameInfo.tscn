@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://b56ntj24s8aer"]
+[gd_scene load_steps=5 format=3 uid="uid://b56ntj24s8aer"]
 
 [ext_resource type="Script" uid="uid://bj005rski21ke" path="res://assets/script/GameInfo.gd" id="1_i5m0w"]
 [ext_resource type="Script" uid="uid://cgylra5llr451" path="res://assets/script/AVGManager.gd" id="2_84ng3"]
 [ext_resource type="Script" uid="uid://p2br7it6cq3n" path="res://assets/script/CardDataManager.gd" id="3_f4gtt"]
+[ext_resource type="Script" uid="uid://u4g57rytdm0e" path="res://assets/script/MindStateManager.gd" id="4_0pxyy"]
 
 [node name="GameInfo" type="Node"]
 script = ExtResource("1_i5m0w")
@@ -12,3 +13,6 @@ script = ExtResource("2_84ng3")
 
 [node name="CardDataManager" type="Node" parent="."]
 script = ExtResource("3_f4gtt")
+
+[node name="MindStateManager" type="Node" parent="."]
+script = ExtResource("4_0pxyy")

@@ -1,0 +1,43 @@
+[gd_scene load_steps=2 format=3 uid="uid://y26gsgs6ahbf"]
+
+[ext_resource type="Script" uid="uid://kgby6bvusjcp" path="res://scene/event/MindStateEvent/mind_state_battle_panel.gd" id="1_ij0qh"]
+
+[node name="MindStateBattle" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -20.0
+offset_bottom = -380.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ij0qh")
+
+[node name="TextArea" type="Control" parent="."]
+anchors_preset = 0
+offset_right = 700.0
+offset_bottom = 700.0
+
+[node name="BgImage" type="ColorRect" parent="TextArea"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.62288105, 0.62288105, 0.62288105, 1)
+
+[node name="CardArea" type="Control" parent="."]
+anchors_preset = 0
+offset_left = 700.0
+offset_right = 1900.0
+offset_bottom = 700.0
+
+[node name="BgImage" type="ColorRect" parent="CardArea"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.80616075, 0.80616075, 0.8061606, 1)

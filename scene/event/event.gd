@@ -4,6 +4,7 @@ signal show_seat_brief_status()
 signal build_seat()
 
 @onready var resultDeckRoot = $EventResult/ResultCardList
+@onready var mindStateBattleRoot = $MindStateBattleRoot
 var resultCardList: Array
 ## 仅用于判断座位是否被创建过，防止反复被外部调用。内部变量。
 var _isSeatBuild = false
@@ -15,6 +16,9 @@ func _ready() -> void:
 	GameInfo.avgManager.connect("close_avg", _on_close_avg)
 	GameInfo.avgManager.connect("draw_npc", _set_npcInfo)
 	GameInfo.avgManager.connect("show_event_result", open_card_result_panel)
+
+	GameInfo.mindStateManager.connect('show_mindStateBattle_panel', on_show_mindStateBattle_panel)
+
 	connect("show_seat_brief_status", set_seat_brief_status)
 	connect("build_seat", on_build_seat)
 	$TextArea/NextAvgButton.pressed.connect(_check_next_avg)
@@ -210,3 +214,8 @@ func set_seatConfirmButton_status(status:bool):
 ## 设置座位被调用的状态。方便外部、内部调用。方便管理。
 func set_seatBuild_status(status:bool) -> void:
 	_isSeatBuild = status
+
+func on_show_mindStateBattle_panel() -> void:
+	var panel = preload("res://scene/event/MindStateEvent/MindStateBattle.tscn").instantiate() as MindStateBattlePanel
+	mindStateBattleRoot.add_child(panel)
+	panel.position = Vector2.ZERO

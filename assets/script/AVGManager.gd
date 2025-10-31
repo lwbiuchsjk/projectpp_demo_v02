@@ -143,8 +143,13 @@ func set_seatPair(key:String, value):
 
 func avg_control(nextEvent = null):
 	## 如果当前正在显示事件结果，那么弹出事件结果面板
-	if _check_nowAvg_showEventResult():
+	if _check_nowAvg_finishFunc(finishFunc.EventResult):
 		emit_signal("show_event_result")
+		return
+
+	## 如果当前准备进入战斗，那么转入战斗面板，由战斗流程接管
+	if _check_nowAvg_finishFunc(finishFunc.Battle):
+		GameInfo.mindStateManager.emit_signal("start_mindStateBattle")
 		return
 
 	## 如果当前正在选择，那么阻断点击
@@ -193,10 +198,10 @@ func _check_nowAvg_seating(checkEvent) -> bool:
 	else:
 		return false
 
-func _check_nowAvg_showEventResult() -> bool:
+func _check_nowAvg_finishFunc(funcIndex: int) -> bool:
 	var nowAvg = load_avg_config()
 
-	if (nowAvg['nextID'] == null or nowAvg['nextID'] == "") and _check_nowEvent_finishFunc(finishFunc.EventResult):
+	if (nowAvg['nextID'] == null or nowAvg['nextID'] == "") and _check_nowEvent_finishFunc(funcIndex):
 		return true
 	else:
 		return false
@@ -329,5 +334,7 @@ func eventConfig_data_wash() -> void:
 			## TODO 后续扩展其他功能
 			eventResultFunc:
 				print(eventResultFunc)
+			battleFunc:
+				print(battleFunc)
 			_:
 				print("未匹配")
