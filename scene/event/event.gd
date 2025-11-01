@@ -18,6 +18,7 @@ func _ready() -> void:
 	GameInfo.avgManager.connect("show_event_result", open_card_result_panel)
 
 	GameInfo.mindStateManager.connect('show_mindStateBattle_panel', on_show_mindStateBattle_panel)
+	GameInfo.mindStateManager.connect('close_mindStateBattle_panel', on_close_mindStateBattle_panel)
 
 	connect("show_seat_brief_status", set_seat_brief_status)
 	connect("build_seat", on_build_seat)
@@ -159,7 +160,8 @@ func _set_npcInfo():
 func set_seat_brief_status(index: int, status: bool) -> void:
 	var seat_brief_rootNode = $SeatBriefPanel/ColorRect/SeatBriefList
 	var seat_brief_node = seat_brief_rootNode.get_child(index)
-	seat_brief_node.emit_signal("change_seat_brief_status", status)
+	if seat_brief_node != null:
+		seat_brief_node.emit_signal("change_seat_brief_status", status)
 
 ## 关闭展示弹板
 func close_card_result_panel() -> void:
@@ -215,7 +217,16 @@ func set_seatConfirmButton_status(status:bool):
 func set_seatBuild_status(status:bool) -> void:
 	_isSeatBuild = status
 
+## 创建 MindStateBattle 面板
 func on_show_mindStateBattle_panel() -> void:
 	var panel = preload("res://scene/event/MindStateEvent/MindStateBattle.tscn").instantiate() as MindStateBattlePanel
 	mindStateBattleRoot.add_child(panel)
 	panel.position = Vector2.ZERO
+	## 将 panel 赋值，方便后续调用
+	GameInfo.mindStateManager.battlePanel = panel
+
+## 在 MindStateRoot 下清理 MindStateBattle 面板
+func on_close_mindStateBattle_panel() -> void:
+	for child in mindStateBattleRoot.get_children():
+		mindStateBattleRoot.remove_child(child)
+		child.queue_free()

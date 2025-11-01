@@ -42,6 +42,9 @@ var mindStateSwarm:Dictionary
 var mindStateTemplate_file_path = 'res://assets/data/mindStateTemplate.csv'
 var mindStateTemplate:Dictionary
 
+var mindStateBattle_file_path = 'res://assets/data/mindStateBattle.csv'
+var mindStateBattle:Dictionary
+
 ## 子节点结构
 var cardDataManager: CardDataManager
 var avgManager: AVGManager
@@ -69,6 +72,8 @@ func _ready() -> void:
 	mindStateSwarm = read_csv_as_nested_dict(mindStateSwarm_file_path)
 	mindStateSwarm_data_wash()
 	mindStateTemplate = read_csv_as_nested_dict(mindStateTemplate_file_path)
+	mindStateBattle = read_csv_as_nested_dict(mindStateBattle_file_path)
+	mindStateBattle_data_wash()
 
 	# 基础配置读取完成后，将部分模板配置替换为实际配置
 	card_template_changer()
@@ -230,6 +235,18 @@ func card_data_wash() -> void:
 ## 将 MindStateSwarm 的部分配置规范化处理
 func mindStateSwarm_data_wash() -> void:
 	for config in mindStateSwarm.values():
+		## 处理 cardsInfo
+		var inputValue = config['CardsInfo'].replace(" ", "").split("/")
+		var outputValue = []
+		for value in inputValue:
+			if value.is_valid_int():
+				var swarmCardInfo = cardInfo[value]
+				outputValue.append(swarmCardInfo)
+		config['CardsInfo'] = outputValue
+
+## 将 MindStateBattle 的部分配置规范化处理
+func mindStateBattle_data_wash() -> void:
+	for config in mindStateBattle.values():
 		## 处理 cardsInfo
 		var inputValue = config['CardsInfo'].replace(" ", "").split("/")
 		var outputValue = []

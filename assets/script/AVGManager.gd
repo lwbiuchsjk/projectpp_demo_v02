@@ -149,6 +149,8 @@ func avg_control(nextEvent = null):
 
 	## 如果当前准备进入战斗，那么转入战斗面板，由战斗流程接管
 	if _check_nowAvg_finishFunc(finishFunc.Battle):
+		var nowEvent = load_event_from_ID(nowEventID)
+		GameInfo.mindStateManager.battleID = nowEvent['plot_finish_func_param']
 		GameInfo.mindStateManager.emit_signal("start_mindStateBattle")
 		return
 
