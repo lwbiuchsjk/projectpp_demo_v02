@@ -24,11 +24,20 @@ func _is_type_match(targetCard: card) -> bool:
 	var cardType = GameType.get_cardType(cardData['base_cardType'])
 	var nowSeatType = GameType.get_cardType(seatType)
 	var cardClass = GameType.get_cardClass(cardData['base_cardClass'])
-	if cardType != GameType.CardType.NONE and cardType == nowSeatType and cardClass in accepted_class:
+	## 判断 accepted_class 时，支持为 []。此时代表允许放入任何 cardClass 卡牌
+	if cardType != GameType.CardType.NONE and cardType == nowSeatType and (cardClass in accepted_class or accepted_class == []):
 		return true
 	return false
 
 func add_card(cardToAdd)->void:
+	## 调用基本功能
+	_add_card_base_func(cardToAdd)
+	## seat 功能中，特别通知 avgManager 功能
+	GameInfo.avgManager.set_seatPair(seatID, 1)
+	GameInfo.avgManager.emit_signal("show_seat_brief_status", seat_index, true)
+
+## 添加卡牌的基本功能，被封装后，供各继承类统一调用
+func _add_card_base_func(cardToAdd) -> void:
 	var cardBackground=preload("res://scene/cards/card_background.tscn").instantiate()
 	cardPoiDeck.add_child(cardBackground)
 
@@ -46,10 +55,9 @@ func add_card(cardToAdd)->void:
 	cardToAdd.cardCurrentState=cardToAdd.cardState.following
 	update_weight()
 	trigger_deck_sort()
-
+	## 将拖入的卡牌参数传入
 	_set_seat_card(cardToAdd)
-	GameInfo.avgManager.set_seatPair(seatID, 1)
-	GameInfo.avgManager.emit_signal("show_seat_brief_status", seat_index, true)
+
 
 func update_weight() -> void:
 	var nowWeight=0

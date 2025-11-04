@@ -1,4 +1,5 @@
 ﻿ID,base_cardType,base_cardClass,base_displayName,base_description
 1,MindState,item,冰,不仅能降温，还能当成临时冰淇淋。
 2,MindState,item,石头,看似平凡，却是太空飞船的基础材料。
+998,MindState,,精神,仅限定 MindState 类型，不限定具体类型
 999,,,空,占位

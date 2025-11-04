@@ -1,15 +1,18 @@
-[gd_scene load_steps=3 format=3 uid="uid://y26gsgs6ahbf"]
+[gd_scene load_steps=4 format=3 uid="uid://y26gsgs6ahbf"]
 
 [ext_resource type="Script" uid="uid://kgby6bvusjcp" path="res://scene/event/MindStateEvent/mind_state_battle_panel.gd" id="1_ij0qh"]
 [ext_resource type="PackedScene" uid="uid://b80jq7wxyi2j7" path="res://scene/Seat/seat.tscn" id="2_oeu2u"]
+[ext_resource type="PackedScene" uid="uid://djauqv8lmiukb" path="res://scene/Seat/MindStateBattleSeat/MindStateBattleSeat.tscn" id="3_ds76y"]
 
 [node name="MindStateBattle" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_right = -20.0
-offset_bottom = -380.0
+offset_left = 129.0
+offset_top = 411.0
+offset_right = 109.0
+offset_bottom = 31.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_ij0qh")
@@ -74,6 +77,84 @@ offset_top = 325.0
 offset_right = 1200.0
 offset_bottom = 375.0
 text = "确认"
+
+[node name="IncreaseCardArea" type="Control" parent="."]
+visible = false
+anchors_preset = 0
+offset_left = 700.0
+offset_top = 1.0
+offset_right = 1900.0
+offset_bottom = 701.0
+
+[node name="TopBgImage" type="ColorRect" parent="IncreaseCardArea"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = -350.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TargetCardName" type="Label" parent="IncreaseCardArea/TopBgImage"]
+layout_mode = 0
+offset_left = 550.0
+offset_right = 650.0
+offset_bottom = 50.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 25
+text = "卡牌名称"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BottomBgImage" type="ColorRect" parent="IncreaseCardArea"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 350.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="SourceCardName" type="Label" parent="IncreaseCardArea/BottomBgImage"]
+layout_mode = 0
+offset_left = 550.0
+offset_top = 300.0
+offset_right = 650.0
+offset_bottom = 350.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 25
+text = "卡牌名称"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="InputCardArea" type="HBoxContainer" parent="."]
+visible = false
+layout_mode = 0
+offset_left = 700.0
+offset_top = 200.0
+offset_right = 1900.0
+offset_bottom = 500.0
+theme_override_constants/separation = 40
+alignment = 1
+
+[node name="MindStateBattleSeat" parent="InputCardArea" instance=ExtResource("3_ds76y")]
+layout_mode = 2
+
+[node name="MindStateBattleSeat2" parent="InputCardArea" instance=ExtResource("3_ds76y")]
+layout_mode = 2
+
+[node name="MindStateBattleSeat3" parent="InputCardArea" instance=ExtResource("3_ds76y")]
+layout_mode = 2
+
+[node name="MindStateBattleSeat4" parent="InputCardArea" instance=ExtResource("3_ds76y")]
+layout_mode = 2
+
+[node name="MindStateBattleSeat5" parent="InputCardArea" instance=ExtResource("3_ds76y")]
+layout_mode = 2
+
+[node name="MindStateBattleSeat6" parent="InputCardArea" instance=ExtResource("3_ds76y")]
+layout_mode = 2
 
 [node name="CloseButton" type="Button" parent="."]
 layout_mode = 0

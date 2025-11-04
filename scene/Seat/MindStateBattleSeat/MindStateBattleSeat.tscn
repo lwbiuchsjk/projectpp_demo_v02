@@ -1,0 +1,158 @@
+[gd_scene format=3 uid="uid://djauqv8lmiukb"]
+
+[node name="MindStateBattleSeat" type="Control"]
+custom_minimum_size = Vector2(150, 300)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 150.0
+offset_bottom = 300.0
+
+[node name="CardInfoArea" type="Control" parent="."]
+anchors_preset = 0
+offset_top = 50.0
+offset_right = 150.0
+offset_bottom = 250.0
+
+[node name="BgImage" type="ColorRect" parent="CardInfoArea"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.6120363, 0.61203635, 0.6120363, 1)
+
+[node name="InputHint" type="Label" parent="CardInfoArea"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 30
+text = "+"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TopIncreaseArea" type="Control" parent="."]
+anchors_preset = 0
+offset_right = 150.0
+offset_bottom = 50.0
+
+[node name="PropertyNumber" type="Label" parent="TopIncreaseArea"]
+layout_mode = 0
+offset_right = 150.0
+offset_bottom = 25.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 25
+text = "99"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="IncreaseMainPropertyMark" type="ColorRect" parent="TopIncreaseArea"]
+layout_mode = 0
+offset_top = 30.0
+offset_right = 150.0
+offset_bottom = 45.0
+color = Color(0, 0, 0, 1)
+
+[node name="IncreaseAssistPropertyMark" type="ColorRect" parent="TopIncreaseArea"]
+layout_mode = 0
+offset_left = 50.0
+offset_top = 30.0
+offset_right = 100.0
+offset_bottom = 45.0
+color = Color(0, 0, 0, 1)
+
+[node name="TopDecreaseArea" type="Control" parent="."]
+visible = false
+anchors_preset = 0
+offset_right = 150.0
+offset_bottom = 50.0
+
+[node name="PropertyNumber" type="Label" parent="TopDecreaseArea"]
+layout_mode = 0
+offset_right = 150.0
+offset_bottom = 25.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 25
+text = "99"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="IncreaseMainPropertyMark" type="ColorRect" parent="TopDecreaseArea"]
+layout_mode = 0
+offset_top = 30.0
+offset_right = 150.0
+offset_bottom = 45.0
+
+[node name="IncreaseAssistPropertyMark" type="ColorRect" parent="TopDecreaseArea"]
+layout_mode = 0
+offset_left = 50.0
+offset_top = 30.0
+offset_right = 100.0
+offset_bottom = 45.0
+
+[node name="BottomIncreaseArea" type="Control" parent="."]
+visible = false
+anchors_preset = 0
+offset_top = 250.0
+offset_right = 150.0
+offset_bottom = 300.0
+
+[node name="PropertyNumber" type="Label" parent="BottomIncreaseArea"]
+layout_mode = 0
+offset_top = 15.0
+offset_right = 150.0
+offset_bottom = 50.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 25
+text = "99"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="IncreaseMainPropertyMark" type="ColorRect" parent="BottomIncreaseArea"]
+layout_mode = 0
+offset_top = 5.0
+offset_right = 150.0
+offset_bottom = 20.0
+color = Color(0, 0, 0, 1)
+
+[node name="IncreaseAssistPropertyMark" type="ColorRect" parent="BottomIncreaseArea"]
+layout_mode = 0
+offset_left = 50.0
+offset_top = 5.0
+offset_right = 100.0
+offset_bottom = 20.0
+color = Color(0, 0, 0, 1)
+
+[node name="BottomDecreaseArea" type="Control" parent="."]
+anchors_preset = 0
+offset_top = 250.0
+offset_right = 150.0
+offset_bottom = 300.0
+
+[node name="PropertyNumber" type="Label" parent="BottomDecreaseArea"]
+layout_mode = 0
+offset_top = 15.0
+offset_right = 150.0
+offset_bottom = 50.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 25
+text = "99"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="IncreaseMainPropertyMark" type="ColorRect" parent="BottomDecreaseArea"]
+layout_mode = 0
+offset_top = 5.0
+offset_right = 150.0
+offset_bottom = 20.0
+
+[node name="IncreaseAssistPropertyMark" type="ColorRect" parent="BottomDecreaseArea"]
+layout_mode = 0
+offset_left = 50.0
+offset_top = 5.0
+offset_right = 100.0
+offset_bottom = 20.0
