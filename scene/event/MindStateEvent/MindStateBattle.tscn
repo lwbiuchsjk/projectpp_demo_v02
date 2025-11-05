@@ -79,7 +79,6 @@ offset_bottom = 375.0
 text = "确认"
 
 [node name="IncreaseCardArea" type="Control" parent="."]
-visible = false
 anchors_preset = 0
 offset_left = 700.0
 offset_top = 1.0
@@ -95,7 +94,7 @@ offset_bottom = -350.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="TargetCardName" type="Label" parent="IncreaseCardArea/TopBgImage"]
+[node name="SelectCardName" type="Label" parent="IncreaseCardArea/TopBgImage"]
 layout_mode = 0
 offset_left = 550.0
 offset_right = 650.0
@@ -116,7 +115,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 1)
 
-[node name="SourceCardName" type="Label" parent="IncreaseCardArea/BottomBgImage"]
+[node name="TargetCardName" type="Label" parent="IncreaseCardArea/BottomBgImage"]
 layout_mode = 0
 offset_left = 550.0
 offset_top = 300.0

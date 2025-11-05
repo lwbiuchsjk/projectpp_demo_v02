@@ -13,8 +13,12 @@ var battlePanel: MindStateBattlePanel:
 	set(panel): battlePanel = panel
 	get: return battlePanel
 
-var battleNowTargetCard: card
-var playerSelectCard: card
+var battleNowTargetCard: card:
+	set(card): battleNowTargetCard = card
+	get: return battleNowTargetCard
+var playerSelectCard: card:
+	set(card): playerSelectCard = card
+	get: return playerSelectCard
 
 signal start_mindStateBattle()
 signal show_mindStateBattle_panel()		## event中连接
@@ -48,3 +52,10 @@ func _locate_battleData() -> Dictionary:
 		if config.ID == battleID:
 			return config
 	return {}
+
+## 用于结合 playerInputCard 和 battleNowTargetCard 来判断是否为提升卡牌。
+## TODO 当前写死为 true，为了跑通流程
+func check_isIncreaseCard() -> bool:
+	if playerSelectCard == null:
+		return false
+	return true
