@@ -1,17 +1,20 @@
-[gd_scene format=3 uid="uid://djauqv8lmiukb"]
+[gd_scene load_steps=3 format=3 uid="uid://djauqv8lmiukb"]
+
+[ext_resource type="Script" uid="uid://dgkiw16naj2li" path="res://scene/Seat/MindStateBattleSeat/mind_state_battle_seat.gd" id="1_fadcp"]
+[ext_resource type="Texture2D" uid="uid://cdke538rqjchu" path="res://assets/image/CardInfoArraw.png" id="2_mj0wl"]
 
 [node name="MindStateBattleSeat" type="Control"]
-custom_minimum_size = Vector2(150, 300)
+custom_minimum_size = Vector2(300, 70)
 layout_mode = 3
 anchors_preset = 0
-offset_right = 150.0
-offset_bottom = 300.0
+offset_right = 300.0
+offset_bottom = 70.0
+script = ExtResource("1_fadcp")
 
 [node name="CardInfoArea" type="Control" parent="."]
 anchors_preset = 0
-offset_top = 50.0
-offset_right = 150.0
-offset_bottom = 250.0
+offset_right = 200.0
+offset_bottom = 70.0
 
 [node name="BgImage" type="ColorRect" parent="CardInfoArea"]
 layout_mode = 1
@@ -35,124 +38,96 @@ text = "+"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="TopIncreaseArea" type="Control" parent="."]
+[node name="TargetInfoArea" type="Control" parent="."]
 anchors_preset = 0
-offset_right = 150.0
-offset_bottom = 50.0
+offset_left = 200.0
+offset_right = 250.0
+offset_bottom = 70.0
 
-[node name="PropertyNumber" type="Label" parent="TopIncreaseArea"]
+[node name="MainPropertyMark" type="ColorRect" parent="TargetInfoArea"]
 layout_mode = 0
-offset_right = 150.0
-offset_bottom = 25.0
+offset_left = 5.0
+offset_right = 45.0
+offset_bottom = 70.0
+
+[node name="Label" type="Label" parent="TargetInfoArea/MainPropertyMark"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 25
-text = "99"
+text = "主"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="IncreaseMainPropertyMark" type="ColorRect" parent="TopIncreaseArea"]
+[node name="AssistPropertyMark" type="ColorRect" parent="TargetInfoArea"]
 layout_mode = 0
-offset_top = 30.0
-offset_right = 150.0
-offset_bottom = 45.0
-color = Color(0, 0, 0, 1)
+offset_left = 5.0
+offset_right = 45.0
+offset_bottom = 70.0
+color = Color(0.7058824, 0.7058824, 0.7058824, 1)
 
-[node name="IncreaseAssistPropertyMark" type="ColorRect" parent="TopIncreaseArea"]
-layout_mode = 0
-offset_left = 50.0
-offset_top = 30.0
-offset_right = 100.0
-offset_bottom = 45.0
-color = Color(0, 0, 0, 1)
-
-[node name="TopDecreaseArea" type="Control" parent="."]
-visible = false
-anchors_preset = 0
-offset_right = 150.0
-offset_bottom = 50.0
-
-[node name="PropertyNumber" type="Label" parent="TopDecreaseArea"]
-layout_mode = 0
-offset_right = 150.0
-offset_bottom = 25.0
-theme_override_colors/font_color = Color(1, 1, 1, 1)
+[node name="Label" type="Label" parent="TargetInfoArea/AssistPropertyMark"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.3118496, 0.31184962, 0.3118496, 1)
 theme_override_font_sizes/font_size = 25
-text = "99"
+text = "次"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="IncreaseMainPropertyMark" type="ColorRect" parent="TopDecreaseArea"]
-layout_mode = 0
-offset_top = 30.0
-offset_right = 150.0
-offset_bottom = 45.0
-
-[node name="IncreaseAssistPropertyMark" type="ColorRect" parent="TopDecreaseArea"]
-layout_mode = 0
-offset_left = 50.0
-offset_top = 30.0
-offset_right = 100.0
-offset_bottom = 45.0
-
-[node name="BottomIncreaseArea" type="Control" parent="."]
-visible = false
+[node name="InputInfoArea" type="Control" parent="."]
 anchors_preset = 0
-offset_top = 250.0
-offset_right = 150.0
-offset_bottom = 300.0
+offset_left = 250.0
+offset_right = 330.0
+offset_bottom = 70.0
 
-[node name="PropertyNumber" type="Label" parent="BottomIncreaseArea"]
+[node name="MainPropertyMark" type="ColorRect" parent="InputInfoArea"]
 layout_mode = 0
-offset_top = 15.0
-offset_right = 150.0
-offset_bottom = 50.0
+offset_left = 35.0
+offset_right = 75.0
+offset_bottom = 70.0
+
+[node name="Label" type="Label" parent="InputInfoArea/MainPropertyMark"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 25
-text = "99"
+text = "主"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="IncreaseMainPropertyMark" type="ColorRect" parent="BottomIncreaseArea"]
+[node name="AssistPropertyMark" type="ColorRect" parent="InputInfoArea"]
 layout_mode = 0
-offset_top = 5.0
-offset_right = 150.0
-offset_bottom = 20.0
-color = Color(0, 0, 0, 1)
+offset_left = 35.0
+offset_right = 75.0
+offset_bottom = 70.0
+color = Color(0.7058824, 0.7058824, 0.7058824, 1)
 
-[node name="IncreaseAssistPropertyMark" type="ColorRect" parent="BottomIncreaseArea"]
-layout_mode = 0
-offset_left = 50.0
-offset_top = 5.0
-offset_right = 100.0
-offset_bottom = 20.0
-color = Color(0, 0, 0, 1)
-
-[node name="BottomDecreaseArea" type="Control" parent="."]
-anchors_preset = 0
-offset_top = 250.0
-offset_right = 150.0
-offset_bottom = 300.0
-
-[node name="PropertyNumber" type="Label" parent="BottomDecreaseArea"]
-layout_mode = 0
-offset_top = 15.0
-offset_right = 150.0
-offset_bottom = 50.0
-theme_override_colors/font_color = Color(1, 1, 1, 1)
+[node name="Label" type="Label" parent="InputInfoArea/AssistPropertyMark"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.3118496, 0.31184962, 0.3118496, 1)
 theme_override_font_sizes/font_size = 25
-text = "99"
+text = "次"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="IncreaseMainPropertyMark" type="ColorRect" parent="BottomDecreaseArea"]
-layout_mode = 0
-offset_top = 5.0
-offset_right = 150.0
-offset_bottom = 20.0
-
-[node name="IncreaseAssistPropertyMark" type="ColorRect" parent="BottomDecreaseArea"]
-layout_mode = 0
-offset_left = 50.0
-offset_top = 5.0
-offset_right = 100.0
-offset_bottom = 20.0
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(241, 35)
+texture = ExtResource("2_mj0wl")

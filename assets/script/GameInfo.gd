@@ -255,3 +255,29 @@ func mindStateBattle_data_wash() -> void:
 				var swarmCardInfo = cardInfo[value]
 				outputValue.append(swarmCardInfo)
 		config['CardsInfo'] = outputValue
+
+## 获取 mindStateProperty 中有效属性名称的统一方法。
+func get_mindStatePropertyKeys() -> Array:
+	var output = []
+	for key in mindStateTemplate.values()[0].keys():
+		if key in ['ID', 'TypeName']:
+			continue
+		output.append(key)
+	return output
+
+## 根据传入的 TypeName 来返回对应的 templateData
+func get_mindStateTemplaterData(input: String) -> Dictionary:
+	for value in mindStateTemplate.values():
+		if value['TypeName'] == input:
+			return value
+	return {}
+
+func check_property_mainProperty(templateData:Dictionary, propertyKey:String) -> bool:
+	if templateData[propertyKey] == "F":
+		return true
+	return false
+
+func check_property_assistProperty(templateData:Dictionary, propertyKey:String) -> bool:
+	if templateData[propertyKey] == "H":
+		return true
+	return false

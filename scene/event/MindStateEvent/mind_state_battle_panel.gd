@@ -4,8 +4,10 @@ class_name MindStateBattlePanel
 signal load_battleCard()
 
 @onready var targetMindStateCardSeat = $CardArea/InputCardSeat/Seat as Seat
-@onready var inputCardArea = $InputCardArea as Control
+@onready var inputCardArea = $CardArea/InputCardArea as Control
 @onready var inceaseCardArea = $IncreaseCardArea as Control
+
+@export var inputCardList:Array[Control]
 
 var isIncreaseCardFlag: bool
 
@@ -29,7 +31,11 @@ func _on_close_button() -> void:
 	GameInfo.mindStateManager.emit_signal('close_mindStateBattle_panel')
 
 func _on_load_battleCard(cardToAdd: card) -> void:
-	$CardArea/MindStateSwarmCardRoot.add_child(cardToAdd)
+	var battleInfo = $CardArea/MindStateSwarmCardRoot/TargetCardName as Label
+	battleInfo.text = cardToAdd.cardInfo['base_displayName']
+	inputCardArea.visible = true
+
+	_show_CardInfo(GameInfo.mindStateManager.battleNowTargetCard, true)
 
 func get_input_targetCard() -> card:
 	var output = targetMindStateCardSeat.seat_card
@@ -41,24 +47,24 @@ func _on_confirm_button() -> void:
 		print("设置卡牌为空")
 		return
 	GameInfo.mindStateManager.playerSelectCard = seatCard
-	inputCardArea.visible = true
-	if GameInfo.mindStateManager.check_isIncreaseCard():
-		inceaseCardArea.visible = true
-	else:
-		print("为decrease流程预留")
 
-	_show_baseCardInfo()
+	_show_CardInfo(seatCard, false)
 
-## 显示面板上 battleTargetCard 和 playerSelectCard 的基础信息
-func _show_baseCardInfo() -> void:
-	var targetCardName: Label
-	var selectCardName: Label
+## 用于显示 targetCard 和 inputCard 的主属性、副属性提示信息
+func _show_CardInfo(targetCard: card, isBattleTargetCard: bool) -> void:
+	var mindStatePropertyKeys = GameInfo.get_mindStatePropertyKeys()
+	for index in range(0, len(mindStatePropertyKeys)):
+		var inputCardSeat = inputCardList[index] as MindStateBattleSeat
+		var propertyKey = mindStatePropertyKeys[index]
+		var propertyTemplate: Dictionary
 
-	if GameInfo.mindStateManager.check_isIncreaseCard():
-		targetCardName = $IncreaseCardArea/BottomBgImage/TargetCardName
-		selectCardName = $IncreaseCardArea/TopBgImage/SelectCardName
-	else:
-		return
+		propertyTemplate = GameInfo.get_mindStateTemplaterData(targetCard.cardInfo["TypeName"])
+		var mainVisible = GameInfo.check_property_mainProperty(propertyTemplate, propertyKey)
+		var assistVisible = GameInfo.check_property_assistProperty(propertyTemplate, propertyKey)
 
-	targetCardName.text = GameInfo.mindStateManager.battleNowTargetCard.cardName
-	selectCardName.text = GameInfo.mindStateManager.playerSelectCard.cardName
+		if isBattleTargetCard:
+			inputCardSeat.targetInfoArea.visible = true
+			inputCardSeat.set_TargetInfo_visible(mainVisible, assistVisible)
+		else:
+			inputCardSeat.inputInfoArea.visible = true
+			inputCardSeat.set_InputInfo_visible(mainVisible, assistVisible)
