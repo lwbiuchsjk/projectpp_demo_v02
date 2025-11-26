@@ -59,3 +59,17 @@ func check_isIncreaseCard() -> bool:
 	if playerSelectCard == null:
 		return false
 	return true
+
+
+func _get_mindStatePropertyBaseConfig(searchProperty: String, searchBaesConfigKey: String) -> String:
+	for property in GameInfo.propertyList:
+		if property == searchProperty:
+			var searchKey = searchProperty + searchBaesConfigKey
+			return GameInfo.search_const_value(searchKey)['valueString']
+	return ""
+
+func get_mindStateColor(searchProperty: String) -> String:
+	return _get_mindStatePropertyBaseConfig(searchProperty, "Color")
+
+func get_mindStateName(searchProperty: String) -> String:
+	return _get_mindStatePropertyBaseConfig(searchProperty, "Name")

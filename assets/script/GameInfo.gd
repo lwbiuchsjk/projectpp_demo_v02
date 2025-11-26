@@ -50,6 +50,15 @@ var cardDataManager: CardDataManager
 var avgManager: AVGManager
 var mindStateManager: MindStateManager
 
+## 核心数据结构
+const HAPPY_ATTRIBUTE_NAME = "Happiness"
+const SADNESS_ATTRIBUTE_NAME = "Sadness"
+const ANGER_ATTRIBUTE_NAME = "Anger"
+const FEAR_ATTRIBUTE_NAME = "Fear"
+const DISGUST_ATTRIBUTE_NAME = "Disgust"
+const SURPRISE_ATTRIBUTE_NAME = "Surprise"
+var propertyList = [HAPPY_ATTRIBUTE_NAME, SADNESS_ATTRIBUTE_NAME, ANGER_ATTRIBUTE_NAME, FEAR_ATTRIBUTE_NAME, DISGUST_ATTRIBUTE_NAME, SURPRISE_ATTRIBUTE_NAME]
+
 func _ready() -> void:
 	eventSeatsInfo = read_csv_as_nested_dict(eventSeatsInfo_file_path)
 	cardInfo=read_csv_as_nested_dict(cardInfo_file_path)
@@ -255,15 +264,6 @@ func mindStateBattle_data_wash() -> void:
 				var swarmCardInfo = cardInfo[value]
 				outputValue.append(swarmCardInfo)
 		config['CardsInfo'] = outputValue
-
-## 获取 mindStateProperty 中有效属性名称的统一方法。
-func get_mindStatePropertyKeys() -> Array:
-	var output = []
-	for key in mindStateTemplate.values()[0].keys():
-		if key in ['ID', 'TypeName']:
-			continue
-		output.append(key)
-	return output
 
 ## 根据传入的 TypeName 来返回对应的 templateData
 func get_mindStateTemplaterData(input: String) -> Dictionary:

@@ -5,3 +5,9 @@ AngerColor,,#E9E294
 FearColor,,#FFFCB8
 DisgustColor,,#FF0066
 SurpriseColor,,#0D1164
+HappinessName,,快乐
+SadnessName,,忧伤
+AngerName,,愤怒
+FearName,,恐惧
+DisgustName,,厌恶
+SurpriseName,,惊讶

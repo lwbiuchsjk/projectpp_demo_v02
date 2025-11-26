@@ -7,14 +7,6 @@ class_name MindStateCardAttribute
 @onready var cardRoot = self.get_parent() as card
 @onready var attribute_component: AttributeComponent = %AttributeComponent
 
-const HAPPY_ATTRIBUTE_NAME = "Happiness"
-const SADNESS_ATTRIBUTE_NAME = "Sadness"
-const ANGER_ATTRIBUTE_NAME = "Anger"
-const FEAR_ATTRIBUTE_NAME = "Fear"
-const DISGUST_ATTRIBUTE_NAME = "Disgust"
-const SURPRISE_ATTRIBUTE_NAME = "Surprise"
-var propertyList = [HAPPY_ATTRIBUTE_NAME, SADNESS_ATTRIBUTE_NAME, ANGER_ATTRIBUTE_NAME, FEAR_ATTRIBUTE_NAME, DISGUST_ATTRIBUTE_NAME, SURPRISE_ATTRIBUTE_NAME]
-
 const RARITY_ATTRIBUTE_NAME = "rarity"
 
 func _ready() -> void:
@@ -32,7 +24,7 @@ func _ready() -> void:
 ##TODO 对AttributeSet的设置，还需要支持通过表格实现。当前是直接在场景中编辑，很不方便灵活。
 func get_attribute_set() -> AttributeSet:
 	var attributeSet = attribute_component.attribute_set as AttributeSet
-	for property in propertyList:
+	for property in GameInfo.propertyList:
 		if property in cardRoot.cardInfo.keys():
 			var attributeInstance = attributeSet.find_attribute(property)
 			if attributeInstance != null:
@@ -47,7 +39,7 @@ func get_attribute(_attribute_name: String) -> Attribute:
 
 func _init_mindState_info() -> void:
 	var attribute_set = get_attribute_set() as AttributeSet
-	for property in propertyList:
+	for property in GameInfo.propertyList:
 		_set_mindState_info(property)
 	_set_rarity_info(attribute_set)
 
@@ -55,7 +47,7 @@ func _init_mindState_info() -> void:
 
 ## 用于对卡牌相关的 mindState 外显进行设置
 func _show_mindState_info() -> void:
-	for key in propertyList:
+	for key in GameInfo.propertyList:
 		## 设置颜色，颜色由 const 配置决定
 		var colorCode = GameInfo.search_const_value(key + "Color")['valueString']
 		var colorRectNode = cardRoot.get_node("MindStateInfo/" + key + "/ColorRect") as ColorRect
@@ -88,7 +80,7 @@ func _on_rarity_attribute_change() -> void:
 ## 信号绑定函数
 func _bind_attibute_signal() -> void:
 	# 绑定精神状态属性函数
-	for property in propertyList:
+	for property in GameInfo.propertyList:
 		var propertyInstance = attribute_component.attribute_set.find_attribute(property) as MindStateAttribute
 		propertyInstance.attribute_changed.connect(_on_mindState_attribute_change)
 

@@ -3,12 +3,19 @@ class_name MindStateBattleSeat
 
 @onready var targetInfoArea: Control = $TargetInfoArea
 @onready var inputInfoArea: Control = $InputInfoArea
+@onready var bgImage: ColorRect = $CardInfoArea/BgImage
+@onready var showName: Label = $CardInfoArea/InputHint
+
+var mindStateName:String
+var mindStateValue:String
+
+signal init_MindStateInfo()
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	targetInfoArea.visible = false
 	inputInfoArea.visible = false
-
+	init_MindStateInfo.connect(show_mindStateInfo)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
@@ -23,3 +30,11 @@ func set_TargetInfo_visible(isMainVisible: bool, isAssistVisible:bool) -> void:
 func set_InputInfo_visible(isMainVisible: bool, isAssistVisible:bool) -> void:
 	inputInfoArea.get_node("MainPropertyMark").visible = isMainVisible
 	inputInfoArea.get_node("AssistPropertyMark").visible = isAssistVisible
+
+## 显示当前组件的 mindState 相关信息，包括 color 和 name
+func show_mindStateInfo(propertyName:String, propertyValue:String) -> void:
+	mindStateName = propertyName
+	mindStateValue = propertyValue
+
+	showName.text = GameInfo.mindStateManager.get_mindStateName(mindStateName)
+	bgImage.color = Color(GameInfo.mindStateManager.get_mindStateColor(mindStateName))
