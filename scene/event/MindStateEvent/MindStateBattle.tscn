@@ -2,9 +2,9 @@
 
 [ext_resource type="Script" uid="uid://kgby6bvusjcp" path="res://scene/event/MindStateEvent/mind_state_battle_panel.gd" id="1_ij0qh"]
 [ext_resource type="PackedScene" uid="uid://b80jq7wxyi2j7" path="res://scene/Seat/seat.tscn" id="2_oeu2u"]
-[ext_resource type="PackedScene" uid="uid://djauqv8lmiukb" path="res://scene/Seat/MindStateBattleSeat/MindStateBattleSeat.tscn" id="3_ds76y"]
+[ext_resource type="PackedScene" uid="uid://djauqv8lmiukb" path="res://scene/event/MindStateBattleInfoPanel/MindStateBattleInfoPanel.tscn" id="3_ds76y"]
 
-[node name="MindStateBattle" type="Control" node_paths=PackedStringArray("inputCardList")]
+[node name="MindStateBattle" type="Control" node_paths=PackedStringArray("mindStateList")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -16,7 +16,7 @@ offset_bottom = 31.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_ij0qh")
-inputCardList = [NodePath("CardArea/MindStateSelectArea/MindStateBattleSeat"), NodePath("CardArea/MindStateSelectArea/MindStateBattleSeat2"), NodePath("CardArea/MindStateSelectArea/MindStateBattleSeat3"), NodePath("CardArea/MindStateSelectArea/MindStateBattleSeat4"), NodePath("CardArea/MindStateSelectArea/MindStateBattleSeat5"), NodePath("CardArea/MindStateSelectArea/MindStateBattleSeat6")]
+mindStateList = [NodePath("CardArea/MindStateSelectArea/MindStateBattleInfoPanel"), NodePath("CardArea/MindStateSelectArea/MindStateBattleInfoPanel2"), NodePath("CardArea/MindStateSelectArea/MindStateBattleInfoPanel3"), NodePath("CardArea/MindStateSelectArea/MindStateBattleInfoPanel4"), NodePath("CardArea/MindStateSelectArea/MindStateBattleInfoPanel5"), NodePath("CardArea/MindStateSelectArea/MindStateBattleInfoPanel6")]
 
 [node name="TextArea" type="Control" parent="."]
 anchors_preset = 0
@@ -43,7 +43,7 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_right = -600.0
+offset_right = -750.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -120,23 +120,63 @@ offset_bottom = 650.0
 theme_override_constants/separation = 30
 alignment = 1
 
-[node name="MindStateBattleSeat" parent="CardArea/MindStateSelectArea" instance=ExtResource("3_ds76y")]
+[node name="MindStateBattleInfoPanel" parent="CardArea/MindStateSelectArea" instance=ExtResource("3_ds76y")]
 layout_mode = 2
 
-[node name="MindStateBattleSeat2" parent="CardArea/MindStateSelectArea" instance=ExtResource("3_ds76y")]
+[node name="MindStateBattleInfoPanel2" parent="CardArea/MindStateSelectArea" instance=ExtResource("3_ds76y")]
 layout_mode = 2
 
-[node name="MindStateBattleSeat3" parent="CardArea/MindStateSelectArea" instance=ExtResource("3_ds76y")]
+[node name="MindStateBattleInfoPanel3" parent="CardArea/MindStateSelectArea" instance=ExtResource("3_ds76y")]
 layout_mode = 2
 
-[node name="MindStateBattleSeat4" parent="CardArea/MindStateSelectArea" instance=ExtResource("3_ds76y")]
+[node name="MindStateBattleInfoPanel4" parent="CardArea/MindStateSelectArea" instance=ExtResource("3_ds76y")]
 layout_mode = 2
 
-[node name="MindStateBattleSeat5" parent="CardArea/MindStateSelectArea" instance=ExtResource("3_ds76y")]
+[node name="MindStateBattleInfoPanel5" parent="CardArea/MindStateSelectArea" instance=ExtResource("3_ds76y")]
 layout_mode = 2
 
-[node name="MindStateBattleSeat6" parent="CardArea/MindStateSelectArea" instance=ExtResource("3_ds76y")]
+[node name="MindStateBattleInfoPanel6" parent="CardArea/MindStateSelectArea" instance=ExtResource("3_ds76y")]
 layout_mode = 2
+
+[node name="InpuCardArea" type="Control" parent="CardArea"]
+anchors_preset = 0
+offset_right = 450.0
+offset_bottom = 700.0
+
+[node name="NormalStatus" type="ColorRect" parent="CardArea/InpuCardArea"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="CardArea/InpuCardArea/NormalStatus"]
+layout_mode = 0
+offset_left = 115.0
+offset_top = 170.0
+offset_right = 335.0
+offset_bottom = 490.0
+color = Color(0.7058824, 0.7058824, 0.7058824, 1)
+
+[node name="Label" type="Label" parent="CardArea/InpuCardArea/NormalStatus/ColorRect"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 25
+text = "选择一个情感"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="InputRoot" type="Control" parent="CardArea/InpuCardArea"]
+visible = false
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
 
 [node name="CloseButton" type="Button" parent="."]
 layout_mode = 0

@@ -1,15 +1,15 @@
 [gd_scene load_steps=3 format=3 uid="uid://djauqv8lmiukb"]
 
-[ext_resource type="Script" uid="uid://dgkiw16naj2li" path="res://scene/Seat/MindStateBattleSeat/mind_state_battle_seat.gd" id="1_fadcp"]
-[ext_resource type="Texture2D" uid="uid://cdke538rqjchu" path="res://assets/image/CardInfoArraw.png" id="2_mj0wl"]
+[ext_resource type="Script" uid="uid://dgkiw16naj2li" path="res://scene/event/MindStateBattleInfoPanel/mind_state_battle_info_panel.gd" id="1_mjnxl"]
+[ext_resource type="Texture2D" uid="uid://cdke538rqjchu" path="res://assets/image/CardInfoArraw.png" id="2_0iprt"]
 
-[node name="MindStateBattleSeat" type="Control"]
+[node name="MindStateBattleInfoPanel" type="Control"]
 custom_minimum_size = Vector2(300, 70)
 layout_mode = 3
 anchors_preset = 0
 offset_right = 300.0
 offset_bottom = 70.0
-script = ExtResource("1_fadcp")
+script = ExtResource("1_mjnxl")
 
 [node name="CardInfoArea" type="Control" parent="."]
 anchors_preset = 0
@@ -32,7 +32,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/font_size = 30
 text = "+"
 horizontal_alignment = 1
@@ -40,7 +40,7 @@ vertical_alignment = 1
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(241, 35)
-texture = ExtResource("2_mj0wl")
+texture = ExtResource("2_0iprt")
 
 [node name="TargetInfoArea" type="Control" parent="."]
 anchors_preset = 0

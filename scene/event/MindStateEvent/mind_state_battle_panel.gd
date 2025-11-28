@@ -7,8 +7,11 @@ signal load_battleCard()
 @onready var mindStateSelectArea = $CardArea/MindStateSelectArea as Control
 @onready var selectCardMask = $CardArea/InputCardSeat/Mask as Control
 @onready var selectCardConfirmButton = $CardArea/ConfirmTargetButton as Control
+@onready var mindStateInputRoot = $CardArea/InpuCardArea/InputRoot as Control
+@onready var mindStateInputHintPanel = $CardArea/InpuCardArea/NormalStatus as Control
 
-@export var inputCardList:Array[Control]
+@export var mindStateList:Array[Control]
+var mindStateInputList:Array[MindStateBattleInputPanel]
 
 var isIncreaseCardFlag: bool
 
@@ -53,24 +56,38 @@ func _on_confirm_button() -> void:
 	## 处理后续组件显示
 	selectCardConfirmButton.visible = false
 	selectCardMask.visible = true
+	mindStateInputHintPanel.visible = true
+	## mindState相关信息重点展示
+	for index in range(0, len(GameInfo.propertyList)):
+		var mindStatePanel = mindStateList[index] as MindStateBattleInfoPanel
+		var propertyKey = GameInfo.propertyList[index]
+		mindStatePanel.emit_signal("show_MindStateColor", propertyKey)
+
+	## 初始化 mindStateInpuPanelList 结构，将6个 panel 添加进入 root
+	_init_mindStateInputPanelList()
 
 ## 用于显示 targetCard 和 inputCard 的主属性、副属性提示信息
 func _show_CardInfo(targetCard: card, isBattleTargetCard: bool) -> void:
 	for index in range(0, len(GameInfo.propertyList)):
-		var inputCardSeat = inputCardList[index] as MindStateBattleSeat
+		var mindStatePanel = mindStateList[index] as MindStateBattleInfoPanel
 		var propertyKey = GameInfo.propertyList[index]
 		var propertyTemplate: Dictionary
 
 		## 外显 seat 中的 mindState 相关信息
-		inputCardSeat.emit_signal("init_MindStateInfo", propertyKey, targetCard.cardInfo[propertyKey])
+		mindStatePanel.emit_signal("init_MindStateInfo", propertyKey, targetCard.cardInfo[propertyKey])
 		## 读取主属性、副属性配置
 		propertyTemplate = GameInfo.get_mindStateTemplaterData(targetCard.cardInfo["TypeName"])
 		var mainVisible = GameInfo.check_property_mainProperty(propertyTemplate, propertyKey)
 		var assistVisible = GameInfo.check_property_assistProperty(propertyTemplate, propertyKey)
 
 		if isBattleTargetCard:
-			inputCardSeat.targetInfoArea.visible = true
-			inputCardSeat.set_TargetInfo_visible(mainVisible, assistVisible)
+			mindStatePanel.targetInfoArea.visible = true
+			mindStatePanel.set_TargetInfo_visible(mainVisible, assistVisible)
 		else:
-			inputCardSeat.inputInfoArea.visible = true
-			inputCardSeat.set_InputInfo_visible(mainVisible, assistVisible)
+			mindStatePanel.inputInfoArea.visible = true
+			mindStatePanel.set_InputInfo_visible(mainVisible, assistVisible)
+
+## 用于初始化 MindStateInputPanel，将其实例化后，方便对其内容进行操作
+func _init_mindStateInputPanelList() -> void:
+
+	print(len(mindStateInputList))
