@@ -74,12 +74,21 @@ func check_seat_can_drop() -> bool:
 
 
 func _on_area_entered(targetArea: Area2D):
+	## 边界管理
+	if self.visible == false:
+		return
+	## 实际功能
 	var targetCard = targetArea.get_parent() as card
 	card_can_drop = false
+
 	if targetCard.is_in_group("card") and _is_type_match(targetCard):
 		card_can_drop = true
 
 func _on_area_exited(targetCard: Area2D):
+	## 边界管理
+	if self.visible == false:
+		return
+	## 实际功能
 	if targetCard.is_in_group("card"):
 		card_can_drop = false
 

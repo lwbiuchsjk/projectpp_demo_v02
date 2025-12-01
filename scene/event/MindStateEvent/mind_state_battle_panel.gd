@@ -89,5 +89,9 @@ func _show_CardInfo(targetCard: card, isBattleTargetCard: bool) -> void:
 
 ## 用于初始化 MindStateInputPanel，将其实例化后，方便对其内容进行操作
 func _init_mindStateInputPanelList() -> void:
-
-	print(len(mindStateInputList))
+	## TODO 这里应当直接设置状态。不再动态加载多个面板，而是通过状态来设置面板形态。
+	if mindStateInputRoot.get_child_count() == 0:
+		for property in GameInfo.propertyList:
+			var inputPanel = preload("res://scene/event/MindStateBattleInputPanel/MindStateBattleInputPanel.tscn").instantiate() as MindStateBattleInputPanel
+			mindStateInputRoot.add_child(inputPanel)
+			mindStateInputList.append(inputPanel)

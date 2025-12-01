@@ -1,8 +1,12 @@
 extends Control
 class_name MindStateBattleInputPanel
 
+@onready var seat = $Seat as Seat
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	self.visible = false
+	seat.visible = false
 	pass # Replace with function body.
 
 
