@@ -23,6 +23,7 @@ var playerSelectCard: card:
 signal start_mindStateBattle()
 signal show_mindStateBattle_panel()		## event中连接
 signal close_mindStateBattle_panel() 	## event中连接
+signal select_mindState_to_change()		## mindStateBattlePanel 中连接
 
 func _ready() -> void:
 	connect("start_mindStateBattle", _on_start_mindStateBattle)

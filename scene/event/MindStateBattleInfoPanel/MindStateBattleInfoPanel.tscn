@@ -1,7 +1,17 @@
-[gd_scene load_steps=3 format=3 uid="uid://djauqv8lmiukb"]
+[gd_scene load_steps=8 format=3 uid="uid://djauqv8lmiukb"]
 
 [ext_resource type="Script" uid="uid://dgkiw16naj2li" path="res://scene/event/MindStateBattleInfoPanel/mind_state_battle_info_panel.gd" id="1_mjnxl"]
 [ext_resource type="Texture2D" uid="uid://cdke538rqjchu" path="res://assets/image/CardInfoArraw.png" id="2_0iprt"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_45jkj"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_a8d0m"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_u0f54"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_i72ey"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_dr4bc"]
 
 [node name="MindStateBattleInfoPanel" type="Control"]
 custom_minimum_size = Vector2(300, 70)
@@ -37,6 +47,20 @@ theme_override_font_sizes/font_size = 30
 text = "+"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="SelectMindStateButton" type="Button" parent="CardInfoArea"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/normal = SubResource("StyleBoxEmpty_45jkj")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_a8d0m")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_u0f54")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_i72ey")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_dr4bc")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(241, 35)

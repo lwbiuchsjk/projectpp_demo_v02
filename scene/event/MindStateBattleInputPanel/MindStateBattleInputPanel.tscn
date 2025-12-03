@@ -8,7 +8,7 @@ layout_mode = 3
 anchors_preset = 0
 script = ExtResource("1_e67ks")
 
-[node name="NormalStatus" type="ColorRect" parent="."]
+[node name="MindStateColor" type="ColorRect" parent="."]
 layout_mode = 0
 offset_right = 450.0
 offset_bottom = 700.0

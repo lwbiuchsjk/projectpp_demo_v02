@@ -9,6 +9,7 @@ signal load_battleCard()
 @onready var selectCardConfirmButton = $CardArea/ConfirmTargetButton as Control
 @onready var mindStateInputRoot = $CardArea/InpuCardArea/InputRoot as Control
 @onready var mindStateInputHintPanel = $CardArea/InpuCardArea/NormalStatus as Control
+@onready var mindStateEmptyStatue = $CardArea/InpuCardArea/NormalStatus as Control
 
 @export var mindStateList:Array[Control]
 var mindStateInputList:Array[MindStateBattleInputPanel]
@@ -21,6 +22,7 @@ func _ready() -> void:
 	connect('load_battleCard', _on_load_battleCard)
 	$CloseButton.pressed.connect(_on_close_button)
 	$CardArea/ConfirmTargetButton.pressed.connect(_on_confirm_button)
+	GameInfo.mindStateManager.select_mindState_to_change.connect(select_mindStateInputPanel)
 
 	## 设置组件初始状态
 	mindStateSelectArea.visible = false
@@ -95,3 +97,19 @@ func _init_mindStateInputPanelList() -> void:
 			var inputPanel = preload("res://scene/event/MindStateBattleInputPanel/MindStateBattleInputPanel.tscn").instantiate() as MindStateBattleInputPanel
 			mindStateInputRoot.add_child(inputPanel)
 			mindStateInputList.append(inputPanel)
+			## 初始化面板信息
+			inputPanel.init_panel_info(property)
+
+## 在 mindStateInput 面板列表中，选择一个打开，其余关闭。通过信号调用本功能
+func select_mindStateInputPanel(property: String) -> void:
+	## 关闭输入提示信息
+	mindStateEmptyStatue.visible = false
+	mindStateInputRoot.visible = true
+	## 正式功能
+	for i in range(len(GameInfo.propertyList)):
+		var nowProperty = GameInfo.propertyList[i]
+		var inputPanel = mindStateInputList[i]
+		if nowProperty == property:
+			inputPanel.open_panel()
+		else:
+			inputPanel.close_panel()

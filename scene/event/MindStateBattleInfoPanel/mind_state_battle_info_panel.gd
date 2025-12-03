@@ -5,12 +5,14 @@ class_name MindStateBattleInfoPanel
 @onready var inputInfoArea: Control = $InputInfoArea
 @onready var bgImage: ColorRect = $CardInfoArea/BgImage
 @onready var showName: Label = $CardInfoArea/InputHint
+@onready var selectButton: Button = $CardInfoArea/SelectMindStateButton
 
 var mindStateName:String
 var mindStateValue:String
 
 signal init_MindStateInfo()
 signal show_MindStateColor()
+signal select_MindState()
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -18,6 +20,7 @@ func _ready() -> void:
 	inputInfoArea.visible = false
 	init_MindStateInfo.connect(_show_mindStateInfo)
 	show_MindStateColor.connect(_show_mindStateColor)
+	selectButton.pressed.connect(_select_this_mindState)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
@@ -39,7 +42,14 @@ func _show_mindStateInfo(propertyName:String, propertyValue:String) -> void:
 	mindStateValue = propertyValue
 	showName.text = GameInfo.mindStateManager.get_mindStateName(mindStateName)
 
-## 显示当前组件的 mindState 相关信息，例如 color
+## 显示当前组件的 mindState 相关信息，例如 color。并且开启设置按钮功能，允许后续进行选择
 func _show_mindStateColor(propertyName:String) -> void:
 	bgImage.color = Color(GameInfo.mindStateManager.get_mindStateColor(propertyName))
+	selectButton.visible = true
 
+## 触发选择功能。通过 MindStateManger 进行全局影响
+func _select_this_mindState() -> void:
+	if not self.visible:
+		return
+
+	GameInfo.mindStateManager.emit_signal("select_mindState_to_change", mindStateName)
