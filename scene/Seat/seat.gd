@@ -32,6 +32,8 @@ func _is_type_match(targetCard: card) -> bool:
 func add_card(cardToAdd)->void:
 	## 调用基本功能
 	_add_card_base_func(cardToAdd)
+	## 将拖入的卡牌参数传入
+	_set_seat_card(cardToAdd)
 	## seat 功能中，特别通知 avgManager 功能
 	GameInfo.avgManager.set_seatPair(seatID, 1)
 	GameInfo.avgManager.emit_signal("show_seat_brief_status", seat_index, true)
@@ -55,8 +57,6 @@ func _add_card_base_func(cardToAdd) -> void:
 	cardToAdd.cardCurrentState=cardToAdd.cardState.following
 	update_weight()
 	trigger_deck_sort()
-	## 将拖入的卡牌参数传入
-	_set_seat_card(cardToAdd)
 
 
 func update_weight() -> void:

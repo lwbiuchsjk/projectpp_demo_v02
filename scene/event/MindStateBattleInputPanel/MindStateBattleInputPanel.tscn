@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://dsawema5fva7b"]
 
 [ext_resource type="Script" uid="uid://bt61nkkb2goxl" path="res://scene/event/MindStateBattleInputPanel/mind_state_battle_input_panel.gd" id="1_e67ks"]
-[ext_resource type="PackedScene" uid="uid://b80jq7wxyi2j7" path="res://scene/Seat/seat.tscn" id="1_scu4p"]
+[ext_resource type="PackedScene" uid="uid://djbxpw8pv5etv" path="res://scene/Seat/MindStateSelectSeat/MindStateSelectSeat.tscn" id="2_e67ks"]
 
 [node name="MindStateBattleInputPanel" type="Control"]
 layout_mode = 3
@@ -13,8 +13,12 @@ layout_mode = 0
 offset_right = 450.0
 offset_bottom = 700.0
 
-[node name="Seat" parent="." instance=ExtResource("1_scu4p")]
+[node name="SelectSeat" parent="." instance=ExtResource("2_e67ks")]
 layout_mode = 0
+offset_left = 115.0
+offset_top = 170.0
+offset_right = 335.0
+offset_bottom = 490.0
 
 [node name="Mask" type="Control" parent="."]
 visible = false
@@ -24,8 +28,8 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 115.0
 offset_top = 170.0
-offset_right = 115.0
-offset_bottom = 170.0
+offset_right = 335.0
+offset_bottom = 490.0
 grow_horizontal = 2
 grow_vertical = 2
 
