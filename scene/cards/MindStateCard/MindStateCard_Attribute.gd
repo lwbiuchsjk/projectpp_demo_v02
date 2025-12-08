@@ -30,6 +30,10 @@ func get_attribute_set() -> AttributeSet:
 			if attributeInstance != null:
 				attributeInstance.set_value(float(cardRoot.cardInfo[property]))
 
+	var rarityInstance = attributeSet.find_attribute(RARITY_ATTRIBUTE_NAME)
+	if rarityInstance != null:
+		rarityInstance.set_value(float(cardRoot.cardInfo[RARITY_ATTRIBUTE_NAME]))
+
 	return attributeSet
 
 
@@ -41,7 +45,8 @@ func _init_mindState_info() -> void:
 	var attribute_set = get_attribute_set() as AttributeSet
 	for property in GameInfo.propertyList:
 		_set_mindState_info(property)
-	_set_rarity_info(attribute_set)
+	var rarityAttibute = get_attribute(RARITY_ATTRIBUTE_NAME)
+	_set_rarity_info(rarityAttibute)
 
 	pass
 
@@ -65,15 +70,14 @@ func _on_mindState_attribute_change(attribute: Attribute) -> void:
 	_set_mindState_info(attribute.attribute_name)
 	pass
 
-func _set_rarity_info(attribute_set: AttributeSet) -> void:
+func _set_rarity_info(attribute: Attribute) -> void:
 	#rarity = attribute_set.attributes_runtime_dict[RARITY_ATTRIBUTE_NAME] as SpiritAttribute
 	#$SpiritInfo/SpiritBar.value = (spirit.get_value() - spirit.get_min_value()) / (spirit.get_max_value() - spirit.get_min_value()) * $SpiritInfo/SpiritBar.max_value
 	#$SpiritInfo/SpiritString.text = str(int(spirit.get_value()))
 	pass
 
-func _on_rarity_attribute_change() -> void:
-	var attribute_set = get_attribute_set() as AttributeSet
-	_set_rarity_info(attribute_set)
+func _on_rarity_attribute_change(attribute: Attribute) -> void:
+	_set_rarity_info(attribute)
 	pass
 
 

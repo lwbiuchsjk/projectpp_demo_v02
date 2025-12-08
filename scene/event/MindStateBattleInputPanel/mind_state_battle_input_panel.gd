@@ -44,10 +44,9 @@ func open_panel() -> void:
 
 ## 用于确认选择的功能按钮，需要判断 seat 中是否有卡牌
 func _on_confirm_select_card() -> void:
-	print("seat_Card! ")
 	if confirmButton.visible and selectSeat.seat_card != null:
 		seatMask.visible = true
 		confirmButton.visible = false
 		selectCard = selectSeat.seat_card
 
-		print("set Card")
+		print(selectCard.cardInfo['rarity'])
