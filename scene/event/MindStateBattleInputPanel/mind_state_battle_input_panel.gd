@@ -9,11 +9,14 @@ class_name MindStateBattleInputPanel
 
 var selectCard: card
 
+signal show_inputCard_change_direction()
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	self.visible = false
 	selectSeat.visible = false
 	confirmButton.pressed.connect(_on_confirm_select_card)
+	show_inputCard_change_direction.connect(_show_change_direction)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -21,10 +24,11 @@ func _process(delta: float) -> void:
 	pass
 
 ## 初始化各类信息
-func init_panel_info(propertyName:String) -> void:
+func init_panel_info(propertyName:String, index: int) -> void:
 	bgImage.color = Color(GameInfo.mindStateManager.get_mindStateColor(propertyName))
 	seatMask.visible = false
 	close_panel()
+	_set_seatIndex(index)
 	pass
 
 ## 关闭面板，以防他人代用
@@ -49,4 +53,13 @@ func _on_confirm_select_card() -> void:
 		confirmButton.visible = false
 		selectCard = selectSeat.seat_card
 
-		print(selectCard.cardInfo['rarity'])
+## 根据传入的 inputCard 参数与 battleNowTargetCard 之间的关系，显示 changeDirection 对应信息。
+func _show_change_direction(inputCard: card) -> void:
+	var attributeManager = selectSeat.seat_card.cardAttributeManager as MindStateCardAttributeManager
+	print(attributeManager.get_attribute(attributeManager.RARITY_ATTRIBUTE_NAME).get_value())
+	print(GameInfo.mindStateManager.battleNowTargetCard.cardInfo["rarity"])
+	pass
+
+## 将 panel 的 index 传入 seat，方便标记序号
+func _set_seatIndex(index: int) -> void:
+	selectSeat.seat_index = index

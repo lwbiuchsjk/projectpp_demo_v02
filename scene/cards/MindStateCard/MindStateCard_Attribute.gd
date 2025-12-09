@@ -1,5 +1,5 @@
 extends Node
-class_name MindStateCardAttribute
+class_name MindStateCardAttributeManager
 
 @export var character_name: String
 
@@ -10,8 +10,11 @@ class_name MindStateCardAttribute
 const RARITY_ATTRIBUTE_NAME = "rarity"
 
 func _ready() -> void:
+	# 将本 manager 绑定至 card 父节点上
+	cardRoot.cardAttributeManager = self
+
 	# 绑定信息改变信号
-	_bind_attibute_signal()
+	_bind_attribute_signal()
 
 	# 初始化信息显示
 	_show_mindState_info()
@@ -82,7 +85,7 @@ func _on_rarity_attribute_change(attribute: Attribute) -> void:
 
 
 ## 信号绑定函数
-func _bind_attibute_signal() -> void:
+func _bind_attribute_signal() -> void:
 	# 绑定精神状态属性函数
 	for property in GameInfo.propertyList:
 		var propertyInstance = attribute_component.attribute_set.find_attribute(property) as MindStateAttribute

@@ -11,6 +11,7 @@ class_name MindStateAttribute extends Attribute
 #	print(enemy_attribute.get_value())
 #	return _operated_value - enemy_attribute.get_value()
 
+## TODO 此处应当添加经验值与品质之间的自动换算关系
 
 ## 属性依赖列表
 func derived_from() -> Array[String]:

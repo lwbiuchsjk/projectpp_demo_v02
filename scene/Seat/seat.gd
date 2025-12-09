@@ -4,7 +4,7 @@ class_name Seat
 var accepted_class: Array[GameType.CardClass]  # 在检查器中设置允许的类型
 var seatType
 var card_can_drop:bool = false
-var seat_card
+var seat_card: card
 var seat_index: int
 var seatID
 

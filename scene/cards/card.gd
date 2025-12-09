@@ -21,6 +21,7 @@ var dup
 var num = 1
 
 var avgManager = GameInfo.get_node("AVGManager")
+var cardAttributeManager
 
 enum cardState{following,dragging,vfs,fake,focus}
 @export var cardCurrentState=cardState.following

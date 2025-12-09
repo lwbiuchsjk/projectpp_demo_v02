@@ -98,7 +98,7 @@ func _init_mindStateInputPanelList() -> void:
 			mindStateInputRoot.add_child(inputPanel)
 			mindStateInputList.append(inputPanel)
 			## 初始化面板信息
-			inputPanel.init_panel_info(property)
+			inputPanel.init_panel_info(property, index)
 			inputPanel.selectSeat.set_seat_data(index, GameInfo.search_const_value("MindStateInputSeatID")['value'])
 
 ## 在 mindStateInput 面板列表中，选择一个打开，其余关闭。通过信号调用本功能

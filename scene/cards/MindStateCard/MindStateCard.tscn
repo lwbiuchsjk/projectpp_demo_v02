@@ -17,41 +17,35 @@ metadata/_custom_type_script = "uid://5wus8k0trlmv"
 script = ExtResource("5_dgbeb")
 enemy_attribute_name = "anti_Sadness"
 attribute_name = "Sadness"
-base_value = 0.0
 metadata/_custom_type_script = "uid://5wus8k0trlmv"
 
 [sub_resource type="Resource" id="Resource_dgbeb"]
 script = ExtResource("5_dgbeb")
 enemy_attribute_name = "anti_Anger"
 attribute_name = "Anger"
-base_value = 0.0
 metadata/_custom_type_script = "uid://5wus8k0trlmv"
 
 [sub_resource type="Resource" id="Resource_a0cf6"]
 script = ExtResource("5_dgbeb")
 enemy_attribute_name = "anti_Fear"
 attribute_name = "Fear"
-base_value = 0.0
 metadata/_custom_type_script = "uid://5wus8k0trlmv"
 
 [sub_resource type="Resource" id="Resource_nu1xd"]
 script = ExtResource("5_dgbeb")
 enemy_attribute_name = "anti_Disgust"
 attribute_name = "Disgust"
-base_value = 0.0
 metadata/_custom_type_script = "uid://5wus8k0trlmv"
 
 [sub_resource type="Resource" id="Resource_xdb0a"]
 script = ExtResource("5_dgbeb")
 enemy_attribute_name = "anti_Surprise"
 attribute_name = "Surprise"
-base_value = 0.0
 metadata/_custom_type_script = "uid://5wus8k0trlmv"
 
 [sub_resource type="Resource" id="Resource_1ior1"]
 script = ExtResource("2_8pbwu")
 attribute_name = "rarity"
-base_value = 0.0
 metadata/_custom_type_script = "uid://bw4kf70rvxlww"
 
 [sub_resource type="Resource" id="Resource_3ttrw"]
@@ -186,7 +180,7 @@ vertical_alignment = 1
 [node name="AttributeComponent" parent="." index="5"]
 attribute_set = SubResource("Resource_3ttrw")
 
-[node name="Attribute" type="Node" parent="." index="6"]
+[node name="AttributeManager" type="Node" parent="." index="6"]
 script = ExtResource("2_0y4oo")
 metadata/_custom_type_script = "uid://dabqovygaswi1"
 
