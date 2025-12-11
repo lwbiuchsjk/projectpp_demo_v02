@@ -1,7 +1,7 @@
-[gd_scene load_steps=14 format=3 uid="uid://cdy3f6ovagdmq"]
+[gd_scene load_steps=15 format=3 uid="uid://cdy3f6ovagdmq"]
 
 [ext_resource type="PackedScene" uid="uid://bmjqf30wl6ddi" path="res://scene/cards/card.tscn" id="1_uarrd"]
-[ext_resource type="Script" uid="uid://c4kny0id6wtjc" path="res://scene/cards/MindStateCard/MindStateCard_Attribute.gd" id="2_0y4oo"]
+[ext_resource type="Script" uid="uid://c4kny0id6wtjc" path="res://scene/cards/MindStateCard/MindStateCardAttributeManager.gd" id="2_0y4oo"]
 [ext_resource type="Script" uid="uid://bw4kf70rvxlww" path="res://assets/script/AttributePrototype/Attribute.gd" id="2_8pbwu"]
 [ext_resource type="Script" uid="uid://cdcushggciuu1" path="res://assets/script/AttributePrototype/AttributeSet.gd" id="3_sf0id"]
 [ext_resource type="Script" uid="uid://5wus8k0trlmv" path="res://assets/script/Attribute/MindStateAttribute.gd" id="5_dgbeb"]
@@ -48,10 +48,15 @@ script = ExtResource("2_8pbwu")
 attribute_name = "rarity"
 metadata/_custom_type_script = "uid://bw4kf70rvxlww"
 
+[sub_resource type="Resource" id="Resource_egrg2"]
+script = ExtResource("2_8pbwu")
+attribute_name = "exp"
+metadata/_custom_type_script = "uid://bw4kf70rvxlww"
+
 [sub_resource type="Resource" id="Resource_3ttrw"]
 resource_local_to_scene = true
 script = ExtResource("3_sf0id")
-attributes = Array[ExtResource("2_8pbwu")]([SubResource("Resource_gh0n0"), SubResource("Resource_sf0id"), SubResource("Resource_dgbeb"), SubResource("Resource_a0cf6"), SubResource("Resource_nu1xd"), SubResource("Resource_xdb0a"), SubResource("Resource_1ior1")])
+attributes = Array[ExtResource("2_8pbwu")]([SubResource("Resource_gh0n0"), SubResource("Resource_sf0id"), SubResource("Resource_dgbeb"), SubResource("Resource_a0cf6"), SubResource("Resource_nu1xd"), SubResource("Resource_xdb0a"), SubResource("Resource_1ior1"), SubResource("Resource_egrg2")])
 metadata/_custom_type_script = "uid://cdcushggciuu1"
 
 [node name="Control" instance=ExtResource("1_uarrd")]

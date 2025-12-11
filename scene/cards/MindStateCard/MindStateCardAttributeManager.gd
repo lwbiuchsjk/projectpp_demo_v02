@@ -7,7 +7,8 @@ class_name MindStateCardAttributeManager
 @onready var cardRoot = self.get_parent() as card
 @onready var attribute_component: AttributeComponent = %AttributeComponent
 
-const RARITY_ATTRIBUTE_NAME = "rarity"
+const ATTRIBUTE_LEVEL_NAME = "Level"
+const ATTRIBUTE_EXP_NAME = 'Exp'
 
 func _ready() -> void:
 	# 将本 manager 绑定至 card 父节点上
@@ -33,23 +34,45 @@ func get_attribute_set() -> AttributeSet:
 			if attributeInstance != null:
 				attributeInstance.set_value(float(cardRoot.cardInfo[property]))
 
-	var rarityInstance = attributeSet.find_attribute(RARITY_ATTRIBUTE_NAME)
-	if rarityInstance != null:
-		rarityInstance.set_value(float(cardRoot.cardInfo[RARITY_ATTRIBUTE_NAME]))
+	#var levelInstance = attributeSet.find_attribute(ATTRIBUTE_LEVEL_NAME)
+	#if levelInstance != null:
+	#	levelInstance.set_value(float(cardRoot.cardInfo[ATTRIBUTE_LEVEL_NAME]))
+
+	#var expInstance = attributeSet.find_attribute(ATTRIBUTE_EXP_NAME)
+	#if expInstance != null:
+	#	expInstance.set_value(float(cardRoot.cardInfo[ATTRIBUTE_EXP_NAME]))
 
 	return attributeSet
 
-
+## 待废弃
 func get_attribute(_attribute_name: String) -> Attribute:
 	return attribute_component.find_attribute(_attribute_name)
 
+## 取得 MindStateProperty 的 level 数值
+func get_propertyLevel(propertyName: String) -> int:
+	var key = propertyName + ATTRIBUTE_LEVEL_NAME
+	return _get_value_from_CardInto(key).to_int()
 
+## 取得 MindStateProperty 的 exp 数值
+func get_propertyExp(propertyName: String) -> int:
+	var key = propertyName + ATTRIBUTE_EXP_NAME
+	return _get_value_from_CardInto(key).to_int()
+
+## 内部通用取值方法
+func _get_value_from_CardInto(key: String) -> String:
+	if not key in cardRoot.cardInfo.keys():
+		return "-1"
+	else:
+		return str(cardRoot.cardInfo[key])
+
+## 内部方法，用于初始化 MindState 相关信息。
+## 待扩展
 func _init_mindState_info() -> void:
 	var attribute_set = get_attribute_set() as AttributeSet
 	for property in GameInfo.propertyList:
 		_set_mindState_info(property)
-	var rarityAttibute = get_attribute(RARITY_ATTRIBUTE_NAME)
-	_set_rarity_info(rarityAttibute)
+	#var levelInstance = get_attribute(ATTRIBUTE_LEVEL_NAME)
+	#_set_level_info(levelInstance)
 
 	pass
 
@@ -73,14 +96,14 @@ func _on_mindState_attribute_change(attribute: Attribute) -> void:
 	_set_mindState_info(attribute.attribute_name)
 	pass
 
-func _set_rarity_info(attribute: Attribute) -> void:
+func _set_level_info(attribute: Attribute) -> void:
 	#rarity = attribute_set.attributes_runtime_dict[RARITY_ATTRIBUTE_NAME] as SpiritAttribute
 	#$SpiritInfo/SpiritBar.value = (spirit.get_value() - spirit.get_min_value()) / (spirit.get_max_value() - spirit.get_min_value()) * $SpiritInfo/SpiritBar.max_value
 	#$SpiritInfo/SpiritString.text = str(int(spirit.get_value()))
 	pass
 
-func _on_rarity_attribute_change(attribute: Attribute) -> void:
-	_set_rarity_info(attribute)
+func _on_level_attribute_change(attribute: Attribute) -> void:
+	_set_level_info(attribute)
 	pass
 
 
@@ -92,6 +115,24 @@ func _bind_attribute_signal() -> void:
 		propertyInstance.attribute_changed.connect(_on_mindState_attribute_change)
 
 	# 绑定稀有度属性函数
-	var rarityAttribute = attribute_component.attribute_set.find_attribute(RARITY_ATTRIBUTE_NAME) as Attribute
-	rarityAttribute.attribute_changed.connect(_on_rarity_attribute_change)
+	#var levelAttribute = attribute_component.attribute_set.find_attribute(ATTRIBUTE_LEVEL_NAME) as Attribute
+	#levelAttribute.attribute_changed.connect(_on_level_attribute_change)
 	pass
+
+## 处理 MindStateProperty 升级的逻辑
+func add_MindStateProperty_exp(propertyName: String, addedExp: int) -> void:
+	var propertyLevel = get_propertyLevel(propertyName)
+	var levelKey = propertyName + ATTRIBUTE_LEVEL_NAME
+	## 空逻辑处理
+	if propertyLevel < 0:
+		return
+	## 正式逻辑
+	var propertyExp = get_propertyExp(propertyName)
+	var afterExp = propertyExp + addedExp
+	var expKey = propertyName + ATTRIBUTE_EXP_NAME
+
+	if afterExp > 100:
+		cardRoot.cardInfo[levelKey] = str(propertyLevel + 10)
+		cardRoot.cardInfo[expKey] = str(afterExp - 100)
+	else:
+		cardRoot.cardInfo[levelKey] = str(afterExp)
