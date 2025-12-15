@@ -1,5 +1,5 @@
 ﻿ID,base_cardType,base_cardName,base_cardClass,base_displayName,base_description,base_price,base_cardWeight,base_maxStack,site_area,npc_schedule,food_HP,rarity,property_type,property_template,stackFlag
-1,MindState,Ice,item,冰,不仅能降温，还能当成临时冰淇淋。,2,1,1000,0,0,0,1,MindState,1,
+1,MindState,Ice,item,冰,不仅能降温，还能当成临时冰淇淋。,2,1,1000,0,0,0,11,MindState,1,
 2,MindState,Stone,item,石头,看似平凡，却是太空飞船的基础材料。,1,1,1000,0,0,0,2,MindState,2,1
 3,MindState,Iron_ore,ore,铁矿,虽然看起来很普通，但经过加工后，它可是战斗中的坚固护甲。,10,1,1000,0,0,0,3,MindState,3,1
 4,MindState,Silicon_ore,ore,硅矿,高科技设备的幕后英雄。,5,1,1000,0,0,0,3,MindState,4,1

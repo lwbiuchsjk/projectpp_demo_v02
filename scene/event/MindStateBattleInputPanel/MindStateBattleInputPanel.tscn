@@ -13,6 +13,42 @@ layout_mode = 0
 offset_right = 450.0
 offset_bottom = 700.0
 
+[node name="DecreaseHint" type="Control" parent="."]
+visible = false
+anchors_preset = 0
+offset_left = 115.0
+offset_top = 80.0
+offset_right = 335.0
+offset_bottom = 580.0
+
+[node name="Label" type="Label" parent="DecreaseHint"]
+layout_mode = 0
+offset_right = 220.0
+offset_bottom = 45.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 32
+text = "减少"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="IncreaseHint" type="Control" parent="."]
+visible = false
+anchors_preset = 0
+offset_left = 115.0
+offset_top = 80.0
+offset_right = 335.0
+offset_bottom = 580.0
+
+[node name="Label" type="Label" parent="IncreaseHint"]
+layout_mode = 0
+offset_right = 220.0
+offset_bottom = 45.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 32
+text = "增加"
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="SelectSeat" parent="." instance=ExtResource("2_e67ks")]
 layout_mode = 0
 offset_left = 115.0

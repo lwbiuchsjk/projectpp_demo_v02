@@ -24,3 +24,5 @@ func _add_cardToSeat(cardToAdd) -> void:
 ## 复写 super 函数，仅调用基础逻辑，不受其他业务影响
 func clean_seat_card() -> void:
 	seat_card = null
+	## 调用 battlePanel 中对应 index 的 inputPanel 信号 clean_change_direction
+	GameInfo.mindStateManager.battlePanel.mindStateInputList[seat_index].emit_signal("clean_change_direction")

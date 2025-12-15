@@ -21,6 +21,7 @@ func _ready() -> void:
 	_show_mindState_info()
 	_init_mindState_info()
 
+	_get_card_rarity_from_mindStateCard_mainAttribute()
 	print("设置卡牌属性")
 
 	pass
@@ -136,3 +137,21 @@ func add_MindStateProperty_exp(propertyName: String, addedExp: int) -> void:
 		cardRoot.cardInfo[expKey] = str(afterExp - 100)
 	else:
 		cardRoot.cardInfo[levelKey] = str(afterExp)
+
+## 自动设置 card 的 rarity。方法为，获得卡牌的主属性，将主属性的 rarity 设置为 card 的 rarity
+func _get_card_rarity_from_mindStateCard_mainAttribute() -> void:
+	var mindStateClass = cardRoot.cardInfo['TypeName']
+	var mindStateTemplate = GameInfo.get_mindStateTemplaterData(mindStateClass)
+	var mainAttributeKey: String
+	for property in GameInfo.propertyList:
+		if GameInfo.check_property_mainProperty(mindStateTemplate, property):
+			mainAttributeKey = property
+			break
+	if mainAttributeKey == null:
+		cardRoot.cardInfo['rarity'] = 0
+		return
+	else:
+		## 如果得到的 mindStateMainProperty 的 Level 属性不为0，那么将其直接设置为 card 的 rarity 属性
+		cardRoot.cardInfo['rarity'] = cardRoot.cardInfo[mainAttributeKey + ATTRIBUTE_LEVEL_NAME]
+
+
