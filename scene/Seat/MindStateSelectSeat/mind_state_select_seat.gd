@@ -19,7 +19,7 @@ func add_card(cardToAdd) -> void:
 func _add_cardToSeat(cardToAdd) -> void:
 	seat_card = cardToAdd
 	## 调用 battlePanel 中对应 index 的 inputPanel 信号 show_inputCard_change_direction
-	GameInfo.mindStateManager.battlePanel.mindStateInputList[seat_index].emit_signal("show_inputCard_change_direction", seat_card)
+	GameInfo.mindStateManager.battlePanel.mindStateInputList[seat_index].emit_signal("show_inputCard_change_direction", seat_card, seat_index)
 
 ## 复写 super 函数，仅调用基础逻辑，不受其他业务影响
 func clean_seat_card() -> void:
