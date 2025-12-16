@@ -11,17 +11,12 @@ class_name MindStateBattleInputPanel
 
 var selectCard: card
 
-signal show_inputCard_change_direction()	## mindStateSelectSeat 中被调用
-signal clean_change_direction()				## mindStateSelectSeat 中被调用
-
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	self.visible = false
 	selectSeat.visible = false
 	confirmButton.pressed.connect(_on_confirm_select_card)
-	show_inputCard_change_direction.connect(_show_change_direction)
-	clean_change_direction.connect(_clean_change_direction)
-	_clean_change_direction()
+	set_change_direction_status(false, false)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -58,28 +53,12 @@ func _on_confirm_select_card() -> void:
 		confirmButton.visible = false
 		selectCard = selectSeat.seat_card
 
-## 根据传入的 inputCard 参数与 battleNowTargetCard 之间的关系，显示 changeDirection 对应信息。
-func _show_change_direction(inputCard: card, propertyIndex: int) -> void:
-	var attributerManager = inputCard.cardAttributeManager as MindStateCardAttributeManager
-	var propertyLevelKey = GameInfo.propertyList[propertyIndex] + attributerManager.ATTRIBUTE_LEVEL_NAME
-	var isIncrease = _check_change_direction_increase(GameInfo.mindStateManager.battleNowTargetCard, inputCard, propertyLevelKey)
-	increaseHint.visible = isIncrease
-	decreaseHint.visible = !isIncrease
 
 ## 将 panel 的 index 传入 seat，方便标记序号
 func _set_seatIndex(index: int) -> void:
 	selectSeat.seat_index = index
 
-## 内部方法，用于根据传入的两个卡牌来决定是增加还是减少。targetCard 使用 attributeLevelKey 进行判断，inputCard 直接使用其 rarity 来判断
-func _check_change_direction_increase(targetCard: card, inputCard: card, targetAttributerLevelKey: String) -> bool:
-	var targetLevel = targetCard.cardInfo[targetAttributerLevelKey]
-	var selectLevel = inputCard.cardInfo['rarity']
-	if targetLevel >= selectLevel:
-		return true
-	else:
-		return false
-
 ## 清除改变方向外显，即将 Increase 和 Decrease 设为不显示。通过 signal 调用
-func _clean_change_direction() -> void:
-	increaseHint.visible = false
-	decreaseHint.visible = false
+func set_change_direction_status(increaseVisible: bool, decreaseVisible: bool) -> void:
+	increaseHint.visible = increaseVisible
+	decreaseHint.visible = decreaseVisible

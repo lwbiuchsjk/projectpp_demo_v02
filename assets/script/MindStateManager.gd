@@ -24,10 +24,13 @@ signal start_mindStateBattle()
 signal show_mindStateBattle_panel()		## event中连接
 signal close_mindStateBattle_panel() 	## event中连接
 signal select_mindState_to_change()		## mindStateBattlePanel 中连接
+signal show_inputCard_change_direction()	## mindStateSelectSeat 中被调用
+signal clean_change_direction()				## mindStateSelectSeat 中被调用
 
 func _ready() -> void:
 	connect("start_mindStateBattle", _on_start_mindStateBattle)
-
+	show_inputCard_change_direction.connect(_show_change_direction)
+	clean_change_direction.connect(_clean_change_direction)
 
 func _on_start_mindStateBattle() -> void:
 	print("battle start")
@@ -74,3 +77,27 @@ func get_mindStateColor(searchProperty: String) -> String:
 
 func get_mindStateName(searchProperty: String) -> String:
 	return _get_mindStatePropertyBaseConfig(searchProperty, "Name")
+
+
+## 根据传入的 inputCard 参数与 battleNowTargetCard 之间的关系，显示 changeDirection 对应信息。
+func _show_change_direction(inputCard: card, propertyIndex: int) -> void:
+	var attributerManager = inputCard.cardAttributeManager as MindStateCardAttributeManager
+	var propertyLevelKey = GameInfo.propertyList[propertyIndex] + attributerManager.ATTRIBUTE_LEVEL_NAME
+	var isIncrease = _check_change_direction_increase(battleNowTargetCard, inputCard, propertyLevelKey)
+	var inputPanel = battlePanel.mindStateInputList[propertyIndex] as MindStateBattleInputPanel
+	inputPanel.set_change_direction_status(isIncrease, !isIncrease)
+
+
+## 内部方法，用于根据传入的两个卡牌来决定是增加还是减少。targetCard 使用 attributeLevelKey 进行判断，inputCard 直接使用其 rarity 来判断
+func _check_change_direction_increase(targetCard: card, inputCard: card, targetAttributerLevelKey: String) -> bool:
+	var targetLevel = targetCard.cardInfo[targetAttributerLevelKey]
+	var selectLevel = inputCard.cardInfo['rarity']
+	if targetLevel >= selectLevel:
+		return true
+	else:
+		return false
+
+## 内部方法，用于响应信号，被 seat 调用，清理 InputPanel 的 changeDirection 外显
+func _clean_change_direction(inputPanelIndex: int) -> void:
+	var inputPanel = battlePanel.mindStateInputList[inputPanelIndex] as MindStateBattleInputPanel
+	inputPanel.set_change_direction_status(false, false)
