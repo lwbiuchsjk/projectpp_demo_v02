@@ -53,6 +53,8 @@ func _on_confirm_select_card() -> void:
 		confirmButton.visible = false
 		selectCard = selectSeat.seat_card
 
+		## 通过信号调用后续处理逻辑
+		GameInfo.mindStateManager.emit_signal("process_targetCard_property", selectCard, selectSeat.seat_index)
 
 ## 将 panel 的 index 传入 seat，方便标记序号
 func _set_seatIndex(index: int) -> void:

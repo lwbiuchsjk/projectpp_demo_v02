@@ -120,23 +120,36 @@ func _bind_attribute_signal() -> void:
 	#levelAttribute.attribute_changed.connect(_on_level_attribute_change)
 	pass
 
-## 处理 MindStateProperty 升级的逻辑
-func add_MindStateProperty_exp(propertyName: String, addedExp: int) -> void:
+## 处理 MindStateProperty 升级的逻辑。通过返回值判断等级是否变化，返回值即为等级变动数值。
+func add_MindStateProperty_exp(propertyName: String, addedExp: int) -> int:
 	var propertyLevel = get_propertyLevel(propertyName)
 	var levelKey = propertyName + ATTRIBUTE_LEVEL_NAME
-	## 空逻辑处理
+	## 空逻辑处理，返回值 = 0，即不升级
 	if propertyLevel < 0:
-		return
+		return 0
 	## 正式逻辑
 	var propertyExp = get_propertyExp(propertyName)
 	var afterExp = propertyExp + addedExp
 	var expKey = propertyName + ATTRIBUTE_EXP_NAME
+	## 判断是否升级
+	var afterLevel = _search_property_level(afterExp)
+	cardRoot.cardInfo[levelKey] = str(afterLevel)
+	cardRoot.cardInfo[expKey] = str(afterExp)
 
-	if afterExp > 100:
-		cardRoot.cardInfo[levelKey] = str(propertyLevel + 10)
-		cardRoot.cardInfo[expKey] = str(afterExp - 100)
-	else:
-		cardRoot.cardInfo[levelKey] = str(afterExp)
+	return afterLevel - propertyLevel
+
+## 通过查询 exp 配置值，得到对应的 level
+func _search_property_level(nowExp: int) -> int:
+	var nowLevel = 1
+	for config in GameInfo.mindStateLevelExp.values():
+		if config['Exp'] == "":
+			break
+		if config['Exp'] < nowExp:
+			nowLevel = config['ID'].to_int()
+		break
+
+	return nowLevel
+
 
 ## 自动设置 card 的 rarity。方法为，获得卡牌的主属性，将主属性的 rarity 设置为 card 的 rarity
 func _get_card_rarity_from_mindStateCard_mainAttribute() -> void:

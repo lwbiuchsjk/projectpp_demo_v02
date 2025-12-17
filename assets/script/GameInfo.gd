@@ -45,6 +45,9 @@ var mindStateTemplate:Dictionary
 var mindStateBattle_file_path = 'res://assets/data/mindStateBattle.csv'
 var mindStateBattle:Dictionary
 
+var mindStateLevelExp_file_path = 'res://assets/data/mindStateLevelExp.csv'
+var mindStateLevelExp:Dictionary
+
 ## 子节点结构
 var cardDataManager: CardDataManager
 var avgManager: AVGManager
@@ -83,6 +86,7 @@ func _ready() -> void:
 	mindStateTemplate = read_csv_as_nested_dict(mindStateTemplate_file_path)
 	mindStateBattle = read_csv_as_nested_dict(mindStateBattle_file_path)
 	mindStateBattle_data_wash()
+	mindStateLevelExp = read_csv_as_nested_dict(mindStateLevelExp_file_path)
 
 	# 基础配置读取完成后，将部分模板配置替换为实际配置
 	card_template_changer()

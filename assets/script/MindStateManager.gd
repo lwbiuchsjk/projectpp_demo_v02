@@ -16,7 +16,7 @@ var battlePanel: MindStateBattlePanel:
 var battleNowTargetCard: card:
 	set(card): battleNowTargetCard = card
 	get: return battleNowTargetCard
-var playerSelectCard: card:
+var playerSelectCard: card:		## 待废弃，因为本配置可以通过 battlePanel 中的 inputPanelList 中的 seat 查询得到
 	set(card): playerSelectCard = card
 	get: return playerSelectCard
 
@@ -26,11 +26,13 @@ signal close_mindStateBattle_panel() 	## event中连接
 signal select_mindState_to_change()		## mindStateBattlePanel 中连接
 signal show_inputCard_change_direction()	## mindStateSelectSeat 中被调用
 signal clean_change_direction()				## mindStateSelectSeat 中被调用
+signal process_targetCard_property()
 
 func _ready() -> void:
 	connect("start_mindStateBattle", _on_start_mindStateBattle)
 	show_inputCard_change_direction.connect(_show_change_direction)
 	clean_change_direction.connect(_clean_change_direction)
+	process_targetCard_property.connect(_process_targetCard_property)
 
 func _on_start_mindStateBattle() -> void:
 	print("battle start")
@@ -45,6 +47,10 @@ func _load_mindStateSwarmCard_from_battle() -> void:
 		var cardToAdd=preload("res://scene/cards/MindStateCard/MindStateCard.tscn").instantiate() as card
 		cardToAdd.initCard(searchCard)
 		battleNowTargetCard = cardToAdd
+		## 通过本行为来触发 battleNowTargetCard 中节点的创建逻辑
+		self.add_child(battleNowTargetCard)
+		battleNowTargetCard.visible = false	## 关闭外显
+
 		if battlePanel != null:
 			battlePanel.emit_signal('load_battleCard', cardToAdd)
 	else:
@@ -56,14 +62,6 @@ func _locate_battleData() -> Dictionary:
 		if config.ID == battleID:
 			return config
 	return {}
-
-## 用于结合 playerInputCard 和 battleNowTargetCard 来判断是否为提升卡牌。
-## TODO 当前写死为 true，为了跑通流程
-func check_isIncreaseCard() -> bool:
-	if playerSelectCard == null:
-		return false
-	return true
-
 
 func _get_mindStatePropertyBaseConfig(searchProperty: String, searchBaesConfigKey: String) -> String:
 	for property in GameInfo.propertyList:
@@ -101,3 +99,12 @@ func _check_change_direction_increase(targetCard: card, inputCard: card, targetA
 func _clean_change_direction(inputPanelIndex: int) -> void:
 	var inputPanel = battlePanel.mindStateInputList[inputPanelIndex] as MindStateBattleInputPanel
 	inputPanel.set_change_direction_status(false, false)
+
+## 内部方法，通过信号调用。将
+func _process_targetCard_property(inputCard: card, propertyIndex: int) -> void:
+	var inputLevel = battleNowTargetCard.cardInfo['rarity'].to_int()
+	var attributerManager = battleNowTargetCard.cardAttributeManager as MindStateCardAttributeManager
+	var propertyLevelKey = GameInfo.propertyList[propertyIndex] + attributerManager.ATTRIBUTE_LEVEL_NAME
+	var changeLevel = attributerManager.add_MindStateProperty_exp(propertyLevelKey, inputLevel)
+	## TODO 需要补充等级变化逻辑
+
