@@ -22,6 +22,7 @@ func _ready() -> void:
 	_init_mindState_info()
 
 	_get_card_rarity_from_mindStateCard_mainAttribute()
+	_check_propertyExp_from_propertyLevl()
 	print("设置卡牌属性")
 
 	pass
@@ -144,9 +145,11 @@ func _search_property_level(nowExp: int) -> int:
 	for config in GameInfo.mindStateLevelExp.values():
 		if config['Exp'] == "":
 			break
-		if config['Exp'] < nowExp:
+		var levelStartExp = config['Exp'].to_int()
+		if nowExp >= levelStartExp:
 			nowLevel = config['ID'].to_int()
-		break
+		else:
+			break
 
 	return nowLevel
 
@@ -167,4 +170,14 @@ func _get_card_rarity_from_mindStateCard_mainAttribute() -> void:
 		## 如果得到的 mindStateMainProperty 的 Level 属性不为0，那么将其直接设置为 card 的 rarity 属性
 		cardRoot.cardInfo['rarity'] = cardRoot.cardInfo[mainAttributeKey + ATTRIBUTE_LEVEL_NAME]
 
-
+## 根据配置的 level 自动矫正 exp 配置。要求 exp 配置能够正确换算至 level 配置。否则将使用 level 配置的 exp 数值覆盖回 exp 配置。
+func _check_propertyExp_from_propertyLevl() -> void:
+	for property in GameInfo.propertyList:
+		var configLevel = get_propertyLevel(property)
+		var propertyExpKey = property + ATTRIBUTE_EXP_NAME
+		var checkLevelFromExp = _search_property_level(cardRoot.cardInfo[propertyExpKey].to_int())
+		## 无法换算时的覆盖逻辑
+		if configLevel != checkLevelFromExp:
+			for config in GameInfo.mindStateLevelExp.values():
+				if config['ID'] == str(configLevel):
+					cardRoot.cardInfo[propertyExpKey] = config['Exp']

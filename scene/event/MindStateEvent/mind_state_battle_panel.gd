@@ -68,6 +68,8 @@ func _on_confirm_button() -> void:
 	## 初始化 mindStateInpuPanelList 结构，将6个 panel 添加进入 root
 	_init_mindStateInputPanelList()
 
+	## TODO 输入选择模板卡牌后，选择模板卡牌状态应当有变化，否则后续操作会误以为是在指向选择模板卡牌，而不是 battleTargetCard
+
 ## 用于显示 targetCard 和 inputCard 的主属性、副属性提示信息
 func _show_CardInfo(targetCard: card, isBattleTargetCard: bool) -> void:
 	for index in range(0, len(GameInfo.propertyList)):

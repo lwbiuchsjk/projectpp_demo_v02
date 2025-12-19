@@ -87,8 +87,8 @@ func _show_change_direction(inputCard: card, propertyIndex: int) -> void:
 
 
 ## 内部方法，用于根据传入的两个卡牌来决定是增加还是减少。targetCard 使用 attributeLevelKey 进行判断，inputCard 直接使用其 rarity 来判断
-func _check_change_direction_increase(targetCard: card, inputCard: card, targetAttributerLevelKey: String) -> bool:
-	var targetLevel = targetCard.cardInfo[targetAttributerLevelKey]
+func _check_change_direction_increase(targetCard: card, inputCard: card, targetAttributeLevelKey: String) -> bool:
+	var targetLevel = targetCard.cardInfo[targetAttributeLevelKey]
 	var selectLevel = inputCard.cardInfo['rarity']
 	if targetLevel >= selectLevel:
 		return true
@@ -102,9 +102,12 @@ func _clean_change_direction(inputPanelIndex: int) -> void:
 
 ## 内部方法，通过信号调用。将
 func _process_targetCard_property(inputCard: card, propertyIndex: int) -> void:
-	var inputLevel = battleNowTargetCard.cardInfo['rarity'].to_int()
+	var inputLevel = inputCard.cardInfo['rarity'].to_int()
 	var attributerManager = battleNowTargetCard.cardAttributeManager as MindStateCardAttributeManager
+	var propertyKey = GameInfo.propertyList[propertyIndex]
 	var propertyLevelKey = GameInfo.propertyList[propertyIndex] + attributerManager.ATTRIBUTE_LEVEL_NAME
-	var changeLevel = attributerManager.add_MindStateProperty_exp(propertyLevelKey, inputLevel)
+	var isIncrease = _check_change_direction_increase(battleNowTargetCard, inputCard, propertyLevelKey)
+	if not isIncrease:
+		inputLevel = -inputLevel
+	var changeLevel = attributerManager.add_MindStateProperty_exp(propertyKey, inputLevel)
 	## TODO 需要补充等级变化逻辑
-
