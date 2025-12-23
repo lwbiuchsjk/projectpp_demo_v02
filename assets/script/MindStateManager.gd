@@ -110,4 +110,6 @@ func _process_targetCard_property(inputCard: card, propertyIndex: int) -> void:
 	if not isIncrease:
 		inputLevel = -inputLevel
 	var changeLevel = attributerManager.add_MindStateProperty_exp(propertyKey, inputLevel)
-	## TODO 需要补充等级变化逻辑
+	## TODO 需要补充等级变化逻辑，是否考虑提交卡牌时消耗精神等，限制流程长度
+
+	print("本次变化等级：" + str(changeLevel))

@@ -46,6 +46,7 @@ anchor_bottom = 1.0
 offset_right = -750.0
 grow_horizontal = 2
 grow_vertical = 2
+color = Color(0, 0, 0, 1)
 
 [node name="BgRIghtImage" type="ColorRect" parent="CardArea"]
 layout_mode = 1
@@ -94,7 +95,7 @@ offset_bottom = 490.0
 [node name="Seat" parent="CardArea/InputCardSeat" instance=ExtResource("2_oeu2u")]
 layout_mode = 0
 
-[node name="Mask" type="Control" parent="CardArea/InputCardSeat"]
+[node name="Mask" type="ColorRect" parent="CardArea/InputCardSeat"]
 visible = false
 layout_mode = 1
 anchors_preset = 15
@@ -102,6 +103,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+color = Color(0, 0, 0, 0.7058824)
 
 [node name="ConfirmTargetButton" type="Button" parent="CardArea"]
 layout_mode = 0
@@ -151,6 +153,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+color = Color(0, 0, 0, 1)
 
 [node name="ColorRect" type="ColorRect" parent="CardArea/InpuCardArea/NormalStatus"]
 layout_mode = 0
@@ -158,7 +161,7 @@ offset_left = 115.0
 offset_top = 170.0
 offset_right = 335.0
 offset_bottom = 490.0
-color = Color(0.7058824, 0.7058824, 0.7058824, 1)
+color = Color(0.7058824, 0.7058824, 0.7058824, 0)
 
 [node name="Label" type="Label" parent="CardArea/InpuCardArea/NormalStatus/ColorRect"]
 layout_mode = 1
@@ -168,7 +171,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_font_sizes/font_size = 25
-text = "选择一个情感"
+text = "右侧选择一个情感"
 horizontal_alignment = 1
 vertical_alignment = 1
 
