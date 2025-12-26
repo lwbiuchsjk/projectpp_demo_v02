@@ -39,6 +39,9 @@ func _on_start_mindStateBattle() -> void:
 	emit_signal("show_mindStateBattle_panel")
 	_load_mindStateSwarmCard_from_battle()
 
+	## TODO 此处可以改变进入战斗时的 spirit 值。可根据情况扩展。
+	PlayerInfo.gamePlayerInfoManager.settle_spiritAttribute(-50)
+
 func _load_mindStateSwarmCard_from_battle() -> void:
 	battleData = _locate_battleData()
 	if not battleData.is_empty():
@@ -100,7 +103,8 @@ func _clean_change_direction(inputPanelIndex: int) -> void:
 	var inputPanel = battlePanel.mindStateInputList[inputPanelIndex] as MindStateBattleInputPanel
 	inputPanel.set_change_direction_status(false, false)
 
-## 内部方法，通过信号调用。将
+## 内部方法，通过信号调用。将卡牌属性进行变化。
+## TODO 退出机制可以统一在此处调用。
 func _process_targetCard_property(inputCard: card, propertyIndex: int) -> void:
 	var inputLevel = inputCard.cardInfo['rarity'].to_int()
 	var attributerManager = battleNowTargetCard.cardAttributeManager as MindStateCardAttributeManager
@@ -113,3 +117,7 @@ func _process_targetCard_property(inputCard: card, propertyIndex: int) -> void:
 	## TODO 需要补充等级变化逻辑，是否考虑提交卡牌时消耗精神等，限制流程长度
 
 	print("本次变化等级：" + str(changeLevel))
+
+	## TODO 此处恢复精神。暂定根据变化等级进行恢复
+	var spiritChangeValue = abs(changeLevel) * 10
+	PlayerInfo.gamePlayerInfoManager.settle_spiritAttribute(spiritChangeValue)

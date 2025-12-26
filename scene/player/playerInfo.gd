@@ -7,6 +7,10 @@ var save:player
 
 var playerInfoPath:String
 
+var gamePlayerInfoManager: PlayerInfoManager:
+	set(manager): gamePlayerInfoManager = manager
+	get(): return gamePlayerInfoManager
+
 func add_new_card(cardName,cardDeck,caller = get_tree().get_first_node_in_group("cardDeck"))->Node:
 		print("开始创建新卡牌："+str(cardName))
 		var searchCard = GameInfo.search_card_from_cardName(cardName)

@@ -53,8 +53,12 @@ func _on_confirm_select_card() -> void:
 		confirmButton.visible = false
 		selectCard = selectSeat.seat_card
 
+		## TODO 此处暂定固定消耗 5 精神。后续可根据卡牌配置或level情况进行变化
+		PlayerInfo.gamePlayerInfoManager.settle_spiritAttribute(-5)
+
 		## 通过信号调用后续处理逻辑
 		GameInfo.mindStateManager.emit_signal("process_targetCard_property", selectCard, selectSeat.seat_index)
+
 
 ## 将 panel 的 index 传入 seat，方便标记序号
 func _set_seatIndex(index: int) -> void:

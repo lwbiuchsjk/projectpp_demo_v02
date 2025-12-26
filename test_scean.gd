@@ -1,6 +1,6 @@
 extends Control
 
-@export var characters: Array[PlayerInfoPannel] = []
+@export var characters: Array[PlayerInfoManager] = []
 @export var cardCound := 3
 
 func _init() -> void:
