@@ -7,7 +7,7 @@ class_name MindStateCardAttributeManager
 @onready var cardRoot = self.get_parent() as card
 @onready var attribute_component: AttributeComponent = %AttributeComponent
 
-const ATTRIBUTE_LEVEL_NAME = "Level"
+##const ATTRIBUTE_LEVEL_NAME = "Level"
 const ATTRIBUTE_EXP_NAME = 'Exp'
 
 func _ready() -> void:
@@ -52,7 +52,7 @@ func get_attribute(_attribute_name: String) -> Attribute:
 
 ## 取得 MindStateProperty 的 level 数值
 func get_propertyLevel(propertyName: String) -> int:
-	var key = propertyName + ATTRIBUTE_LEVEL_NAME
+	var key = propertyName
 	return _get_value_from_CardInto(key).to_int()
 
 ## 取得 MindStateProperty 的 exp 数值
@@ -124,7 +124,7 @@ func _bind_attribute_signal() -> void:
 ## 处理 MindStateProperty 升级的逻辑。通过返回值判断等级是否变化，返回值即为等级变动数值。
 func add_MindStateProperty_exp(propertyName: String, addedExp: int) -> int:
 	var propertyLevel = get_propertyLevel(propertyName)
-	var levelKey = propertyName + ATTRIBUTE_LEVEL_NAME
+	var levelKey = propertyName
 	## 空逻辑处理，返回值 = 0，即不升级
 	if propertyLevel < 0:
 		return 0
@@ -168,7 +168,7 @@ func _get_card_rarity_from_mindStateCard_mainAttribute() -> void:
 		return
 	else:
 		## 如果得到的 mindStateMainProperty 的 Level 属性不为0，那么将其直接设置为 card 的 rarity 属性
-		cardRoot.cardInfo['rarity'] = cardRoot.cardInfo[mainAttributeKey + ATTRIBUTE_LEVEL_NAME]
+		cardRoot.cardInfo['rarity'] = cardRoot.cardInfo[mainAttributeKey]
 
 ## 根据配置的 level 自动矫正 exp 配置。要求 exp 配置能够正确换算至 level 配置。否则将使用 level 配置的 exp 数值覆盖回 exp 配置。
 func _check_propertyExp_from_propertyLevl() -> void:
@@ -181,3 +181,116 @@ func _check_propertyExp_from_propertyLevl() -> void:
 			for config in GameInfo.mindStateLevelExp.values():
 				if config['ID'] == str(configLevel):
 					cardRoot.cardInfo[propertyExpKey] = config['Exp']
+
+## 检查等级变动后的，属性在属性模板中的标志，是否与 inputCard 的属性模板一致。如果一致，那么恢复精神，否则消耗精神。
+func check_propertyTemplate_flag(playerInputCard:card, propertyIndex:int) -> bool:
+	var propertyKey = GameInfo.propertyList[propertyIndex]
+	var propertyValueList = []
+	for property in GameInfo.propertyList:
+		propertyValueList.append(cardRoot.cardInfo[property].to_int())
+
+	var propertySortIndexList = _get_ranks_with_ties(propertyValueList)
+
+	print("变更后 targetCard 的 mindState 属性情况：", propertyValueList)
+	print("变更后 targetCard 的 mindState 属性排序情况：", propertySortIndexList)
+
+	var mindStateClass = playerInputCard.cardInfo['TypeName']
+	var mindStateTemplate = GameInfo.get_mindStateTemplaterData(mindStateClass)
+	if GameInfo.check_property_mainProperty(mindStateTemplate, propertyKey):
+		if propertySortIndexList[propertyIndex] == 1:
+			return true
+
+	var secondPropertyRealCount = _get_second_smallest_sort(propertySortIndexList)
+	if secondPropertyRealCount != null:
+		if GameInfo.check_property_secondProperty(mindStateTemplate, propertyKey):
+			if propertySortIndexList[propertyIndex] == secondPropertyRealCount:
+				return true
+
+	return false
+
+
+## 	稳定排序：相同值时保持原始顺序
+func _get_stable_sorted_indices(arr: Array) -> Array:
+	# 创建带原始索引的数组
+	var indexed_arr = []
+	for i in range(arr.size()):
+		indexed_arr.append({
+			"value": arr[i],
+			"original_index": i
+		})
+
+	# 排序：先按值，再按原始索引
+	indexed_arr.sort_custom(func(a, b):
+		if a.value == b.value:
+			return a.original_index < b.original_index
+		return a.value < b.value
+	)
+
+	# 提取排序后的索引
+	var indices = []
+	for item in indexed_arr:
+		indices.append(item.original_index)
+
+	return indices
+
+##	获取数组元素的排名，相同值排名相同
+##	排名从1开始（1表示最高或最低，取决于排序方式）
+func _get_ranks_with_ties(arr: Array) -> Array:
+	if arr.is_empty():
+		return []
+
+	# 创建带索引的数组
+	var indexed_arr = []
+	for i in range(arr.size()):
+		indexed_arr.append({
+			"value": arr[i],
+			"original_index": i
+		})
+
+	# 降序排序（值大的排名高，排名从1开始）
+	indexed_arr.sort_custom(func(a, b): return a.value > b.value)
+
+	# 计算排名
+	var ranks = []
+	ranks.resize(arr.size())
+
+	var current_rank = 1
+	for i in range(indexed_arr.size()):
+		var current_item = indexed_arr[i]
+		var current_index = current_item.original_index
+
+		# 如果是第一个元素，直接赋值
+		if i == 0:
+			ranks[current_index] = current_rank
+		else:
+			var prev_item = indexed_arr[i - 1]
+			# 如果当前值与上一个值相同，则排名相同
+			if current_item.value == prev_item.value:
+				ranks[current_index] = current_rank
+			else:
+				current_rank = i + 1
+				ranks[current_index] = current_rank
+
+	return ranks
+
+##	获取第二小的值，如果不存在则返回 null
+##	考虑值相等的情况
+func _get_second_smallest_sort(arr: Array) -> Variant:
+	if arr.size() < 2:
+		print("数组元素不足2个")
+		return null
+
+	# 创建副本并排序
+	var sorted_arr = arr.duplicate()
+	sorted_arr.sort()  # 升序排序
+
+	var smallest = sorted_arr[0]
+
+	# 寻找第一个不等于最小值的元素
+	for i in range(1, sorted_arr.size()):
+		if sorted_arr[i] != smallest:
+			return sorted_arr[i]
+
+	# 所有值都相同
+	print("所有值都相同，没有第二小的值")
+	return null

@@ -82,7 +82,7 @@ func _show_CardInfo(targetCard: card, isBattleTargetCard: bool) -> void:
 		## 读取主属性、副属性配置
 		propertyTemplate = GameInfo.get_mindStateTemplaterData(targetCard.cardInfo["TypeName"])
 		var mainVisible = GameInfo.check_property_mainProperty(propertyTemplate, propertyKey)
-		var assistVisible = GameInfo.check_property_assistProperty(propertyTemplate, propertyKey)
+		var assistVisible = GameInfo.check_property_secondProperty(propertyTemplate, propertyKey)
 
 		if isBattleTargetCard:
 			mindStatePanel.targetInfoArea.visible = true

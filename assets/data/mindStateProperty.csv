@@ -1,5 +1,5 @@
 ﻿ID,TypeName,Happiness,HappinessLevel,HappinessExp,Sadness,SadnessLevel,SadnessExp,Anger,AngerLevel,AngerExp,Fear,FearLevel,FearExp,Disgust,DisgustLevel,DisgustExp,Surprise,SurpriseLevel,SurpriseExp
-1,class1,1,1,0,1,1,0,1,1,0,1,1,0,1,1,0,1,1,0
+1,class1,10,10,0,10,10,0,10,10,0,10,10,0,10,10,0,10,10,0
 2,class2,2,2,0,2,2,0,2,2,0,2,2,0,2,2,0,2,2,0
 3,class3,3,3,0,3,3,0,3,3,0,3,3,0,3,3,0,3,3,0
 4,class4,4,4,0,4,4,0,4,4,0,4,4,0,4,4,0,4,4,0

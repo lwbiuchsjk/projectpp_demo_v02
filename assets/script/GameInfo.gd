@@ -281,7 +281,7 @@ func check_property_mainProperty(templateData:Dictionary, propertyKey:String) ->
 		return true
 	return false
 
-func check_property_assistProperty(templateData:Dictionary, propertyKey:String) -> bool:
+func check_property_secondProperty(templateData:Dictionary, propertyKey:String) -> bool:
 	if templateData[propertyKey] == "H":
 		return true
 	return false

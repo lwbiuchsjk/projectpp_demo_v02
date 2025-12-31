@@ -83,7 +83,7 @@ func get_mindStateName(searchProperty: String) -> String:
 ## 根据传入的 inputCard 参数与 battleNowTargetCard 之间的关系，显示 changeDirection 对应信息。
 func _show_change_direction(inputCard: card, propertyIndex: int) -> void:
 	var attributerManager = inputCard.cardAttributeManager as MindStateCardAttributeManager
-	var propertyLevelKey = GameInfo.propertyList[propertyIndex] + attributerManager.ATTRIBUTE_LEVEL_NAME
+	var propertyLevelKey = GameInfo.propertyList[propertyIndex]
 	var isIncrease = _check_change_direction_increase(battleNowTargetCard, inputCard, propertyLevelKey)
 	var inputPanel = battlePanel.mindStateInputList[propertyIndex] as MindStateBattleInputPanel
 	inputPanel.set_change_direction_status(isIncrease, !isIncrease)
@@ -109,7 +109,7 @@ func _process_targetCard_property(inputCard: card, propertyIndex: int) -> void:
 	var inputLevel = inputCard.cardInfo['rarity'].to_int()
 	var attributerManager = battleNowTargetCard.cardAttributeManager as MindStateCardAttributeManager
 	var propertyKey = GameInfo.propertyList[propertyIndex]
-	var propertyLevelKey = GameInfo.propertyList[propertyIndex] + attributerManager.ATTRIBUTE_LEVEL_NAME
+	var propertyLevelKey = GameInfo.propertyList[propertyIndex]
 	var isIncrease = _check_change_direction_increase(battleNowTargetCard, inputCard, propertyLevelKey)
 	if not isIncrease:
 		inputLevel = -inputLevel
@@ -121,3 +121,7 @@ func _process_targetCard_property(inputCard: card, propertyIndex: int) -> void:
 	## TODO 此处恢复精神。暂定根据变化等级进行恢复
 	var spiritChangeValue = abs(changeLevel) * 10
 	PlayerInfo.gamePlayerInfoManager.settle_spiritAttribute(spiritChangeValue)
+
+	var isSeatInPropertyTemplate = attributerManager.check_propertyTemplate_flag(playerSelectCard, propertyIndex)
+
+	print(isSeatInPropertyTemplate)
