@@ -13,12 +13,18 @@ var battlePanel: MindStateBattlePanel:
 	set(panel): battlePanel = panel
 	get: return battlePanel
 
+## 通过 MindStateSwarn 创建的 TargetCard，指本次 MindStateBattle 面对的 card
 var battleNowTargetCard: card:
 	set(card): battleNowTargetCard = card
 	get: return battleNowTargetCard
-var playerSelectCard: card:		## 待废弃，因为本配置可以通过 battlePanel 中的 inputPanelList 中的 seat 查询得到
+## 通过 MindStateBattlePanel 中，玩家手动指定的 card。本次战斗的目的是将 TargetCard 改变为 SelectCard。
+## 改变结果通过 TargetCard 最终属性是否能够与 SelectCard 对应的模板【匹配】。
+var playerSelectCard: card:
 	set(card): playerSelectCard = card
 	get: return playerSelectCard
+
+var mainPropertyValue = "F"
+var secondPropertyValue = "H"
 
 signal start_mindStateBattle()
 signal show_mindStateBattle_panel()		## event中连接
@@ -114,14 +120,64 @@ func _process_targetCard_property(inputCard: card, propertyIndex: int) -> void:
 	if not isIncrease:
 		inputLevel = -inputLevel
 	var changeLevel = attributerManager.add_MindStateProperty_exp(propertyKey, inputLevel)
-	## TODO 需要补充等级变化逻辑，是否考虑提交卡牌时消耗精神等，限制流程长度
-
 	print("本次变化等级：" + str(changeLevel))
 
-	## TODO 此处恢复精神。暂定根据变化等级进行恢复
-	var spiritChangeValue = abs(changeLevel) * 10
-	PlayerInfo.gamePlayerInfoManager.settle_spiritAttribute(spiritChangeValue)
-
+	## TODO 需要补充等级变化逻辑，是否考虑提交卡牌时消耗精神等，限制流程长度
+	## 此处恢复精神。暂定根据变化等级进行恢复
 	var isSeatInPropertyTemplate = attributerManager.check_propertyTemplate_flag(playerSelectCard, propertyIndex)
 
+	var spiritChangeValue = abs(changeLevel) * 10
+	if not isSeatInPropertyTemplate:
+		spiritChangeValue = -spiritChangeValue
+	var spiritQuitFlag = PlayerInfo.gamePlayerInfoManager.settle_spiritAttribute(spiritChangeValue)
+
 	print(isSeatInPropertyTemplate)
+	print(spiritChangeValue)
+
+	## TODO 退出机制，仅会被2种情况触发：满足 selectCard 的 MindStateTemplate，或精神达到最低。
+	## 此时精神到最低后，应当有恢复机制，让玩家不至于又快速被迫面对 MindStateBattle
+	## 固定恢复机制？如果满足 selectCard，那么大回复。否则，小回复。
+
+	print("判断是否触发退出机制")
+	var selectMindStateClass = playerSelectCard.cardInfo['TypeName']
+	var selectMindStateTemplate = GameInfo.get_mindStateTemplaterData(selectMindStateClass)
+	var isSatisfiedTemplate = _check_mindStateProperty_satisfied_template(selectMindStateTemplate, battleNowTargetCard)
+	print(isSatisfiedTemplate)
+
+## 检查当前属性是否满足 selectCard 的 template
+func _check_mindStateProperty_satisfied_template(template: Dictionary, mindStateCard: card) -> bool:
+	## 通过 template 得到【主属性】【副属性】的 index
+	var mainPropertyIndex = _check_mindStateProperty_from_templateValue(template, mainPropertyValue)
+	var secondPropertyIndex = _check_mindStateProperty_from_templateValue(template, secondPropertyValue)
+	if mainPropertyIndex < 0 or secondPropertyIndex < 0:
+		print("检测 _check_mindStateProperty_from_templateValue 存在错误。mainPropertyIndex = %d, secondPropertyIndex = %d" %[mainPropertyIndex, secondPropertyIndex])
+		return false
+	## 判断根据 template 索引到的【主属性】【副属性】，是否真的符合其定义。
+	var attributerManager = mindStateCard.cardAttributeManager as MindStateCardAttributeManager
+	var propertyRankList = attributerManager.get_mindStateProperty_rank()
+	## 此处调用定义，主属性是排序前3位的属性，副属性是排序后3为的属性。同时满足这两个情况，才与模板匹配。
+	if check_mainProperty_satisfied(propertyRankList, mainPropertyIndex) and check_secondProperty_satisfied(propertyRankList, secondPropertyIndex):
+		return true
+
+	return false
+
+## 内部方法。对【主属性】【副属性】通用的检测方式
+func _check_mindStateProperty_from_templateValue(template: Dictionary, propertyTemplateValue: String) -> int:
+	for index in range(len(template.values())):
+		if template.values()[index] == propertyTemplateValue:
+			return index
+	return -1
+
+func check_mainProperty_satisfied(rankList: Array, index: int) -> bool:
+	var rankValue = rankList[index]
+	if rankValue <= 3:
+		return true
+	return false
+
+func check_secondProperty_satisfied(rankList: Array, index: int) -> bool:
+	var rankValue = rankList[index]
+	if rankValue > 3:
+		return true
+	elif rankValue == rankList.max():
+		return true
+	return false

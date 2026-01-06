@@ -185,26 +185,19 @@ func _check_propertyExp_from_propertyLevl() -> void:
 ## 检查等级变动后的，属性在属性模板中的标志，是否与 inputCard 的属性模板一致。如果一致，那么恢复精神，否则消耗精神。
 func check_propertyTemplate_flag(playerInputCard:card, propertyIndex:int) -> bool:
 	var propertyKey = GameInfo.propertyList[propertyIndex]
-	var propertyValueList = []
-	for property in GameInfo.propertyList:
-		propertyValueList.append(cardRoot.cardInfo[property].to_int())
+	var propertySortIndexList = get_mindStateProperty_rank()
 
-	var propertySortIndexList = _get_ranks_with_ties(propertyValueList)
-
-	print("变更后 targetCard 的 mindState 属性情况：", propertyValueList)
 	print("变更后 targetCard 的 mindState 属性排序情况：", propertySortIndexList)
 
 	var mindStateClass = playerInputCard.cardInfo['TypeName']
 	var mindStateTemplate = GameInfo.get_mindStateTemplaterData(mindStateClass)
 	if GameInfo.check_property_mainProperty(mindStateTemplate, propertyKey):
-		if propertySortIndexList[propertyIndex] == 1:
+		if GameInfo.mindStateManager.check_mainProperty_satisfied(propertySortIndexList, propertyIndex):
 			return true
 
-	var secondPropertyRealCount = _get_second_smallest_sort(propertySortIndexList)
-	if secondPropertyRealCount != null:
-		if GameInfo.check_property_secondProperty(mindStateTemplate, propertyKey):
-			if propertySortIndexList[propertyIndex] == secondPropertyRealCount:
-				return true
+	if GameInfo.check_property_secondProperty(mindStateTemplate, propertyKey):
+		if GameInfo.mindStateManager.check_secondProperty_satisfied(propertySortIndexList, propertyIndex):
+			return true
 
 	return false
 
@@ -232,6 +225,16 @@ func _get_stable_sorted_indices(arr: Array) -> Array:
 		indices.append(item.original_index)
 
 	return indices
+
+## 通用方法。可以返回本卡牌，MindStateProperty 的数值排序结果
+func get_mindStateProperty_rank() -> Array:
+	var propertyValueList = []
+	for property in GameInfo.propertyList:
+		propertyValueList.append(cardRoot.cardInfo[property].to_int())
+
+	print("变更后 targetCard 的 mindState 属性情况：", propertyValueList)
+
+	return _get_ranks_with_ties(propertyValueList)
 
 ##	获取数组元素的排名，相同值排名相同
 ##	排名从1开始（1表示最高或最低，取决于排序方式）
