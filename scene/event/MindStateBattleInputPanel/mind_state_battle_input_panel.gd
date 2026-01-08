@@ -58,7 +58,9 @@ func _on_confirm_select_card() -> void:
 
 		## 通过信号调用后续处理逻辑
 		GameInfo.mindStateManager.emit_signal("process_targetCard_property", selectCard, selectSeat.seat_index)
-
+		GameInfo.mindStateManager.battlePanel.show_CardInfo(GameInfo.mindStateManager.battleNowTargetCard, true)
+		var infoPanel = GameInfo.mindStateManager.battlePanel.mindStateSelectArea.get_child(selectSeat.seat_index) as MindStateBattleInfoPanel
+		infoPanel.move_card(selectCard, self)
 
 ## 将 panel 的 index 传入 seat，方便标记序号
 func _set_seatIndex(index: int) -> void:

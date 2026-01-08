@@ -40,7 +40,7 @@ func _on_load_battleCard(cardToAdd: card) -> void:
 	battleInfo.text = cardToAdd.cardInfo['base_displayName']
 	mindStateSelectArea.visible = true
 
-	_show_CardInfo(GameInfo.mindStateManager.battleNowTargetCard, true)
+	show_CardInfo(GameInfo.mindStateManager.battleNowTargetCard, true)
 
 func get_input_targetCard() -> card:
 	var output = targetMindStateCardSeat.seat_card
@@ -54,7 +54,7 @@ func _on_confirm_button() -> void:
 	GameInfo.mindStateManager.playerSelectCard = seatCard
 
 	## 处理 selectCard 信息显示
-	_show_CardInfo(seatCard, false)
+	show_CardInfo(GameInfo.mindStateManager.battleNowTargetCard, false)
 	## 处理后续组件显示
 	selectCardConfirmButton.visible = false
 	selectCardMask.visible = true
@@ -71,7 +71,7 @@ func _on_confirm_button() -> void:
 	## TODO 输入选择模板卡牌后，选择模板卡牌状态应当有变化，否则后续操作会误以为是在指向选择模板卡牌，而不是 battleTargetCard
 
 ## 用于显示 targetCard 和 inputCard 的主属性、副属性提示信息
-func _show_CardInfo(targetCard: card, isBattleTargetCard: bool) -> void:
+func show_CardInfo(targetCard: card, isBattleTargetCard: bool) -> void:
 	for index in range(0, len(GameInfo.propertyList)):
 		var mindStatePanel = mindStateList[index] as MindStateBattleInfoPanel
 		var propertyKey = GameInfo.propertyList[index]

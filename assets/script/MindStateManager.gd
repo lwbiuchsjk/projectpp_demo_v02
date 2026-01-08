@@ -122,8 +122,7 @@ func _process_targetCard_property(inputCard: card, propertyIndex: int) -> void:
 	var changeLevel = attributerManager.add_MindStateProperty_exp(propertyKey, inputLevel)
 	print("本次变化等级：" + str(changeLevel))
 
-	## TODO 需要补充等级变化逻辑，是否考虑提交卡牌时消耗精神等，限制流程长度
-	## 此处恢复精神。暂定根据变化等级进行恢复
+	## 此处精神变化。暂定根据变化等级进行恢复
 	var isSeatInPropertyTemplate = attributerManager.check_propertyTemplate_flag(playerSelectCard, propertyIndex)
 
 	var spiritChangeValue = abs(changeLevel) * 10
@@ -131,18 +130,23 @@ func _process_targetCard_property(inputCard: card, propertyIndex: int) -> void:
 		spiritChangeValue = -spiritChangeValue
 	var spiritQuitFlag = PlayerInfo.gamePlayerInfoManager.settle_spiritAttribute(spiritChangeValue)
 
-	print(isSeatInPropertyTemplate)
-	print(spiritChangeValue)
+	print("本次精神变化计算值：", spiritChangeValue)
 
-	## TODO 退出机制，仅会被2种情况触发：满足 selectCard 的 MindStateTemplate，或精神达到最低。
-	## 此时精神到最低后，应当有恢复机制，让玩家不至于又快速被迫面对 MindStateBattle
-	## 固定恢复机制？如果满足 selectCard，那么大回复。否则，小回复。
-
-	print("判断是否触发退出机制")
+	## 此处判断提交卡牌后，数值变化是否与 PlayerSelectCard 的模板相匹配
 	var selectMindStateClass = playerSelectCard.cardInfo['TypeName']
 	var selectMindStateTemplate = GameInfo.get_mindStateTemplaterData(selectMindStateClass)
 	var isSatisfiedTemplate = _check_mindStateProperty_satisfied_template(selectMindStateTemplate, battleNowTargetCard)
-	print(isSatisfiedTemplate)
+
+	## 判断是否满足退出机制
+	## TODO 退出机制，仅会被2种情况触发：满足 selectCard 的 MindStateTemplate，或精神达到最低。
+	## 此时精神到最低后，应当有恢复机制，让玩家不至于又快速被迫面对 MindStateBattle
+	## 固定恢复机制？如果满足 selectCard，那么大回复。否则，小回复。
+	if isSatisfiedTemplate:
+		print("修正属性值后，满足 playerSelectCard 模板。退出 MindStateBattle。")
+	elif spiritQuitFlag:
+		print("操作后，精神降至最低，退出 MindStateBattle。")
+
+	print("继续 MindStateBattle.")
 
 ## 检查当前属性是否满足 selectCard 的 template
 func _check_mindStateProperty_satisfied_template(template: Dictionary, mindStateCard: card) -> bool:
@@ -163,8 +167,9 @@ func _check_mindStateProperty_satisfied_template(template: Dictionary, mindState
 
 ## 内部方法。对【主属性】【副属性】通用的检测方式
 func _check_mindStateProperty_from_templateValue(template: Dictionary, propertyTemplateValue: String) -> int:
-	for index in range(len(template.values())):
-		if template.values()[index] == propertyTemplateValue:
+	for index in range(len(GameInfo.propertyList)):
+		var propertyKey = GameInfo.propertyList[index]
+		if template[propertyKey] == propertyTemplateValue:
 			return index
 	return -1
 
