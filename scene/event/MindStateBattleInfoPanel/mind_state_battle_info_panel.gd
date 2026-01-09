@@ -54,9 +54,14 @@ func _show_mindStateInfo(propertyName:String, propertyValue:String) -> void:
 	mindStateValue = propertyValue
 	showName.text = GameInfo.mindStateManager.get_mindStateName(mindStateName) + ":" + str(propertyValue)
 
-## 显示当前组件的 mindState 相关信息，例如 color。并且开启设置按钮功能，允许后续进行选择
+## 显示当前组件的 mindState 相关信息，例如 color。并且开启设置按钮功能，允许后续进行选择。如果输入的 propertyName 无法被检测到，那么显示默认颜色
 func _show_mindStateColor(propertyName:String) -> void:
-	bgImage.color = Color(GameInfo.mindStateManager.get_mindStateColor(propertyName))
+	var defaultColor = Color("#9c9c9c")
+	var propertyColorCode = GameInfo.mindStateManager.get_mindStateColor(propertyName)
+	if propertyColorCode == "":
+		bgImage.color = defaultColor
+	else:
+		bgImage.color = Color(GameInfo.mindStateManager.get_mindStateColor(propertyName))
 	selectButton.visible = true
 
 ## 触发选择功能。通过 MindStateManger 进行全局影响
@@ -78,7 +83,7 @@ func move_card(cardToAdd: card, cardParent: MindStateBattleInputPanel) -> void:
 ## 卡牌移动到目标位置后，需要将其从原 MindStateBattleInputPanel 结构中清除。
 func clean_card_from_parent(parent: MindStateBattleInputPanel) -> void:
 	## 从 seat 结构中移除。处理 seat 相关各种显示问题
-	var seat = parent.selectSeat
+	var seat = parent.inputSeat
 	seat.clear_children(seat.cardDeck)
 	seat.clear_children(seat.cardPoiDeck)
 	seat.clean_seat_card()

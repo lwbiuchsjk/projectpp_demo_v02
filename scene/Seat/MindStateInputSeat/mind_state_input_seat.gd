@@ -1,5 +1,5 @@
 extends Seat
-class_name MindStateSelectSeat
+class_name MindStateInputSeat
 
 #var seat_mindStateCard: card:
 #	set(cardToAdd): seat_mindStateCard = cardToAdd

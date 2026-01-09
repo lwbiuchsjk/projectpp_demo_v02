@@ -130,6 +130,9 @@ func _process_targetCard_property(inputCard: card, propertyIndex: int) -> void:
 		spiritChangeValue = -spiritChangeValue
 	var spiritQuitFlag = PlayerInfo.gamePlayerInfoManager.settle_spiritAttribute(spiritChangeValue)
 
+	## 变化结束后，需要更新 battlePanel 中相关信息的显示
+	battlePanel.show_CardInfo(GameInfo.mindStateManager.battleNowTargetCard, true)
+
 	print("本次精神变化计算值：", spiritChangeValue)
 
 	## 此处判断提交卡牌后，数值变化是否与 PlayerSelectCard 的模板相匹配

@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://chmru3udu14l3"]
 
 [ext_resource type="Script" uid="uid://bt61nkkb2goxl" path="res://scene/event/MindStateBattleInputPanel/mind_state_battle_input_panel.gd" id="1_e67ks"]
-[ext_resource type="PackedScene" uid="uid://djbxpw8pv5etv" path="res://scene/Seat/MindStateSelectSeat/MindStateSelectSeat.tscn" id="2_e67ks"]
+[ext_resource type="PackedScene" uid="uid://djbxpw8pv5etv" path="res://scene/Seat/MindStateInputSeat/MindStateInputSeat.tscn" id="2_e67ks"]
 
 [node name="MindStateBattleInputPanel" type="Control"]
 layout_mode = 3

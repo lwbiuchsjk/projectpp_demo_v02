@@ -1,7 +1,0 @@
-[gd_scene load_steps=3 format=3 uid="uid://djbxpw8pv5etv"]
-
-[ext_resource type="PackedScene" uid="uid://b80jq7wxyi2j7" path="res://scene/Seat/seat.tscn" id="1_fj3v2"]
-[ext_resource type="Script" uid="uid://b8mry8xcpq7cs" path="res://scene/Seat/MindStateSelectSeat/mind_state_select_seat.gd" id="2_y3jv3"]
-
-[node name="MindStateSelectSeat" instance=ExtResource("1_fj3v2")]
-script = ExtResource("2_y3jv3")

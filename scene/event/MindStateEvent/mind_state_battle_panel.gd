@@ -3,9 +3,9 @@ class_name MindStateBattlePanel
 
 signal load_battleCard()
 
-@onready var targetMindStateCardSeat = $CardArea/InputCardSeat/Seat as Seat
-@onready var mindStateSelectArea = $CardArea/MindStateSelectArea as Control
-@onready var selectCardMask = $CardArea/InputCardSeat/Mask as Control
+@onready var selectMindStateCardSeat = $CardArea/SelectCardSeat/Seat as Seat
+@onready var mindStateInfoArea = $CardArea/MindStateInfoArea as Control
+@onready var selectCardMask = $CardArea/SelectCardSeat/Mask as Control
 @onready var selectCardConfirmButton = $CardArea/ConfirmTargetButton as Control
 @onready var mindStateInputRoot = $CardArea/InpuCardArea/InputRoot as Control
 @onready var mindStateInputHintPanel = $CardArea/InpuCardArea/NormalStatus as Control
@@ -25,11 +25,11 @@ func _ready() -> void:
 	GameInfo.mindStateManager.select_mindState_to_change.connect(select_mindStateInputPanel)
 
 	## 设置组件初始状态
-	mindStateSelectArea.visible = false
+	mindStateInfoArea.visible = false
 
 	## 初始化 seat 数据
 	## TODO 此处暂用 ID = 998 的Seat数据强制赋值。后续需要指定专用 SeatID，或根据功能支持配置指定 SeatID
-	$CardArea/InputCardSeat/Seat.set_seat_data(0, '998')
+	$CardArea/SelectCardSeat/Seat.set_seat_data(0, '998')
 
 
 func _on_close_button() -> void:
@@ -38,23 +38,25 @@ func _on_close_button() -> void:
 func _on_load_battleCard(cardToAdd: card) -> void:
 	var battleInfo = $CardArea/MindStateSwarmCardRoot/TargetCardName as Label
 	battleInfo.text = cardToAdd.cardInfo['base_displayName']
-	mindStateSelectArea.visible = true
+	mindStateInfoArea.visible = true
 
 	show_CardInfo(GameInfo.mindStateManager.battleNowTargetCard, true)
 
 func get_input_targetCard() -> card:
-	var output = targetMindStateCardSeat.seat_card
+	var output = selectMindStateCardSeat.seat_card
 	return output
 
 func _on_confirm_button() -> void:
 	var seatCard = get_input_targetCard()
 	if seatCard == null:
+		GameInfo.mindStateManager.playerSelectCard = null
+		show_CardInfo(GameInfo.mindStateManager.playerSelectCard, false)
 		print("设置卡牌为空")
 		return
 	GameInfo.mindStateManager.playerSelectCard = seatCard
 
 	## 处理 selectCard 信息显示
-	show_CardInfo(GameInfo.mindStateManager.battleNowTargetCard, false)
+	show_CardInfo(GameInfo.mindStateManager.playerSelectCard, false)
 	## 处理后续组件显示
 	selectCardConfirmButton.visible = false
 	selectCardMask.visible = true
@@ -77,8 +79,15 @@ func show_CardInfo(targetCard: card, isBattleTargetCard: bool) -> void:
 		var propertyKey = GameInfo.propertyList[index]
 		var propertyTemplate: Dictionary
 
+		## 边界情况处理。此处为传入空的 targetCard 时的处理方法。通常情况下，是要清楚上一张 targetCard 卡牌的属性标记
+		if targetCard == null:
+			mindStatePanel.inputInfoArea.visible = false
+			continue
+
 		## 外显 seat 中的 mindState 相关信息
-		mindStatePanel.emit_signal("init_MindStateInfo", propertyKey, targetCard.cardInfo[propertyKey])
+		## 特别注意，此处固定刷新 battleNowTargetCard 的属性。而后续主副属性的显示标记，由 targetCard 驱动。
+		mindStatePanel.emit_signal("init_MindStateInfo", propertyKey, GameInfo.mindStateManager.battleNowTargetCard.cardInfo[propertyKey])
+
 		## 读取主属性、副属性配置
 		propertyTemplate = GameInfo.get_mindStateTemplaterData(targetCard.cardInfo["TypeName"])
 		var mainVisible = GameInfo.check_property_mainProperty(propertyTemplate, propertyKey)
@@ -101,7 +110,7 @@ func _init_mindStateInputPanelList() -> void:
 			mindStateInputList.append(inputPanel)
 			## 初始化面板信息
 			inputPanel.init_panel_info(property, index)
-			inputPanel.selectSeat.set_seat_data(index, GameInfo.search_const_value("MindStateInputSeatID")['value'])
+			inputPanel.inputSeat.set_seat_data(index, GameInfo.search_const_value("MindStateInputSeatID")['value'])
 
 ## 在 mindStateInput 面板列表中，选择一个打开，其余关闭。通过信号调用本功能
 func select_mindStateInputPanel(property: String) -> void:
