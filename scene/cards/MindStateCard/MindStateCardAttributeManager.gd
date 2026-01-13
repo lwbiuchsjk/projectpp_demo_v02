@@ -130,7 +130,7 @@ func add_MindStateProperty_exp(propertyName: String, addedExp: int) -> int:
 		return 0
 	## 正式逻辑
 	var propertyExp = get_propertyExp(propertyName)
-	var afterExp = propertyExp + addedExp
+	var afterExp = _check_max_exp(propertyExp + addedExp)
 	var expKey = propertyName + ATTRIBUTE_EXP_NAME
 	## 判断是否升级
 	var afterLevel = _search_property_level(afterExp)
@@ -139,20 +139,27 @@ func add_MindStateProperty_exp(propertyName: String, addedExp: int) -> int:
 
 	return afterLevel - propertyLevel
 
-## 通过查询 exp 配置值，得到对应的 level
+## 通过查询 exp 配置值，得到对应的 level。
+## 配置时，每个等级检索其经验上限。按等级从低到高索引，检索到第一个当前经验小于经验上限的等级。
 func _search_property_level(nowExp: int) -> int:
 	var nowLevel = 1
 	for config in GameInfo.mindStateLevelExp.values():
 		if config['Exp'] == "":
 			break
-		var levelStartExp = config['Exp'].to_int()
-		if nowExp >= levelStartExp:
+		var levelEndExp = config['Exp'].to_int()
+		if nowExp <= levelEndExp:
 			nowLevel = config['ID'].to_int()
-		else:
 			break
 
 	return nowLevel
 
+## 检查是否已经达到最大经验值
+func _check_max_exp(nowExp: int) -> int:
+	var maxLevel = GameInfo.mindStateLevelExp.keys()[GameInfo.mindStateLevelExp.keys().size() - 1]
+	var maxExp = GameInfo.mindStateLevelExp[maxLevel]['Exp'].to_int()
+	if nowExp > maxExp:
+		return maxExp
+	return nowExp
 
 ## 自动设置 card 的 rarity。方法为，获得卡牌的主属性，将主属性的 rarity 设置为 card 的 rarity
 func _get_card_rarity_from_mindStateCard_mainAttribute() -> void:
@@ -179,8 +186,13 @@ func _check_propertyExp_from_propertyLevl() -> void:
 		## 无法换算时的覆盖逻辑
 		if configLevel != checkLevelFromExp:
 			for config in GameInfo.mindStateLevelExp.values():
-				if config['ID'] == str(configLevel):
+				var tempLevel = config['ID'].to_int()
+				if configLevel == 1:
+					cardRoot.cardInfo[propertyExpKey] = "0"
+					break
+				if tempLevel == configLevel - 1:
 					cardRoot.cardInfo[propertyExpKey] = config['Exp']
+					break
 
 ## 检查等级变动后的，属性在属性模板中的标志，是否与 inputCard 的属性模板一致。如果一致，那么恢复精神，否则消耗精神。
 func check_propertyTemplate_flag(playerInputCard:card, propertyIndex:int) -> bool:
