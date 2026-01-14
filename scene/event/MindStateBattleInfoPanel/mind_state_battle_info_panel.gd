@@ -6,6 +6,9 @@ class_name MindStateBattleInfoPanel
 @onready var bgImage: ColorRect = $CardInfoArea/BgImage
 @onready var showName: Label = $CardInfoArea/InputHint
 @onready var selectButton: Button = $CardInfoArea/SelectMindStateButton
+@onready var levelText: Label = $CardInfoArea/LevelHint
+@onready var expText: Label = $CardInfoArea/HealHint
+@onready var expBar: ColorRect = $CardInfoArea/UpperBgImage
 
 var mindStateName:String
 var mindStateValue:String
@@ -52,7 +55,18 @@ func set_InputInfo_visible(isMainVisible: bool, isAssistVisible:bool) -> void:
 func _show_mindStateInfo(propertyName:String, propertyValue:String) -> void:
 	mindStateName = propertyName
 	mindStateValue = propertyValue
-	showName.text = GameInfo.mindStateManager.get_mindStateName(mindStateName) + ":" + str(propertyValue)
+	showName.text = GameInfo.mindStateManager.get_mindStateName(mindStateName)
+	var mindStateCardManager = GameInfo.mindStateManager.battleNowTargetCard.cardAttributeManager as MindStateCardAttributeManager
+	var nowLevel = mindStateCardManager.get_propertyLevel(propertyName)
+	var nowExp = mindStateCardManager.get_propertyExp(propertyName)
+	## 计算进度条长度
+	var minExpFromLevel = mindStateCardManager.search_level_minExp(nowLevel)
+	var maxExpFromLevel = mindStateCardManager.search_level_maxExp(nowLevel)
+	var nowBarWidth = (nowExp - minExpFromLevel) * 200 / (maxExpFromLevel - minExpFromLevel)
+	## 处理显示
+	levelText.text = str(nowLevel)
+	expText.text = str(nowExp)
+	expBar.set_size(Vector2(nowBarWidth, 70))
 
 ## 显示当前组件的 mindState 相关信息，例如 color。并且开启设置按钮功能，允许后续进行选择。如果输入的 propertyName 无法被检测到，那么显示默认颜色
 func _show_mindStateColor(propertyName:String) -> void:
@@ -61,7 +75,8 @@ func _show_mindStateColor(propertyName:String) -> void:
 	if propertyColorCode == "":
 		bgImage.color = defaultColor
 	else:
-		bgImage.color = Color(GameInfo.mindStateManager.get_mindStateColor(propertyName))
+		bgImage.color = Color(propertyColorCode)
+		expBar.color = Color(propertyColorCode)
 	selectButton.visible = true
 
 ## 触发选择功能。通过 MindStateManger 进行全局影响

@@ -130,7 +130,7 @@ func add_MindStateProperty_exp(propertyName: String, addedExp: int) -> int:
 		return 0
 	## 正式逻辑
 	var propertyExp = get_propertyExp(propertyName)
-	var afterExp = _check_max_exp(propertyExp + addedExp)
+	var afterExp = _floor_max_exp(propertyExp + addedExp)
 	var expKey = propertyName + ATTRIBUTE_EXP_NAME
 	## 判断是否升级
 	var afterLevel = _search_property_level(afterExp)
@@ -154,12 +154,49 @@ func _search_property_level(nowExp: int) -> int:
 	return nowLevel
 
 ## 检查是否已经达到最大经验值
-func _check_max_exp(nowExp: int) -> int:
+func _floor_max_exp(nowExp: int) -> int:
 	var maxLevel = GameInfo.mindStateLevelExp.keys()[GameInfo.mindStateLevelExp.keys().size() - 1]
 	var maxExp = GameInfo.mindStateLevelExp[maxLevel]['Exp'].to_int()
 	if nowExp > maxExp:
 		return maxExp
 	return nowExp
+
+## 获得输入等级的最小经验
+func search_level_minExp(level: int) -> int:
+	if not _check_level_illegal(level):
+		return -1
+
+	for config in GameInfo.mindStateLevelExp.values():
+		var nowLevel = config['ID'].to_int()
+		if nowLevel == level - 1:
+			return config['Exp'].to_int() + 1
+
+	return -1
+
+## 获得输入等级的最大经验
+func search_level_maxExp(level: int) -> int:
+	if not _check_level_illegal(level):
+		return -1
+
+	for config in GameInfo.mindStateLevelExp.values():
+		var nowLevel = config['ID'].to_int()
+		if nowLevel == level:
+			return config['Exp'].to_int()
+
+	return -1
+
+## 等级的是否合法检测
+func _check_level_illegal(level: int) -> bool:
+	## 小于最小等级
+	var minLevel = GameInfo.mindStateLevelExp.keys()[0].to_int()
+	if level < minLevel:
+		return false
+	## 大于最大等级
+	var maxLevel = GameInfo.mindStateLevelExp.keys()[GameInfo.mindStateLevelExp.keys().size() - 1].to_int()
+	if level > maxLevel:
+		return false
+
+	return true
 
 ## 自动设置 card 的 rarity。方法为，获得卡牌的主属性，将主属性的 rarity 设置为 card 的 rarity
 func _get_card_rarity_from_mindStateCard_mainAttribute() -> void:
@@ -191,7 +228,7 @@ func _check_propertyExp_from_propertyLevl() -> void:
 					cardRoot.cardInfo[propertyExpKey] = "0"
 					break
 				if tempLevel == configLevel - 1:
-					cardRoot.cardInfo[propertyExpKey] = config['Exp']
+					cardRoot.cardInfo[propertyExpKey] = str(config['Exp'].to_int() + 1)
 					break
 
 ## 检查等级变动后的，属性在属性模板中的标志，是否与 inputCard 的属性模板一致。如果一致，那么恢复精神，否则消耗精神。

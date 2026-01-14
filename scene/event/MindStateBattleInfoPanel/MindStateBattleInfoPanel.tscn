@@ -23,7 +23,7 @@ script = ExtResource("1_mjnxl")
 
 [node name="CardInfoArea" type="Control" parent="."]
 anchors_preset = 0
-offset_right = 200.0
+offset_right = 250.0
 offset_bottom = 70.0
 
 [node name="BgImage" type="ColorRect" parent="CardInfoArea"]
@@ -35,17 +35,35 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.6120363, 0.61203635, 0.6120363, 1)
 
-[node name="InputHint" type="Label" parent="CardInfoArea"]
+[node name="BgMask" type="ColorRect" parent="CardInfoArea"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 30
+color = Color(0, 0, 0, 0.3137255)
+
+[node name="UpperBgImage" type="ColorRect" parent="CardInfoArea"]
+layout_mode = 1
+offset_right = 200.0
+offset_bottom = 70.0
+color = Color(0.6120363, 0.61203635, 0.6120363, 1)
+
+[node name="ProgressBar" type="ProgressBar" parent="CardInfoArea"]
+visible = false
+layout_mode = 0
+offset_right = 200.0
+offset_bottom = 70.0
+show_percentage = false
+
+[node name="InputHint" type="Label" parent="CardInfoArea"]
+layout_mode = 1
+offset_right = 100.0
+offset_bottom = 50.0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 45
 text = "+"
-horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="SelectMindStateButton" type="Button" parent="CardInfoArea"]
@@ -62,14 +80,31 @@ theme_override_styles/hover = SubResource("StyleBoxEmpty_u0f54")
 theme_override_styles/disabled = SubResource("StyleBoxEmpty_i72ey")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_dr4bc")
 
+[node name="LevelHint" type="Label" parent="CardInfoArea"]
+layout_mode = 1
+offset_left = 205.0
+offset_top = -12.0
+offset_right = 245.0
+offset_bottom = 84.0
+theme_override_font_sizes/font_size = 70
+text = "4"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HealHint" type="Label" parent="CardInfoArea"]
+layout_mode = 0
+offset_top = -23.0
+offset_right = 40.0
+text = "999"
+
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(241, 35)
+position = Vector2(288, 35)
 texture = ExtResource("2_0iprt")
 
 [node name="TargetInfoArea" type="Control" parent="."]
 anchors_preset = 0
-offset_left = 200.0
-offset_right = 250.0
+offset_left = 247.0
+offset_right = 297.0
 offset_bottom = 70.0
 
 [node name="MainPropertyMark" type="ColorRect" parent="TargetInfoArea"]
@@ -113,8 +148,8 @@ vertical_alignment = 1
 
 [node name="InputInfoArea" type="Control" parent="."]
 anchors_preset = 0
-offset_left = 250.0
-offset_right = 330.0
+offset_left = 297.0
+offset_right = 377.0
 offset_bottom = 70.0
 
 [node name="MainPropertyMark" type="ColorRect" parent="InputInfoArea"]
