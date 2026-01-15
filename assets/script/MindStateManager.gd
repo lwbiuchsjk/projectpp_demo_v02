@@ -46,12 +46,14 @@ func _on_start_mindStateBattle() -> void:
 	_load_mindStateSwarmCard_from_battle()
 
 	## TODO 此处可以改变进入战斗时的 spirit 值。可根据情况扩展。
-	PlayerInfo.gamePlayerInfoManager.settle_spiritAttribute(-50)
+	PlayerInfo.gamePlayerInfoManager.settle_spiritAttribute(-90)
 
 func _load_mindStateSwarmCard_from_battle() -> void:
 	battleData = _locate_battleData()
 	if not battleData.is_empty():
+		## TODO 此处强制取了 MindStateBattle 中 CardsInfo 中的首个配置。暂不支持读入后续卡牌
 		var cardData = battleData['CardsInfo'][0]
+		print(cardData)
 		var searchCard = GameInfo.search_card_from_cardName(cardData['base_cardName'])
 		var cardToAdd=preload("res://scene/cards/MindStateCard/MindStateCard.tscn").instantiate() as card
 		cardToAdd.initCard(searchCard)
@@ -145,9 +147,15 @@ func _process_targetCard_property(inputCard: card, propertyIndex: int) -> void:
 	## 此时精神到最低后，应当有恢复机制，让玩家不至于又快速被迫面对 MindStateBattle
 	## 固定恢复机制？如果满足 selectCard，那么大回复。否则，小回复。
 	if isSatisfiedTemplate:
+		attributerManager.write_cardData_to_cardInfo()
+		GameInfo.mindStateManager.emit_signal('close_mindStateBattle_panel')
 		print("修正属性值后，满足 playerSelectCard 模板。退出 MindStateBattle。")
+		return
 	elif spiritQuitFlag:
+		attributerManager.write_cardData_to_cardInfo()
+		GameInfo.mindStateManager.emit_signal('close_mindStateBattle_panel')
 		print("操作后，精神降至最低，退出 MindStateBattle。")
+		return
 
 	print("继续 MindStateBattle.")
 
@@ -186,6 +194,6 @@ func check_secondProperty_satisfied(rankList: Array, index: int) -> bool:
 	var rankValue = rankList[index]
 	if rankValue > 3:
 		return true
-	elif rankValue == rankList.max():
-		return true
+	##elif rankValue == rankList.max():
+	##	return true
 	return false

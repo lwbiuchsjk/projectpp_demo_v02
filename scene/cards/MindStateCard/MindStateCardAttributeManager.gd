@@ -346,3 +346,10 @@ func _get_second_smallest_sort(arr: Array) -> Variant:
 	# 所有值都相同
 	print("所有值都相同，没有第二小的值")
 	return null
+
+## 将当前卡牌结果写入已经读入的 GameInfo 卡牌数据，方便流程中继续使用。
+## 此处不是写入文件。因此在流程之间不会继承改动。
+func write_cardData_to_cardInfo() -> void:
+	for index in range(GameInfo.cardInfo.keys().size()):
+		if GameInfo.cardInfo.keys()[index] == cardRoot.cardInfo['ID']:
+			GameInfo.cardInfo[cardRoot.cardInfo['ID']] = cardRoot.cardInfo

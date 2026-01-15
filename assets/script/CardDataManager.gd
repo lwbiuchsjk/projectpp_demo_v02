@@ -289,7 +289,7 @@ func _mindStateAttribute_changer(targetCard:card, property:Dictionary) -> void:
 	## TODO 此处应当添加对 MindStateSwarm 的相关变化功能
 	print("卡牌属性变化，检测到当前 MindStateSwarm: %s"%[nowMindStateSwarm])
 	var attribute =  targetCard.cardAttributeManager as MindStateCardAttributeManager
-	for item in attribute.propertyList:
+	for item in GameInfo.propertyList:
 		if not item in property.keys():
 			continue
 		var targetAttribute = attribute.attribute_component.find_attribute(item)

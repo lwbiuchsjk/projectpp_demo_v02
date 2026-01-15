@@ -184,6 +184,7 @@ offset_right = 40.0
 offset_bottom = 40.0
 
 [node name="CloseButton" type="Button" parent="."]
+visible = false
 layout_mode = 0
 offset_left = 1800.0
 offset_right = 1900.0
