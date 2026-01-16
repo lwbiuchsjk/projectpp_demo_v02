@@ -178,6 +178,7 @@ func set_next_avg(nextEvent = null) -> void:
 		emit_signal("draw_npc")
 		return
 
+	## 通过 nowAvg 相关配置，来决定是否关闭 avg 面板。
 	if nowAvg['nextID'] == null or nowAvg['nextID'] == "":
 		emit_signal("close_avg")
 
@@ -216,24 +217,27 @@ func _check_nowEvent_finishFunc(funcIndex: int) -> bool:
 	return false
 
 ## 根据当前座位设置条件，判断下一个执行的event
-func check_next_event_condition():
+func check_next_event_condition(setNextEventID = null):
 	var blank_eventID
 	var maxPoint_eventID
-	var now_maxPoint = 0
-	for event in GameInfo.eventConfig.values():
-		var condition_point = _check_event_condition_point_gen(event['condition'])
-		if condition_point == -1:
-			blank_eventID = event.ID
-			continue
-		if condition_point >= now_maxPoint:
-			maxPoint_eventID = event.ID
-			continue
 
+	if setNextEventID == null:
+		var now_maxPoint = 0
+		for event in GameInfo.eventConfig.values():
+			var condition_point = _check_event_condition_point_gen(event['condition'])
+			if condition_point == -1:
+				blank_eventID = event.ID
+				continue
+			if condition_point >= now_maxPoint:
+				maxPoint_eventID = event.ID
+				continue
 
 	print("检查到全空的AVG跳转ID: ", blank_eventID)
 	print("检查到当前最匹配的AVG跳转ID: ", maxPoint_eventID)
 	var nextEvent
-	if maxPoint_eventID != null:
+	if setNextEventID != null:
+		nextEvent = load_event_from_ID(setNextEventID)
+	elif maxPoint_eventID != null:
 		nextEvent = load_event_from_ID(maxPoint_eventID)
 	else:
 		nextEvent = load_event_from_ID(blank_eventID)

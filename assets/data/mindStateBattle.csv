@@ -1,2 +1,2 @@
-﻿ID,remarks,CardsInfo,WinResult,notWinResult
-1,用于描述mindStateBattle，重点是其中的 MindStateCard, 5/2,填入resultID,
+﻿ID,remarks,CardsInfo,BattleEndEvent
+1,用于描述mindStateBattle，重点是其中的 MindStateCard, 5/2,1

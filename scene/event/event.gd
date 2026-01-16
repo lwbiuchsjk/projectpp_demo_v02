@@ -230,3 +230,7 @@ func on_close_mindStateBattle_panel() -> void:
 	for child in mindStateBattleRoot.get_children():
 		mindStateBattleRoot.remove_child(child)
 		child.queue_free()
+
+	## 触发后续AVG流程
+	GameInfo.avgManager.emit_signal("simple_show_next_avg")
+
