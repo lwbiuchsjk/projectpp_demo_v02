@@ -23,9 +23,6 @@ var playerSelectCard: card:
 	set(card): playerSelectCard = card
 	get: return playerSelectCard
 
-var mainPropertyValue = "F"
-var secondPropertyValue = "H"
-
 signal start_mindStateBattle()
 signal show_mindStateBattle_panel()		## event中连接
 signal close_mindStateBattle_panel() 	## event中连接
@@ -46,7 +43,7 @@ func _on_start_mindStateBattle() -> void:
 	_load_mindStateSwarmCard_from_battle()
 
 	## TODO 此处可以改变进入战斗时的 spirit 值。可根据情况扩展。
-	PlayerInfo.gamePlayerInfoManager.settle_spiritAttribute(-90)
+	PlayerInfo.gamePlayerInfoManager.settle_spiritAttribute(-50)
 
 func _load_mindStateSwarmCard_from_battle() -> void:
 	battleData = _locate_battleData()
@@ -133,67 +130,29 @@ func _process_targetCard_property(inputCard: card, propertyIndex: int) -> void:
 	var spiritQuitFlag = PlayerInfo.gamePlayerInfoManager.settle_spiritAttribute(spiritChangeValue)
 
 	## 变化结束后，需要更新 battlePanel 中相关信息的显示
-	battlePanel.show_CardInfo(GameInfo.mindStateManager.battleNowTargetCard, true)
+	battlePanel.show_CardInfo(battleNowTargetCard, true)
 
 	print("本次精神变化计算值：", spiritChangeValue)
 
 	## 此处判断提交卡牌后，数值变化是否与 PlayerSelectCard 的模板相匹配
 	var selectMindStateClass = playerSelectCard.cardInfo['TypeName']
 	var selectMindStateTemplate = GameInfo.get_mindStateTemplaterData(selectMindStateClass)
-	var isSatisfiedTemplate = _check_mindStateProperty_satisfied_template(selectMindStateTemplate, battleNowTargetCard)
+	var isSatisfiedTemplate = attributerManager.check_mindStateProperty_satisfied_template(selectMindStateTemplate)
+
+	attributerManager.write_cardData_to_cardInfo()
 
 	## 判断是否满足退出机制
-	## TODO 退出机制，仅会被2种情况触发：满足 selectCard 的 MindStateTemplate，或精神达到最低。
+	## 退出机制，仅会被2种情况触发：满足 selectCard 的 MindStateTemplate，或精神达到最低。
+	## TODO 补充 battleResult 环节。让玩家精力可以恢复，或补充卡牌
 	## 此时精神到最低后，应当有恢复机制，让玩家不至于又快速被迫面对 MindStateBattle
 	## 固定恢复机制？如果满足 selectCard，那么大回复。否则，小回复。
 	if isSatisfiedTemplate:
-		attributerManager.write_cardData_to_cardInfo()
 		GameInfo.mindStateManager.emit_signal('close_mindStateBattle_panel')
 		print("修正属性值后，满足 playerSelectCard 模板。退出 MindStateBattle。")
 		return
 	elif spiritQuitFlag:
-		attributerManager.write_cardData_to_cardInfo()
 		GameInfo.mindStateManager.emit_signal('close_mindStateBattle_panel')
 		print("操作后，精神降至最低，退出 MindStateBattle。")
 		return
 
 	print("继续 MindStateBattle.")
-
-## 检查当前属性是否满足 selectCard 的 template
-func _check_mindStateProperty_satisfied_template(template: Dictionary, mindStateCard: card) -> bool:
-	## 通过 template 得到【主属性】【副属性】的 index
-	var mainPropertyIndex = _check_mindStateProperty_from_templateValue(template, mainPropertyValue)
-	var secondPropertyIndex = _check_mindStateProperty_from_templateValue(template, secondPropertyValue)
-	if mainPropertyIndex < 0 or secondPropertyIndex < 0:
-		print("检测 _check_mindStateProperty_from_templateValue 存在错误。mainPropertyIndex = %d, secondPropertyIndex = %d" %[mainPropertyIndex, secondPropertyIndex])
-		return false
-	## 判断根据 template 索引到的【主属性】【副属性】，是否真的符合其定义。
-	var attributerManager = mindStateCard.cardAttributeManager as MindStateCardAttributeManager
-	var propertyRankList = attributerManager.get_mindStateProperty_rank()
-	## 此处调用定义，主属性是排序前3位的属性，副属性是排序后3为的属性。同时满足这两个情况，才与模板匹配。
-	if check_mainProperty_satisfied(propertyRankList, mainPropertyIndex) and check_secondProperty_satisfied(propertyRankList, secondPropertyIndex):
-		return true
-
-	return false
-
-## 内部方法。对【主属性】【副属性】通用的检测方式
-func _check_mindStateProperty_from_templateValue(template: Dictionary, propertyTemplateValue: String) -> int:
-	for index in range(len(GameInfo.propertyList)):
-		var propertyKey = GameInfo.propertyList[index]
-		if template[propertyKey] == propertyTemplateValue:
-			return index
-	return -1
-
-func check_mainProperty_satisfied(rankList: Array, index: int) -> bool:
-	var rankValue = rankList[index]
-	if rankValue <= 3:
-		return true
-	return false
-
-func check_secondProperty_satisfied(rankList: Array, index: int) -> bool:
-	var rankValue = rankList[index]
-	if rankValue > 3:
-		return true
-	##elif rankValue == rankList.max():
-	##	return true
-	return false

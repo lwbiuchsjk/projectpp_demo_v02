@@ -9,6 +9,10 @@ class_name MindStateCardAttributeManager
 
 ##const ATTRIBUTE_LEVEL_NAME = "Level"
 const ATTRIBUTE_EXP_NAME = 'Exp'
+const MIND_STATE_PROPERTY_MAX_LEVEL = 5
+const MIND_STATE_PROPERTY_MIN_LEVEL = 1
+const MAIN_PROPERTY_VALUE = "F"
+const SECOND_PROPERTY_VALUE = "H"
 
 func _ready() -> void:
 	# 将本 manager 绑定至 card 父节点上
@@ -71,12 +75,30 @@ func _get_value_from_CardInto(key: String) -> String:
 ## 待扩展
 func _init_mindState_info() -> void:
 	var attribute_set = get_attribute_set() as AttributeSet
+	var mindStateTemplate = GameInfo.get_mindStateTemplaterData(cardRoot.cardInfo['TypeName'])
 	for property in GameInfo.propertyList:
+		_shuffle_mindStatePropert(mindStateTemplate, property)
 		_set_mindState_info(property)
 	#var levelInstance = get_attribute(ATTRIBUTE_LEVEL_NAME)
 	#_set_level_info(levelInstance)
 
 	pass
+
+## TODO 可在此处将 mindStateProperty，按照 template 的要求，进行微调
+## 目前实现，是将数值按照 template 设置，向上、向下调整 1。
+func _shuffle_mindStatePropert(template:Dictionary, propertyName:String) -> void:
+	var propertyInstance = attribute_component.attribute_set.find_attribute(propertyName) as MindStateAttribute
+	var afterValue = propertyInstance.get_value()
+	if GameInfo.check_property_mainProperty(template, propertyName):
+		if propertyInstance.get_value() < MIND_STATE_PROPERTY_MAX_LEVEL:
+			afterValue = propertyInstance.get_value() + 1
+
+	if GameInfo.check_property_secondProperty(template, propertyName):
+		if propertyInstance.get_value() > MIND_STATE_PROPERTY_MIN_LEVEL:
+			afterValue = propertyInstance.get_value() - 1
+
+	propertyInstance.set_value(afterValue)
+	cardRoot.cardInfo[propertyName] = str(afterValue)
 
 ## 用于对卡牌相关的 mindState 外显进行设置
 func _show_mindState_info() -> void:
@@ -353,3 +375,41 @@ func write_cardData_to_cardInfo() -> void:
 	for index in range(GameInfo.cardInfo.keys().size()):
 		if GameInfo.cardInfo.keys()[index] == cardRoot.cardInfo['ID']:
 			GameInfo.cardInfo[cardRoot.cardInfo['ID']] = cardRoot.cardInfo
+
+## 检查当前属性是否满足 selectCard 的 template
+func check_mindStateProperty_satisfied_template(template: Dictionary) -> bool:
+	## 通过 template 得到【主属性】【副属性】的 index
+	var mainPropertyIndex = _check_mindStateProperty_from_templateValue(template, MAIN_PROPERTY_VALUE)
+	var secondPropertyIndex = _check_mindStateProperty_from_templateValue(template, SECOND_PROPERTY_VALUE)
+	if mainPropertyIndex < 0 or secondPropertyIndex < 0:
+		print("检测 _check_mindStateProperty_from_templateValue 存在错误。mainPropertyIndex = %d, secondPropertyIndex = %d" %[mainPropertyIndex, secondPropertyIndex])
+		return false
+	## 判断根据 template 索引到的【主属性】【副属性】，是否真的符合其定义。
+	var propertyRankList = get_mindStateProperty_rank()
+	## 此处调用定义，主属性是排序前3位的属性，副属性是排序后3为的属性。同时满足这两个情况，才与模板匹配。
+	if check_mainProperty_satisfied(propertyRankList, mainPropertyIndex) and check_secondProperty_satisfied(propertyRankList, secondPropertyIndex):
+		return true
+
+	return false
+
+## 内部方法。对【主属性】【副属性】通用的检测方式
+func _check_mindStateProperty_from_templateValue(template: Dictionary, propertyTemplateValue: String) -> int:
+	for index in range(len(GameInfo.propertyList)):
+		var propertyKey = GameInfo.propertyList[index]
+		if template[propertyKey] == propertyTemplateValue:
+			return index
+	return -1
+
+func check_mainProperty_satisfied(rankList: Array, index: int) -> bool:
+	var rankValue = rankList[index]
+	if rankValue <= 3:
+		return true
+	return false
+
+func check_secondProperty_satisfied(rankList: Array, index: int) -> bool:
+	var rankValue = rankList[index]
+	if rankValue > 3:
+		return true
+	##elif rankValue == rankList.max():
+	##	return true
+	return false
