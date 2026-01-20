@@ -43,12 +43,13 @@ func _on_start_mindStateBattle() -> void:
 	_load_mindStateSwarmCard_from_battle()
 
 	## TODO 此处可以改变进入战斗时的 spirit 值。可根据情况扩展。
-	PlayerInfo.gamePlayerInfoManager.settle_spiritAttribute(-50)
+	##PlayerInfo.gamePlayerInfoManager.settle_spiritAttribute(-50)
 
 func _load_mindStateSwarmCard_from_battle() -> void:
 	battleData = _locate_battleData()
 	if not battleData.is_empty():
 		## TODO 此处强制取了 MindStateBattle 中 CardsInfo 中的首个配置。暂不支持读入后续卡牌
+		## TODO 此处 应当处理是否能够从内存中读入 battleNowTargetCard 的设计，避免其被反复 shuffle
 		var cardData = battleData['CardsInfo'][0]
 		print(cardData)
 		var searchCard = GameInfo.search_card_from_cardName(cardData['base_cardName'])

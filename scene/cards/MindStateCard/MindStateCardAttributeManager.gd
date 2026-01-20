@@ -6,6 +6,7 @@ class_name MindStateCardAttributeManager
 #var attribute_component: AttributeComponent
 @onready var cardRoot = self.get_parent() as card
 @onready var attribute_component: AttributeComponent = %AttributeComponent
+var _isShuffled: bool = false
 
 ##const ATTRIBUTE_LEVEL_NAME = "Level"
 const ATTRIBUTE_EXP_NAME = 'Exp'
@@ -76,8 +77,8 @@ func _get_value_from_CardInto(key: String) -> String:
 func _init_mindState_info() -> void:
 	var attribute_set = get_attribute_set() as AttributeSet
 	var mindStateTemplate = GameInfo.get_mindStateTemplaterData(cardRoot.cardInfo['TypeName'])
+	_shuffle_mindStatePropert(mindStateTemplate)
 	for property in GameInfo.propertyList:
-		_shuffle_mindStatePropert(mindStateTemplate, property)
 		_set_mindState_info(property)
 	#var levelInstance = get_attribute(ATTRIBUTE_LEVEL_NAME)
 	#_set_level_info(levelInstance)
@@ -86,19 +87,57 @@ func _init_mindState_info() -> void:
 
 ## TODO 可在此处将 mindStateProperty，按照 template 的要求，进行微调
 ## 目前实现，是将数值按照 template 设置，向上、向下调整 1。
-func _shuffle_mindStatePropert(template:Dictionary, propertyName:String) -> void:
-	var propertyInstance = attribute_component.attribute_set.find_attribute(propertyName) as MindStateAttribute
-	var afterValue = propertyInstance.get_value()
-	if GameInfo.check_property_mainProperty(template, propertyName):
-		if propertyInstance.get_value() < MIND_STATE_PROPERTY_MAX_LEVEL:
-			afterValue = propertyInstance.get_value() + 1
+func _shuffle_mindStatePropert(template:Dictionary) -> void:
+	## 如果已经有排序结果，那么跳过 shuffle 流程
+	## 特别的，限制【可堆叠】卡牌，不允许被 shuffle
+	if _isShuffled or cardRoot.cardInfo['stackFlag']:
+		return
 
-	if GameInfo.check_property_secondProperty(template, propertyName):
-		if propertyInstance.get_value() > MIND_STATE_PROPERTY_MIN_LEVEL:
-			afterValue = propertyInstance.get_value() - 1
+	var mindStatePropertyRank = get_mindStateProperty_rank()
+	var mainPropertyNameList = []
+	var mainPropertyValueList = []
+	var seconderyProperyName
 
+	for index in range(GameInfo.propertyList.size()):
+		var propertyName = GameInfo.propertyList[index]
+		if check_mainProperty_satisfied(mindStatePropertyRank, index) and not GameInfo.check_property_secondProperty(template, propertyName):
+			mainPropertyNameList.append(propertyName)
+			mainPropertyValueList.append(cardRoot.cardInfo[propertyName])
+		if GameInfo.check_property_secondProperty(template, propertyName):
+			seconderyProperyName = propertyName
+
+	print(mainPropertyNameList)
+	print(mainPropertyValueList)
+	print(seconderyProperyName)
+
+	var randomIndex = randi_range(0, mainPropertyNameList.size()-1)
+	var randomPropertyName = mainPropertyNameList[randomIndex]
+	var propertyInstance = attribute_component.attribute_set.find_attribute(randomPropertyName) as MindStateAttribute
+	var afterValue = propertyInstance.get_value() + 1
 	propertyInstance.set_value(afterValue)
-	cardRoot.cardInfo[propertyName] = str(afterValue)
+	cardRoot.cardInfo[randomPropertyName] = str(afterValue)
+
+	var seconderyPropertInstance = attribute_component.attribute_set.find_attribute(seconderyProperyName) as MindStateAttribute
+	var seconderyAfterValue = seconderyPropertInstance.get_value() - 1
+	seconderyPropertInstance.set_value(seconderyAfterValue)
+	cardRoot.cardInfo[seconderyProperyName] = str(seconderyAfterValue)
+
+	#for property in GameInfo.propertyList:
+	#	var propertyInstance = attribute_component.attribute_set.find_attribute(property) as MindStateAttribute
+	#	var afterValue = propertyInstance.get_value()
+	#	if GameInfo.check_property_mainProperty(template, property):
+	#		if propertyInstance.get_value() < MIND_STATE_PROPERTY_MAX_LEVEL:
+	#			afterValue = propertyInstance.get_value() + 1
+
+	#	if GameInfo.check_property_secondProperty(template, property):
+	#		if propertyInstance.get_value() > MIND_STATE_PROPERTY_MIN_LEVEL:
+	#			afterValue = propertyInstance.get_value() - 1
+
+	#	propertyInstance.set_value(afterValue)
+	#	cardRoot.cardInfo[property] = str(afterValue)
+
+	## shuffle 后，将排序结果保存，以供后续调用
+	_isShuffled = true
 
 ## 用于对卡牌相关的 mindState 外显进行设置
 func _show_mindState_info() -> void:
@@ -263,39 +302,15 @@ func check_propertyTemplate_flag(playerInputCard:card, propertyIndex:int) -> boo
 	var mindStateClass = playerInputCard.cardInfo['TypeName']
 	var mindStateTemplate = GameInfo.get_mindStateTemplaterData(mindStateClass)
 	if GameInfo.check_property_mainProperty(mindStateTemplate, propertyKey):
-		if GameInfo.mindStateManager.check_mainProperty_satisfied(propertySortIndexList, propertyIndex):
+		if check_mainProperty_satisfied(propertySortIndexList, propertyIndex):
 			return true
 
 	if GameInfo.check_property_secondProperty(mindStateTemplate, propertyKey):
-		if GameInfo.mindStateManager.check_secondProperty_satisfied(propertySortIndexList, propertyIndex):
+		if check_secondProperty_satisfied(propertySortIndexList, propertyIndex):
 			return true
 
 	return false
 
-
-## 	稳定排序：相同值时保持原始顺序
-func _get_stable_sorted_indices(arr: Array) -> Array:
-	# 创建带原始索引的数组
-	var indexed_arr = []
-	for i in range(arr.size()):
-		indexed_arr.append({
-			"value": arr[i],
-			"original_index": i
-		})
-
-	# 排序：先按值，再按原始索引
-	indexed_arr.sort_custom(func(a, b):
-		if a.value == b.value:
-			return a.original_index < b.original_index
-		return a.value < b.value
-	)
-
-	# 提取排序后的索引
-	var indices = []
-	for item in indexed_arr:
-		indices.append(item.original_index)
-
-	return indices
 
 ## 通用方法。可以返回本卡牌，MindStateProperty 的数值排序结果
 func get_mindStateProperty_rank() -> Array:
@@ -347,27 +362,6 @@ func _get_ranks_with_ties(arr: Array) -> Array:
 
 	return ranks
 
-##	获取第二小的值，如果不存在则返回 null
-##	考虑值相等的情况
-func _get_second_smallest_sort(arr: Array) -> Variant:
-	if arr.size() < 2:
-		print("数组元素不足2个")
-		return null
-
-	# 创建副本并排序
-	var sorted_arr = arr.duplicate()
-	sorted_arr.sort()  # 升序排序
-
-	var smallest = sorted_arr[0]
-
-	# 寻找第一个不等于最小值的元素
-	for i in range(1, sorted_arr.size()):
-		if sorted_arr[i] != smallest:
-			return sorted_arr[i]
-
-	# 所有值都相同
-	print("所有值都相同，没有第二小的值")
-	return null
 
 ## 将当前卡牌结果写入已经读入的 GameInfo 卡牌数据，方便流程中继续使用。
 ## 此处不是写入文件。因此在流程之间不会继承改动。
