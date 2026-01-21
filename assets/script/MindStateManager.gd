@@ -43,7 +43,7 @@ func _on_start_mindStateBattle() -> void:
 	_load_mindStateSwarmCard_from_battle()
 
 	## TODO 此处可以改变进入战斗时的 spirit 值。可根据情况扩展。
-	##PlayerInfo.gamePlayerInfoManager.settle_spiritAttribute(-50)
+	PlayerInfo.gamePlayerInfoManager.settle_spiritAttribute(50)
 
 func _load_mindStateSwarmCard_from_battle() -> void:
 	battleData = _locate_battleData()

@@ -76,7 +76,7 @@ layout_mode = 2
 layout_mode = 0
 offset_right = 30.0
 offset_bottom = 30.0
-color = Color(0, 0, 0, 0.627451)
+color = Color(0.26050612, 0.26050615, 0.26050606, 1)
 
 [node name="Label" type="Label" parent="MindStateInfo/Happiness" index="1"]
 layout_mode = 0
@@ -95,7 +95,7 @@ layout_mode = 2
 layout_mode = 0
 offset_right = 30.0
 offset_bottom = 30.0
-color = Color(0, 0, 0, 0.627451)
+color = Color(0.26050612, 0.26050615, 0.26050606, 1)
 
 [node name="Label" type="Label" parent="MindStateInfo/Sadness" index="1"]
 layout_mode = 0
@@ -114,7 +114,7 @@ layout_mode = 2
 layout_mode = 0
 offset_right = 30.0
 offset_bottom = 30.0
-color = Color(0, 0, 0, 0.627451)
+color = Color(0.26050612, 0.26050615, 0.26050606, 1)
 
 [node name="Label" type="Label" parent="MindStateInfo/Anger" index="1"]
 layout_mode = 0
@@ -133,7 +133,7 @@ layout_mode = 2
 layout_mode = 0
 offset_right = 30.0
 offset_bottom = 30.0
-color = Color(0, 0, 0, 0.627451)
+color = Color(0.26050612, 0.26050615, 0.26050606, 1)
 
 [node name="Label" type="Label" parent="MindStateInfo/Fear" index="1"]
 layout_mode = 0
@@ -152,7 +152,7 @@ layout_mode = 2
 layout_mode = 0
 offset_right = 30.0
 offset_bottom = 30.0
-color = Color(0, 0, 0, 0.627451)
+color = Color(0.26050612, 0.26050615, 0.26050606, 1)
 
 [node name="Label" type="Label" parent="MindStateInfo/Disgust" index="1"]
 layout_mode = 0
@@ -171,7 +171,7 @@ layout_mode = 2
 layout_mode = 0
 offset_right = 30.0
 offset_bottom = 30.0
-color = Color(0, 0, 0, 0.627451)
+color = Color(0.26050612, 0.26050615, 0.26050606, 1)
 
 [node name="Label" type="Label" parent="MindStateInfo/Surprise" index="1"]
 layout_mode = 0
