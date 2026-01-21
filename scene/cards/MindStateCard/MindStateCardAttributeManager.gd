@@ -130,7 +130,11 @@ func _shuffle_mindStatePropert(template:Dictionary) -> void:
 
 ## 用于对卡牌相关的 mindState 外显进行设置
 func _show_mindState_info() -> void:
+	var mindStateTemplate = GameInfo.get_mindStateTemplaterData(cardRoot.cardInfo['TypeName'])
 	for key in GameInfo.propertyList:
+		## 仅对【主属性】显示颜色，方便定位
+		if not GameInfo.check_property_mainProperty(mindStateTemplate, key):
+			continue
 		## 设置颜色，颜色由 const 配置决定
 		var colorCode = GameInfo.search_const_value(key + "Color")['valueString']
 		var colorRectNode = cardRoot.get_node("MindStateInfo/" + key + "/ColorRect") as ColorRect
