@@ -2,12 +2,14 @@
 
 importer="csv_translation"
 type="Translation"
-uid="uid://rue1pea27bk6"
-valid=false
+uid="uid://h28a8e388p5l"
 
 [deps]
 
+files=["res://assets/data/mindStateBattle.remarks.translation", "res://assets/data/mindStateBattle.CardsInfo.translation", "res://assets/data/mindStateBattle.BattleEndEvent.translation"]
+
 source_file="res://assets/data/mindStateBattle.csv"
+dest_files=["res://assets/data/mindStateBattle.remarks.translation", "res://assets/data/mindStateBattle.CardsInfo.translation", "res://assets/data/mindStateBattle.BattleEndEvent.translation"]
 
 [params]
 

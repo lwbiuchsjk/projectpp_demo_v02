@@ -37,33 +37,40 @@ func _ready() -> void:
 	clean_change_direction.connect(_clean_change_direction)
 	process_targetCard_property.connect(_process_targetCard_property)
 
+	#load_mindStateSwarmCard_from_battle()
+
 func _on_start_mindStateBattle() -> void:
 	print("battle start")
 	emit_signal("show_mindStateBattle_panel")
-	_load_mindStateSwarmCard_from_battle()
+	_show_battleNowTargetCard()
 
 	## TODO 此处可以改变进入战斗时的 spirit 值。可根据情况扩展。
 	PlayerInfo.gamePlayerInfoManager.settle_spiritAttribute(50)
 
-func _load_mindStateSwarmCard_from_battle() -> void:
+## 读取 SwarmCard 的配置。
+## 读取时机放在 gameInfo 的 ready 中，确保必要数据结构已经建立。、
+func load_mindStateSwarmCard_from_battle() -> void:
+	battleID = GameInfo.get_mindStateBattleID()
 	battleData = _locate_battleData()
 	if not battleData.is_empty():
 		## TODO 此处强制取了 MindStateBattle 中 CardsInfo 中的首个配置。暂不支持读入后续卡牌
 		## TODO 此处 应当处理是否能够从内存中读入 battleNowTargetCard 的设计，避免其被反复 shuffle
 		var cardData = battleData['CardsInfo'][0]
-		print(cardData)
 		var searchCard = GameInfo.search_card_from_cardName(cardData['base_cardName'])
 		var cardToAdd=preload("res://scene/cards/MindStateCard/MindStateCard.tscn").instantiate() as card
 		cardToAdd.initCard(searchCard)
 		battleNowTargetCard = cardToAdd
+
+	else:
+		print("battleData 检索结果为空，battleID: %s"%battleID)
+
+func _show_battleNowTargetCard() -> void:
+	if battleNowTargetCard != null:
 		## 通过本行为来触发 battleNowTargetCard 中节点的创建逻辑
 		self.add_child(battleNowTargetCard)
 		battleNowTargetCard.visible = false	## 关闭外显
-
 		if battlePanel != null:
-			battlePanel.emit_signal('load_battleCard', cardToAdd)
-	else:
-		print("battleData 检索结果为空，battleID: %s"%battleID)
+			battlePanel.emit_signal('load_battleCard', battleNowTargetCard)
 
 ## 内部函数。通过 battleID 获得配置数据
 func _locate_battleData() -> Dictionary:
@@ -157,3 +164,10 @@ func _process_targetCard_property(inputCard: card, propertyIndex: int) -> void:
 		return
 
 	print("继续 MindStateBattle.")
+
+
+func get_randomCard_from_MindStateSwarm() -> Array:
+	var output = []
+
+	return output
+

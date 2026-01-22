@@ -1,2 +1,2 @@
 ﻿ID,remarks,CardsInfo,PlotInfo
-1,测试数据, 4/2,4
+1,当前数据仅被 cardDataManager 中初始化。没有外部调用，需要协调与 mindStateBattle 之间的关系, 4/2,4

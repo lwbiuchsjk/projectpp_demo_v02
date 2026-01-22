@@ -96,9 +96,8 @@ func _ready() -> void:
 	avgManager = $AVGManager as AVGManager
 	mindStateManager = $MindStateManager as MindStateManager
 
-	## 读入 mindStateSwarm，并将其保存为实时数据，方便改变
-	cardDataManager.init_MindStateSwarm()
-	avgManager.eventConfig_data_wash()
+	## 初始化高优先级数据
+	init_highPriorityData()
 
 # 函数读取CSV文件并将其转换为嵌套字典
 func read_csv_as_nested_dict(path: String) -> Dictionary:
@@ -285,3 +284,15 @@ func check_property_secondProperty(templateData:Dictionary, propertyKey:String) 
 	if templateData[propertyKey] == "H":
 		return true
 	return false
+
+func get_mindStateBattleID() -> String:
+	return search_const_value('MindStateBattleID')['value']
+
+## 用于初始化重要的数据
+func init_highPriorityData() -> void:
+	## 读入 mindStateSwarm，并将其保存为实时数据，方便改变
+	cardDataManager.init_MindStateSwarm()
+	avgManager.eventConfig_data_wash()
+
+	## 初始化 swarm 数据。用于将 MindStateSwarm 从 battle 提升至【全局】
+	mindStateManager.load_mindStateSwarmCard_from_battle()
