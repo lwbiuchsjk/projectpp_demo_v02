@@ -4,11 +4,11 @@
 3,MindState,Iron_ore,ore,铁矿,虽然看起来很普通，但经过加工后，它可是战斗中的坚固护甲。,10,1,1000,0,0,0,3,MindState,3,1
 4,MindState,Silicon_ore,ore,硅矿,高科技设备的幕后英雄。,5,1,1000,0,0,0,3,MindState,4,1
 5,MindState,Magnesium_ore,ore,镁矿,闪亮登场，自带烟花特效。,5,1,1000,0,0,0,3,MindState,5,
-6,MindState,Nickel_ore,ore,镍矿,让你的装备变得更加坚韧。,8,1,1000,0,0,0,3,MindState,6,1
-7,Memory,Cobalt_ore,ore,钴矿,电子设备性能的秘密武器。,8,1,1000,0,0,0,3,MindState,7,1
-8,Memory,Silver_ore,ore,银矿,不仅能买东西，还很奢华。,10,1,1000,0,0,0,3,MindState,8,1
-9,Memory,Gold_ore,ore,金矿,财富和权力的象征，亮瞎眼。,50,1,1000,0,0,0,3,MindState,9,1
-10,Memory,Platinum_ore,ore,铂矿,贵金属中的绅士，低调奢华。,20,1,1000,0,0,0,3,MindState,10,1
+6,MindState,Nickel_ore,ore,镍矿,让你的装备变得更加坚韧。,8,1,1000,0,0,0,3,MindState,6,
+7,MindState,Cobalt_ore,ore,钴矿,电子设备性能的秘密武器。,8,1,1000,0,0,0,3,MindState,7,
+8,MindState,Silver_ore,ore,银矿,不仅能买东西，还很奢华。,10,1,1000,0,0,0,3,MindState,8,
+9,MindState,Gold_ore,ore,金矿,财富和权力的象征，亮瞎眼。,50,1,1000,0,0,0,3,MindState,9,
+10,MindState,Platinum_ore,ore,铂矿,贵金属中的绅士，低调奢华。,20,1,1000,0,0,0,3,MindState,10,
 11,Memory,Uranium_ore,ore,铀矿,能量满满，小心别惹火它。,50,1,1000,0,0,0,3,MindState,11,1
 12,Memory,Iron,item,铁,基础材料之王，不怕生锈。,50,1,1000,0,0,0,3,MindState,12,1
 13,Memory,Silicon,item,硅,构建高科技设备的核心元素。,50,1,1000,0,0,0,3,MindState,13,1

@@ -52,6 +52,18 @@ func get_some_card():
 		var targetDeck = GameInfo.cardDataManager.get_targetDeck_from_card(searchCardData)
 		PlayerInfo.add_new_card(searchCardData['base_cardName'],targetDeck,$Button)
 
+	GameInfo.mindStateManager.get_randomCard_from_MindStateSwarm()
+
+## 获得部分 mindStateCard。获取卡牌基于 mindStateSwarm 生成。
+func get_some_mindStateCard() -> void:
+	var num_cards = randi() % (maxRandomItemNum - minRandomItemNum + 1) + minRandomItemNum
+
+	for i in range(num_cards):
+		await get_tree().create_timer(0.1).timeout
+		var searchCardData = GameInfo.mindStateManager.get_randomCard_from_MindStateSwarm()
+		var targetDeck = GameInfo.cardDataManager.get_targetDeck_from_card(searchCardData)
+		PlayerInfo.add_new_card(searchCardData['base_cardName'],targetDeck,$Button)
+
 
 # 计算权重总和
 func get_total_weight(card_dict):

@@ -112,5 +112,5 @@ offset_right = 161.0
 offset_bottom = -7.0
 text = "site1"
 
-[connection signal="button_down" from="Button" to="." method="get_some_card"]
+[connection signal="button_down" from="Button" to="." method="get_some_mindStateCard"]
 [connection signal="button_down" from="goToButton" to="goToButton" method="_on_button_down"]

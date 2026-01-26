@@ -61,14 +61,16 @@ func load_mindStateSwarmCard_from_battle() -> void:
 		cardToAdd.initCard(searchCard)
 		battleNowTargetCard = cardToAdd
 
+		## 装载 batteleNowTargetCard，用于装载其属性相关组件
+		self.add_child(battleNowTargetCard)
+		battleNowTargetCard.visible = false	## 关闭外显
+
 	else:
 		print("battleData 检索结果为空，battleID: %s"%battleID)
 
 func _show_battleNowTargetCard() -> void:
 	if battleNowTargetCard != null:
 		## 通过本行为来触发 battleNowTargetCard 中节点的创建逻辑
-		self.add_child(battleNowTargetCard)
-		battleNowTargetCard.visible = false	## 关闭外显
 		if battlePanel != null:
 			battlePanel.emit_signal('load_battleCard', battleNowTargetCard)
 
@@ -165,9 +167,35 @@ func _process_targetCard_property(inputCard: card, propertyIndex: int) -> void:
 
 	print("继续 MindStateBattle.")
 
+## 从 battleNowTargetCard 中获得精神卡牌
+func get_randomCard_from_MindStateSwarm() -> Dictionary:
+	var mindStatePropertyManager = battleNowTargetCard.cardAttributeManager as MindStateCardAttributeManager
+	var mindStatePropertyRank = mindStatePropertyManager.get_mindStateProperty_rank()
 
-func get_randomCard_from_MindStateSwarm() -> Array:
-	var output = []
+	var mainPropertyPossibleList = []
+	var secondPropertyPossibleList = []
+	for index in range(mindStatePropertyRank.size()):
+		if mindStatePropertyManager.check_mainProperty_satisfied(mindStatePropertyRank, index):
+			mainPropertyPossibleList.append(index)
+		elif mindStatePropertyManager.check_secondProperty_satisfied(mindStatePropertyRank, index):
+			secondPropertyPossibleList.append(index)
 
-	return output
+	var mainPropertyRandomIndex = mainPropertyPossibleList[randi_range(0, mainPropertyPossibleList.size()-1)]
+	var secondPropertyRandomIndex = secondPropertyPossibleList[randi_range(0, secondPropertyPossibleList.size()-1)]
+	var mainPropertyRandom = GameInfo.propertyList[mainPropertyRandomIndex]
+	var secondPropertyRandom = GameInfo.propertyList[secondPropertyRandomIndex]
 
+	var satisfiedStandardCardID = _search_mindStateTargetCard_from_mainProperty_and_secondProperty(mainPropertyRandom, secondPropertyRandom)
+	var targetCard = GameInfo.cardInfo[satisfiedStandardCardID].duplicate()
+
+	return targetCard
+
+## 根据主属性、副属性标记，来获取对应的模板卡牌
+func _search_mindStateTargetCard_from_mainProperty_and_secondProperty(mainProperty: String, secondProperty: String) -> String:
+	var outputTemplate
+	for template in GameInfo.mindStateTemplate.values():
+		outputTemplate = template
+		if GameInfo.check_property_mainProperty(template, mainProperty) and GameInfo.check_property_secondProperty(template, secondProperty):
+			break
+
+	return outputTemplate['StandardCardID']
