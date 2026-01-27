@@ -10,6 +10,7 @@ signal load_battleCard()
 @onready var mindStateInputRoot = $CardArea/InpuCardArea/InputRoot as Control
 @onready var mindStateInputHintPanel = $CardArea/InpuCardArea/NormalStatus as Control
 @onready var mindStateEmptyStatue = $CardArea/InpuCardArea/NormalStatus as Control
+@onready var closeButton = $CloseButton as Button
 
 @export var mindStateList:Array[Control]
 var mindStateInputList:Array[MindStateBattleInputPanel]
@@ -20,7 +21,7 @@ var isIncreaseCardFlag: bool
 func _ready() -> void:
 	print("show mind state battle panel")
 	connect('load_battleCard', _on_load_battleCard)
-	$CloseButton.pressed.connect(_on_close_button)
+	closeButton.pressed.connect(_on_close_button)
 	$CardArea/ConfirmTargetButton.pressed.connect(_on_confirm_button)
 	GameInfo.mindStateManager.select_mindState_to_change.connect(select_mindStateInputPanel)
 

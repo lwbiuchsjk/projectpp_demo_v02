@@ -1,4 +1,5 @@
 extends Control
+class_name Event
 
 signal show_seat_brief_status()
 signal build_seat()
@@ -17,11 +18,11 @@ func _ready() -> void:
 	GameInfo.avgManager.connect("draw_npc", _set_npcInfo)
 	GameInfo.avgManager.connect("show_event_result", open_card_result_panel)
 
-	GameInfo.mindStateManager.connect('show_mindStateBattle_panel', on_show_mindStateBattle_panel)
-	GameInfo.mindStateManager.connect('close_mindStateBattle_panel', on_close_mindStateBattle_panel)
+	GameInfo.mindStateManager.show_mindStateBattle_panel.connect( on_show_mindStateBattle_panel)
+	GameInfo.mindStateManager.close_mindStateBattle_panel.connect(on_close_mindStateBattle_panel)
 
-	connect("show_seat_brief_status", set_seat_brief_status)
-	connect("build_seat", on_build_seat)
+	show_seat_brief_status.connect(set_seat_brief_status)
+	build_seat.connect(on_build_seat)
 	$TextArea/NextAvgButton.pressed.connect(_check_next_avg)
 	$SeatBriefPanel/SeatConfirmButton.pressed.connect(_confirm_seatSelect)
 	$SeatBriefPanel/SeatPanelTriggerButton.pressed.connect(_on_seatPanelTrigger)
@@ -102,8 +103,7 @@ func on_build_seat():
 
 func _check_next_avg():
 	print("执行下一步AVG")
-	GameInfo.avgManager.emit_signal("trigger_avg_control")
-
+	GameInfo.avgManager.trigger_avg_control.emit()
 
 func _on_close_avg():
 	var parent = get_parent()
@@ -171,7 +171,7 @@ func close_card_result_panel() -> void:
 	## 将弹板中未收回的卡牌，收回至牌库
 	## TODO 需要适配多牌库的情况
 	for target in resultDeckRoot.get_node("ResultDeck/cardDcek").get_children():
-		GameInfo.cardDataManager.emit_signal("trans_card_to_handDeck", target)
+		GameInfo.cardDataManager.trans_card_to_handDeck.emit(target)
 		print("检查弹板中卡牌：", target)
 	## 清理工作
 	# 清理结果弹板
@@ -232,5 +232,5 @@ func on_close_mindStateBattle_panel() -> void:
 		child.queue_free()
 
 	## 触发后续AVG流程
-	GameInfo.avgManager.emit_signal("simple_show_next_avg")
+	GameInfo.avgManager.simple_show_next_avg.emit()
 

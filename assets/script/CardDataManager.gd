@@ -23,8 +23,8 @@ var deckList:Dictionary
 @onready var resultDeck:deck
 
 func _ready() -> void:
-	connect("trans_card_to_handDeck", card_to_handDeck)
-	connect("gen_result_index", gen_event_result_index_from_eventResultCondition)
+	trans_card_to_handDeck.connect(card_to_handDeck)
+	gen_result_index.connect(gen_event_result_index_from_eventResultCondition)
 	## 将 genResult 写入 genResultEnum，方便外部调用
 	for key in genResult:
 		genResultEnum.append(key)
@@ -60,8 +60,8 @@ func SetCardToListFromIndex(index:int, target) -> void:
 
 
 func card_to_handDeck(cardToAdd: card) -> void:
-	var targetCard = get_targetDeck_from_card(cardToAdd.cardInfo)
-	targetCard.add_card(cardToAdd)
+	var targetDeck = get_targetDeck_from_card(cardToAdd.cardInfo)
+	targetDeck.add_card(cardToAdd)
 
 ## 通用函数。根据 cardData 来返回对应的 deck 。通过 'base_cardType' 字段检索
 func get_targetDeck_from_card(cardData: Dictionary) -> deck:

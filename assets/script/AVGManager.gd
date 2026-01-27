@@ -156,8 +156,8 @@ func avg_control(nextEvent = null):
 
 	## 如果当前正在选择，那么阻断点击
 	if _check_nowAvg_seating(nextEvent):
-		var eventNode = rootNode.get_node('Event')
-		eventNode.emit_signal("build_seat")
+		var eventNode = rootNode.get_node('Event') as Event
+		eventNode.build_seat.emit()
 		return
 
 	## 否则触发新avg

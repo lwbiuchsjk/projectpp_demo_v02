@@ -30,22 +30,22 @@ signal select_mindState_to_change()		## mindStateBattlePanel 中连接
 signal show_inputCard_change_direction()	## mindStateSelectSeat 中被调用
 signal clean_change_direction()				## mindStateSelectSeat 中被调用
 signal process_targetCard_property()
+signal show_battleResult_panel()
 
 func _ready() -> void:
-	connect("start_mindStateBattle", _on_start_mindStateBattle)
+	start_mindStateBattle.connect(_on_start_mindStateBattle)
 	show_inputCard_change_direction.connect(_show_change_direction)
 	clean_change_direction.connect(_clean_change_direction)
 	process_targetCard_property.connect(_process_targetCard_property)
-
-	#load_mindStateSwarmCard_from_battle()
+	show_battleResult_panel.connect(_show_battleResult_panel)
 
 func _on_start_mindStateBattle() -> void:
 	print("battle start")
-	emit_signal("show_mindStateBattle_panel")
+	show_mindStateBattle_panel.emit()
 	_show_battleNowTargetCard()
 
 	## TODO 此处可以改变进入战斗时的 spirit 值。可根据情况扩展。
-	PlayerInfo.gamePlayerInfoManager.settle_spiritAttribute(50)
+	PlayerInfo.gamePlayerInfoManager.settle_spiritAttribute(-90)
 
 ## 读取 SwarmCard 的配置。
 ## 读取时机放在 gameInfo 的 ready 中，确保必要数据结构已经建立。、
@@ -157,11 +157,11 @@ func _process_targetCard_property(inputCard: card, propertyIndex: int) -> void:
 	## 此时精神到最低后，应当有恢复机制，让玩家不至于又快速被迫面对 MindStateBattle
 	## 固定恢复机制？如果满足 selectCard，那么大回复。否则，小回复。
 	if isSatisfiedTemplate:
-		GameInfo.mindStateManager.emit_signal('close_mindStateBattle_panel')
+		GameInfo.mindStateManager.show_battleResult_panel.emit()
 		print("修正属性值后，满足 playerSelectCard 模板。退出 MindStateBattle。")
 		return
 	elif spiritQuitFlag:
-		GameInfo.mindStateManager.emit_signal('close_mindStateBattle_panel')
+		GameInfo.mindStateManager.show_battleResult_panel.emit()
 		print("操作后，精神降至最低，退出 MindStateBattle。")
 		return
 
@@ -199,3 +199,18 @@ func _search_mindStateTargetCard_from_mainProperty_and_secondProperty(mainProper
 			break
 
 	return outputTemplate['StandardCardID']
+
+## 触发战斗结算时，显示 battleResult_panel。
+func _show_battleResult_panel() -> void:
+	battlePanel.closeButton.visible = false
+	await get_tree().create_timer(0.5).timeout
+	var battleResultPanel = preload("res://scene/event/ResultPanel/ResultPanel.tscn").instantiate() as Control
+	battlePanel.add_child(battleResultPanel)
+	var resultDeck = battleResultPanel.get_node("ResultDeck") as deck
+	## TODO 临时方法，固定生成4张卡牌，卡牌类型根据 mindStateSwarm 随机生成
+	for index in range(4):
+		var cardRawInfo = get_randomCard_from_MindStateSwarm()
+		var searchCard = PlayerInfo.add_new_card(cardRawInfo['base_cardName'],resultDeck,resultDeck)
+
+
+

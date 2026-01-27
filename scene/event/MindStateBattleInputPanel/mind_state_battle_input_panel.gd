@@ -57,7 +57,7 @@ func _on_confirm_select_card() -> void:
 		PlayerInfo.gamePlayerInfoManager.settle_spiritAttribute(-5)
 
 		## 通过信号调用后续处理逻辑
-		GameInfo.mindStateManager.emit_signal("process_targetCard_property", selectCard, inputSeat.seat_index)
+		GameInfo.mindStateManager.process_targetCard_property.emit(selectCard, inputSeat.seat_index)
 		var infoPanel = GameInfo.mindStateManager.battlePanel.mindStateInfoArea.get_child(inputSeat.seat_index) as MindStateBattleInfoPanel
 		infoPanel.move_card(selectCard, self)
 
