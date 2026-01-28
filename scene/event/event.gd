@@ -12,11 +12,13 @@ var _isSeatBuild = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	GameInfo.avgManager.connect("new_avg", _on_new_avg)
-	GameInfo.avgManager.connect("clean_avg", _on_clean_avg)
-	GameInfo.avgManager.connect("close_avg", _on_close_avg)
-	GameInfo.avgManager.connect("draw_npc", _set_npcInfo)
-	GameInfo.avgManager.connect("show_event_result", open_card_result_panel)
+	GameInfo.avgManager.new_avg.connect(_on_new_avg)
+	##GameInfo.avgManager.new_avg.connect(_avg_test)
+
+	GameInfo.avgManager.clean_avg.connect(_on_clean_avg)
+	GameInfo.avgManager.close_avg.connect(_on_close_avg)
+	GameInfo.avgManager.draw_npc.connect(_set_npcInfo)
+	GameInfo.avgManager.show_event_result.connect(open_card_result_panel)
 
 	GameInfo.mindStateManager.show_mindStateBattle_panel.connect( on_show_mindStateBattle_panel)
 	GameInfo.mindStateManager.close_mindStateBattle_panel.connect(on_close_mindStateBattle_panel)
@@ -234,3 +236,5 @@ func on_close_mindStateBattle_panel() -> void:
 	## 触发后续AVG流程
 	GameInfo.avgManager.simple_show_next_avg.emit()
 
+func _avg_test() -> void:
+	print("success!")

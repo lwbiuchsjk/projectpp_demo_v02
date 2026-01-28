@@ -1,9 +1,19 @@
-[gd_scene load_steps=5 format=3 uid="uid://y26gsgs6ahbf"]
+[gd_scene load_steps=10 format=3 uid="uid://y26gsgs6ahbf"]
 
 [ext_resource type="Script" uid="uid://kgby6bvusjcp" path="res://scene/event/MindStateEvent/mind_state_battle_panel.gd" id="1_ij0qh"]
 [ext_resource type="PackedScene" uid="uid://b80jq7wxyi2j7" path="res://scene/Seat/seat.tscn" id="2_oeu2u"]
 [ext_resource type="Script" uid="uid://caegpfn0rr78n" path="res://scene/Seat/MindStatePlayerSelectSeat/mind_state_player_select_seat.gd" id="3_aisds"]
 [ext_resource type="PackedScene" uid="uid://djauqv8lmiukb" path="res://scene/event/MindStateBattleInfoPanel/MindStateBattleInfoPanel.tscn" id="3_ds76y"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_aisds"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_v30e7"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_mhnvi"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_7bms5"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ebvuy"]
 
 [node name="MindStateBattle" type="Control" node_paths=PackedStringArray("mindStateList")]
 layout_mode = 3
@@ -33,6 +43,35 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.62288105, 0.62288105, 0.62288105, 1)
+
+[node name="ScrollContainer" type="ScrollContainer" parent="TextArea"]
+custom_minimum_size = Vector2(650, 550)
+layout_mode = 0
+offset_left = 25.0
+offset_top = 50.0
+offset_right = 675.0
+offset_bottom = 600.0
+
+[node name="Label" type="Label" parent="TextArea/ScrollContainer"]
+custom_minimum_size = Vector2(650, 550)
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 28
+text = "测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测"
+autowrap_mode = 2
+
+[node name="NextAvgButton" type="Button" parent="TextArea"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/normal = SubResource("StyleBoxEmpty_aisds")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_v30e7")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_mhnvi")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_7bms5")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_ebvuy")
 
 [node name="CardArea" type="Control" parent="."]
 anchors_preset = 0

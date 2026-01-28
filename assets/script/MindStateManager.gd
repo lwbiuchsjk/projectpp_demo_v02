@@ -212,5 +212,3 @@ func _show_battleResult_panel() -> void:
 		var cardRawInfo = get_randomCard_from_MindStateSwarm()
 		var searchCard = PlayerInfo.add_new_card(cardRawInfo['base_cardName'],resultDeck,resultDeck)
 
-
-

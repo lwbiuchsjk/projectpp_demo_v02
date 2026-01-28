@@ -31,10 +31,10 @@ signal show_seat_brief_status()
 signal show_event_result()
 
 func _ready() -> void:
-	connect("trigger_avg_control", avg_control)
-	connect("simple_show_next_avg", set_next_avg)
-	connect("seatSelect_confirm", _on_seatSelect_confirm)
-	connect("show_seat_brief_status", set_seat_brief_status)
+	trigger_avg_control.connect(avg_control)
+	simple_show_next_avg.connect(set_next_avg)
+	seatSelect_confirm.connect(_on_seatSelect_confirm)
+	show_seat_brief_status.connect(set_seat_brief_status)
 
 	## 将 finishFunc 写入 finishFuncEnum，方便外部调用
 	for key in finishFunc:
@@ -131,9 +131,9 @@ func build_event(placeID):
 	set_avg_now(nowEvent['avg_plot'])
 
 	## 触发信号
-	emit_signal("clean_avg")
+	clean_avg.emit()
 	await get_tree().create_timer(0.1).timeout
-	emit_signal("new_avg")
+	new_avg.emit()
 	pass
 
 
@@ -144,14 +144,14 @@ func set_seatPair(key:String, value):
 func avg_control(nextEvent = null):
 	## 如果当前正在显示事件结果，那么弹出事件结果面板
 	if _check_nowAvg_finishFunc(finishFunc.EventResult):
-		emit_signal("show_event_result")
+		show_event_result.emit()
 		return
 
 	## 如果当前准备进入战斗，那么转入战斗面板，由战斗流程接管
 	if _check_nowAvg_finishFunc(finishFunc.Battle):
 		var nowEvent = load_event_from_ID(nowEventID)
 		#GameInfo.mindStateManager.battleID = nowEvent['plot_finish_func_param']
-		GameInfo.mindStateManager.emit_signal("start_mindStateBattle")
+		GameInfo.mindStateManager.start_mindStateBattle.emit()
 		return
 
 	## 如果当前正在选择，那么阻断点击
@@ -174,13 +174,13 @@ func set_next_avg(nextEvent = null) -> void:
 		nowAvgID = nextEvent['avg_plot']
 
 	if nowAvgID != null and nowAvgID != "":
-		emit_signal("new_avg")
-		emit_signal("draw_npc")
+		new_avg.emit()
+		draw_npc.emit()
 		return
 
 	## 通过 nowAvg 相关配置，来决定是否关闭 avg 面板。
 	if nowAvg['nextID'] == null or nowAvg['nextID'] == "":
-		emit_signal("close_avg")
+		close_avg.emit()
 
 func _on_seatSelect_confirm():
 	## 隐藏按钮
