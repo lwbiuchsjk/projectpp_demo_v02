@@ -1,9 +1,10 @@
-[gd_scene load_steps=15 format=3 uid="uid://dmbq200ef0pti"]
+[gd_scene load_steps=16 format=3 uid="uid://dmbq200ef0pti"]
 
 [ext_resource type="Texture2D" uid="uid://fexoqmnw4eiq" path="res://assets/image/placeText.jpg" id="1_la730"]
 [ext_resource type="Script" uid="uid://kpabxofifrvt" path="res://scene/event/event.gd" id="1_luj7y"]
 [ext_resource type="Texture2D" uid="uid://dv70kq5qlxcv5" path="res://assets/image/background.png" id="2_5pdwc"]
 [ext_resource type="Script" uid="uid://db0lxuumvxkwf" path="res://scene/event/CardContainer.gd" id="2_fv7qv"]
+[ext_resource type="PackedScene" uid="uid://vq1vu0hy1dhe" path="res://scene/event/AVGPanel/AVGPanel.tscn" id="3_gyara"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_pcqei"]
 
@@ -57,13 +58,20 @@ offset_left = 1200.0
 offset_right = 1900.0
 offset_bottom = 700.0
 
+[node name="AvgPanel" parent="TextArea" instance=ExtResource("3_gyara")]
+layout_mode = 1
+offset_right = 0.0
+offset_bottom = 0.0
+
 [node name="TextureRect" type="TextureRect" parent="TextArea"]
+visible = false
 layout_mode = 0
 offset_right = 700.0
 offset_bottom = 700.0
 texture = ExtResource("2_5pdwc")
 
 [node name="ScrollContainer" type="ScrollContainer" parent="TextArea"]
+visible = false
 custom_minimum_size = Vector2(650, 550)
 layout_mode = 0
 offset_left = 25.0
@@ -72,6 +80,7 @@ offset_right = 675.0
 offset_bottom = 575.0
 
 [node name="Label" type="Label" parent="TextArea/ScrollContainer"]
+visible = false
 custom_minimum_size = Vector2(650, 550)
 layout_mode = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)

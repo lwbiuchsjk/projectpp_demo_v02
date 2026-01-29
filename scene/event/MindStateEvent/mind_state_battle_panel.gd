@@ -11,6 +11,7 @@ signal load_battleCard()
 @onready var mindStateInputHintPanel = $CardArea/InpuCardArea/NormalStatus as Control
 @onready var mindStateEmptyStatue = $CardArea/InpuCardArea/NormalStatus as Control
 @onready var closeButton = $CloseButton as Button
+@onready var avgPanel = $TextArea/AvgPanel as AVGPanel
 
 @export var mindStateList:Array[Control]
 var mindStateInputList:Array[MindStateBattleInputPanel]
@@ -31,6 +32,15 @@ func _ready() -> void:
 	## 初始化 seat 数据
 	## TODO 此处暂用 ID = 998 的Seat数据强制赋值。后续需要指定专用 SeatID，或根据功能支持配置指定 SeatID
 	$CardArea/SelectCardSeat/Seat.set_seat_data(0, '998')
+
+	## TODO 测试avg功能
+	## avg 相关显示
+	GameInfo.avgManager.new_avg.connect(_on_new_avg)
+	GameInfo.avgManager.clean_avg.connect(_on_clean_avg)
+
+	GameInfo.avgManager.nowAvgID = "3"
+	GameInfo.avgManager.clean_avg.emit(self)
+	GameInfo.avgManager.new_avg.emit(self)
 
 
 func _on_close_button() -> void:
@@ -126,3 +136,22 @@ func select_mindStateInputPanel(property: String) -> void:
 			inputPanel.open_panel()
 		else:
 			inputPanel.close_panel()
+
+
+func _on_clean_avg(caller: Control = null):
+	if caller != null and caller != self:
+		return
+
+	avgPanel.on_clean_avg()
+
+func _on_new_avg(caller: Control = null):
+	if caller != null and caller != self:
+		return
+	var avg = GameInfo.avgManager.load_avg_config()
+	## 设置文字
+	var avgText = avg.words
+	avgPanel.on_new_avg(avgText)
+	## 设置图片
+	var avgBgPic = GameInfo.avgManager.load_picImagePath_from_ID(avg.backgroundPic)
+	if avgBgPic != null:
+		$PicCardArea/EventImage.texture = load(avgBgPic)

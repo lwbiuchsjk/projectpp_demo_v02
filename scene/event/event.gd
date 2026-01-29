@@ -6,17 +6,18 @@ signal build_seat()
 
 @onready var resultDeckRoot = $EventResult/ResultCardList
 @onready var mindStateBattleRoot = $MindStateBattleRoot
+@onready var avgPanel: AVGPanel = $TextArea/AvgPanel
 var resultCardList: Array
 ## 仅用于判断座位是否被创建过，防止反复被外部调用。内部变量。
 var _isSeatBuild = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	## avg 相关显示
 	GameInfo.avgManager.new_avg.connect(_on_new_avg)
-	##GameInfo.avgManager.new_avg.connect(_avg_test)
-
 	GameInfo.avgManager.clean_avg.connect(_on_clean_avg)
 	GameInfo.avgManager.close_avg.connect(_on_close_avg)
+
 	GameInfo.avgManager.draw_npc.connect(_set_npcInfo)
 	GameInfo.avgManager.show_event_result.connect(open_card_result_panel)
 
@@ -46,21 +47,21 @@ func arrange_children_bottom_up() -> void:
 	pass
 
 
-func _on_clean_avg():
-	$TextArea/ScrollContainer/Label.text = ""
+func _on_clean_avg(caller: Control = null):
+	if caller != null and caller != self:
+		return
 
-func _on_new_avg():
+	avgPanel.on_clean_avg()
+
+func _on_new_avg(caller: Control = null):
+	if caller != null and caller != self:
+		return
 	var avg = GameInfo.avgManager.load_avg_config()
 	## 设置文字
 	var avgText = avg.words
+	avgPanel.on_new_avg(avgText)
 	## 设置图片
 	var avgBgPic = GameInfo.avgManager.load_picImagePath_from_ID(avg.backgroundPic)
-	var nowText = $TextArea/ScrollContainer/Label.text
-	if nowText == "":
-		$TextArea/ScrollContainer/Label.text = avgText
-	else:
-		$TextArea/ScrollContainer/Label.text = nowText + "\n\n" + avgText
-
 	if avgBgPic != null:
 		$PicCardArea/EventImage.texture = load(avgBgPic)
 
@@ -112,7 +113,7 @@ func _on_close_avg():
 	if parent:
 		parent.remove_child(self)
 	queue_free()
-	GameInfo.avgManager.emit_signal("next_plot")
+	GameInfo.avgManager.next_plot.emit()
 	pass
 
 ## 卡牌与座位匹配确认按钮
@@ -183,9 +184,9 @@ func close_card_result_panel() -> void:
 	# 清理数据管理器重的座位卡牌数据
 	GameInfo.cardDataManager.CleanSeatedCardList()
 	GameInfo.cardDataManager.set_eventResultCondition()
-	GameInfo.cardDataManager.emit_signal("gen_result_index", true)
+	GameInfo.cardDataManager.gen_result_index.emit(true)
 	## 触发后续AVG流程
-	GameInfo.avgManager.emit_signal("simple_show_next_avg")
+	GameInfo.avgManager.simple_show_next_avg.emit()
 
 ## 打开展示弹板
 func open_card_result_panel() -> void:
@@ -235,6 +236,3 @@ func on_close_mindStateBattle_panel() -> void:
 
 	## 触发后续AVG流程
 	GameInfo.avgManager.simple_show_next_avg.emit()
-
-func _avg_test() -> void:
-	print("success!")

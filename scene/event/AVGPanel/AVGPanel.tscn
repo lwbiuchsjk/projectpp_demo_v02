@@ -1,0 +1,62 @@
+[gd_scene load_steps=7 format=3 uid="uid://vq1vu0hy1dhe"]
+
+[ext_resource type="Script" uid="uid://dwrok1mfwunbg" path="res://scene/event/AVGPanel/avg_panel.gd" id="1_nmdug"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_x5dh5"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_nmdug"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_wpjk8"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_g15jl"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_bhq4q"]
+
+[node name="AvgPanel" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -1220.0
+offset_bottom = -380.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_nmdug")
+
+[node name="BgImage" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.62288105, 0.62288105, 0.62288105, 1)
+
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
+custom_minimum_size = Vector2(650, 550)
+layout_mode = 0
+offset_left = 25.0
+offset_top = 50.0
+offset_right = 675.0
+offset_bottom = 600.0
+
+[node name="Label" type="Label" parent="ScrollContainer"]
+custom_minimum_size = Vector2(650, 550)
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 28
+text = "测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测试数据测"
+autowrap_mode = 2
+
+[node name="NextAvgButton" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/normal = SubResource("StyleBoxEmpty_x5dh5")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_nmdug")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_wpjk8")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_g15jl")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_bhq4q")
