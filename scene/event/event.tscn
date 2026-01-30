@@ -89,6 +89,7 @@ text = "测试数据测试数据测试数据测试数据测试数据测试数据
 autowrap_mode = 2
 
 [node name="NextAvgButton" type="Button" parent="TextArea"]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0

@@ -44,7 +44,7 @@ func _ready() -> void:
 
 
 func _on_close_button() -> void:
-	GameInfo.mindStateManager.emit_signal('close_mindStateBattle_panel')
+	GameInfo.mindStateManager.close_mindStateBattle_panel.emit()
 
 func _on_load_battleCard(cardToAdd: card) -> void:
 	var battleInfo = $CardArea/MindStateSwarmCardRoot/TargetCardName as Label

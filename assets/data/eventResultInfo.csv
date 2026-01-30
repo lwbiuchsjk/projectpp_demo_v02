@@ -1,5 +1,5 @@
 ﻿ID,condition,result
-201,CardEqual:0:1,"Property:0:SKILL:16,AddCard:2"
+201,CardEqual:0:5,"Property:0:SKILL:16,AddCard:2"
 202,"TypeEqual:0:SKILL,CardEqual:1:2","AddSeatIndex:0,AddCard:4"
 203,Typeof:1:SKILL,
 209,,"Property:0:ITEM:16,AddCard:3"

@@ -5,6 +5,7 @@ class_name AVGPanel
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	$NextAvgButton.pressed.connect(_check_next_avg)
 	pass # Replace with function body.
 
 
@@ -21,3 +22,7 @@ func on_new_avg(avgText:String) -> void:
 
 func on_clean_avg():
 	nowText.text = ""
+
+func _check_next_avg():
+	print("执行下一步AVG")
+	GameInfo.avgManager.trigger_avg_control.emit()

@@ -11,6 +11,9 @@ var seatPair:Dictionary
 enum finishFunc{Seat, EventResult, Battle, Choice}
 var finishFuncEnum = []
 
+enum avgStatus{Adventure, Battle}
+var currentAvgStatus = avgStatus.Adventure
+
 ## 面板调用节点配置
 @onready var rootNode:Node = get_tree().root.get_node("testScean")
 ## 信息改变信号
@@ -142,23 +145,35 @@ func set_seatPair(key:String, value):
 	seatPair[key] = value
 
 func avg_control(nextEvent = null):
-	## 如果当前正在显示事件结果，那么弹出事件结果面板
-	if _check_nowAvg_finishFunc(finishFunc.EventResult):
-		show_event_result.emit()
-		return
+	var nowAvg = load_avg_config()
 
-	## 如果当前准备进入战斗，那么转入战斗面板，由战斗流程接管
-	if _check_nowAvg_finishFunc(finishFunc.Battle):
-		var nowEvent = load_event_from_ID(nowEventID)
-		#GameInfo.mindStateManager.battleID = nowEvent['plot_finish_func_param']
-		GameInfo.mindStateManager.start_mindStateBattle.emit()
-		return
+	match currentAvgStatus:
+		avgStatus.Adventure:
+			## 通过 nowAvg 相关配置，来决定是否关闭 avg 面板。
+			if nowAvg == null:
+				close_avg.emit()
+				return
 
-	## 如果当前正在选择，那么阻断点击
-	if _check_nowAvg_seating(nextEvent):
-		var eventNode = rootNode.get_node('Event') as Event
-		eventNode.build_seat.emit()
-		return
+			if nowAvg['nextID'] == null or nowAvg['nextID'] == "":
+				## 如果当前正在显示事件结果，那么弹出事件结果面板
+				if _check_nowAvg_finishFunc(finishFunc.EventResult):
+					show_event_result.emit()
+					return
+
+				## 如果当前准备进入战斗，那么转入战斗面板，由战斗流程接管
+				if _check_nowAvg_finishFunc(finishFunc.Battle):
+					var nowEvent = load_event_from_ID(nowEventID)
+					#GameInfo.mindStateManager.battleID = nowEvent['plot_finish_func_param']
+					GameInfo.mindStateManager.start_mindStateBattle.emit()
+					return
+
+				## 如果当前正在选择，那么阻断点击
+				if _check_nowAvg_seating(nextEvent):
+					var eventNode = rootNode.get_node('Event') as Event
+					eventNode.build_seat.emit()
+					return
+		avgStatus.Battle:
+			return
 
 	## 否则触发新avg
 	set_next_avg(nextEvent)
@@ -178,10 +193,6 @@ func set_next_avg(nextEvent = null) -> void:
 		draw_npc.emit()
 		return
 
-	## 通过 nowAvg 相关配置，来决定是否关闭 avg 面板。
-	if nowAvg['nextID'] == null or nowAvg['nextID'] == "":
-		close_avg.emit()
-
 func _on_seatSelect_confirm():
 	## 隐藏按钮
 	var eventNode = rootNode.get_node('Event')
@@ -193,18 +204,15 @@ func _on_seatSelect_confirm():
 
 ## 内部函数，用于检测是否打开 seatPanel。传入的 checkEvent 用于流程控制。如果其 checkEvent = null，则代表当前没有开启新的 event，因此可以在 AVG 结束时打开 seatPanel
 func _check_nowAvg_seating(checkEvent) -> bool:
-	var nowAvg = load_avg_config()
 	var nowEvent = load_event_from_ID(nowEventID)
 
-	if checkEvent == null and (nowAvg['nextID'] == null or nowAvg['nextID'] == "") and nowEvent['seatList'].size() > 0:
+	if checkEvent == null and nowEvent['seatList'].size() > 0:
 		return true
 	else:
 		return false
 
 func _check_nowAvg_finishFunc(funcIndex: int) -> bool:
-	var nowAvg = load_avg_config()
-
-	if (nowAvg['nextID'] == null or nowAvg['nextID'] == "") and _check_nowEvent_finishFunc(funcIndex):
+	if _check_nowEvent_finishFunc(funcIndex):
 		return true
 	else:
 		return false
@@ -241,7 +249,7 @@ func check_next_event_condition(setNextEventID = null):
 		nextEvent = load_event_from_ID(maxPoint_eventID)
 	else:
 		nextEvent = load_event_from_ID(blank_eventID)
-	emit_signal("trigger_avg_control", nextEvent)
+	trigger_avg_control.emit(nextEvent)
 	pass
 
 ## 条件计分函数。通过最终得分，来给condition的匹配情况进行评价。分数越高，评价结果越好。正常 condition 的得分都会大于 0 。

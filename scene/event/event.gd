@@ -26,7 +26,7 @@ func _ready() -> void:
 
 	show_seat_brief_status.connect(set_seat_brief_status)
 	build_seat.connect(on_build_seat)
-	$TextArea/NextAvgButton.pressed.connect(_check_next_avg)
+	#$TextArea/NextAvgButton.pressed.connect(_check_next_avg)
 	$SeatBriefPanel/SeatConfirmButton.pressed.connect(_confirm_seatSelect)
 	$SeatBriefPanel/SeatPanelTriggerButton.pressed.connect(_on_seatPanelTrigger)
 	$EventResult/CollectCardButton.pressed.connect(close_card_result_panel)
@@ -134,8 +134,8 @@ func _confirm_seatSelect():
 	## 设置seat设置状态为 false，方便后续管理
 	set_seatBuild_status(false)
 	## 触发确认逻辑
-	GameInfo.avgManager.emit_signal('seatSelect_confirm')
-	GameInfo.cardDataManager.emit_signal('gen_result_index')
+	GameInfo.avgManager.seatSelect_confirm.emit()
+	GameInfo.cardDataManager.gen_result_index.emit()
 	pass
 
 ## 呼出 SeatPanel 面板。面板常驻，只是调整其是否显示。
@@ -235,4 +235,5 @@ func on_close_mindStateBattle_panel() -> void:
 		child.queue_free()
 
 	## 触发后续AVG流程
+	GameInfo.avgManager.currentAvgStatus = GameInfo.avgManager.avgStatus.Adventure
 	GameInfo.avgManager.simple_show_next_avg.emit()
