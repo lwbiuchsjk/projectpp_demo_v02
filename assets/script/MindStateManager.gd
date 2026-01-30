@@ -47,7 +47,7 @@ func _on_start_mindStateBattle() -> void:
 	## TODO 此处可以改变进入战斗时的 spirit 值。可根据情况扩展。
 	PlayerInfo.gamePlayerInfoManager.settle_spiritAttribute(-90)
 	## 切换 avg 状态，方便控制流程
-	GameInfo.avgManager.currentAvgStatus = GameInfo.avgManager.avgStatus.Battle
+	GameInfo.avgManager.switch_currentStatus_to_Battle()
 
 ## 读取 SwarmCard 的配置。
 ## 读取时机放在 gameInfo 的 ready 中，确保必要数据结构已经建立。、

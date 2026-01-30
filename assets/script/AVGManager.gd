@@ -117,6 +117,14 @@ func load_picImagePath_from_ID(ID):
 			break
 	return output
 
+## 切换 currentStatus 至 Adventure
+func switch_currentStatus_to_Adventure() -> void:
+	currentAvgStatus = avgStatus.Adventure
+
+## 切换 currentStatus 至 Battle
+func switch_currentStatus_to_Battle() -> void:
+	currentAvgStatus = avgStatus.Battle
+
 ## 信号激活函数。将会在配置的根节点上创建事件面板，并根据配置加载槽位，文字。
 func build_event(placeID):
 	var place = load_place_from_ID(placeID)

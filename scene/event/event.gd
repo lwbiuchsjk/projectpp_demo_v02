@@ -235,5 +235,5 @@ func on_close_mindStateBattle_panel() -> void:
 		child.queue_free()
 
 	## 触发后续AVG流程
-	GameInfo.avgManager.currentAvgStatus = GameInfo.avgManager.avgStatus.Adventure
+	GameInfo.avgManager.switch_currentStatus_to_Adventure()
 	GameInfo.avgManager.simple_show_next_avg.emit()
