@@ -21,7 +21,7 @@ var isIncreaseCardFlag: bool
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	print("show mind state battle panel")
-	connect('load_battleCard', _on_load_battleCard)
+	load_battleCard.connect(_on_load_battleCard)
 	closeButton.pressed.connect(_on_close_button)
 	$CardArea/ConfirmTargetButton.pressed.connect(_on_confirm_button)
 	GameInfo.mindStateManager.select_mindState_to_change.connect(select_mindStateInputPanel)
@@ -38,9 +38,11 @@ func _ready() -> void:
 	GameInfo.avgManager.new_avg.connect(_on_new_avg)
 	GameInfo.avgManager.clean_avg.connect(_on_clean_avg)
 
-	GameInfo.avgManager.nowAvgID = "3"
+	GameInfo.avgManager.nowAvgID = GameInfo.mindStateManager.battleData['AvgList'][0]
 	GameInfo.avgManager.clean_avg.emit(self)
 	GameInfo.avgManager.new_avg.emit(self)
+
+	show_battle_compomd(false)
 
 
 func _on_close_button() -> void:
@@ -151,7 +153,13 @@ func _on_new_avg(caller: Control = null):
 	## 设置文字
 	var avgText = avg.words
 	avgPanel.on_new_avg(avgText)
+	## TODO 在 mindStateBattlePanel 中，暂时不设置 avg 的 pic
 	## 设置图片
 	var avgBgPic = GameInfo.avgManager.load_picImagePath_from_ID(avg.backgroundPic)
-	if avgBgPic != null:
-		$PicCardArea/EventImage.texture = load(avgBgPic)
+	##if avgBgPic != null:
+	##	$CardArea/BgRIghtImage.texture = load(avgBgPic)
+
+## 设置 mindStateBattle 部分组件的可见性。用于决定什么时候 battle 开始
+func show_battle_compomd(status: bool) -> void:
+	$CardArea/SelectCardSeat.visible = status
+	$CardArea/ConfirmTargetButton.visible = status

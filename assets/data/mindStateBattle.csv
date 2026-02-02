@@ -1,2 +1,2 @@
-﻿ID,remarks,CardsInfo,BattleEndEvent
-1,用于描述mindStateBattle，重点是其中的 MindStateCard, 5/2,1
+﻿ID,remarks,CardsInfo,BattleEndEvent,AvgList
+1,用于描述mindStateBattle，重点是其中的 MindStateCard。AvgList 这中应当关联 mindStateBattle 中的多段剧情。当前仅读取 list 中的第一个, 5/2,1, 1/2

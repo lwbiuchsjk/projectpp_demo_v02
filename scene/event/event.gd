@@ -20,13 +20,15 @@ func _ready() -> void:
 
 	GameInfo.avgManager.draw_npc.connect(_set_npcInfo)
 	GameInfo.avgManager.show_event_result.connect(open_card_result_panel)
+	## 手动设置 avgManager 中 eventPanel 为 self。方便 avgManager 通过信号调用对应 panel 中的 avgPanel
+	## 这是因为，当多个界面中存在 avgPanel 中时，on_new_avg 需要通过判断 caller 来决定，哪个 avgPanel 来响应当前信号
+	GameInfo.avgManager.eventPanel = self
 
 	GameInfo.mindStateManager.show_mindStateBattle_panel.connect( on_show_mindStateBattle_panel)
 	GameInfo.mindStateManager.close_mindStateBattle_panel.connect(on_close_mindStateBattle_panel)
 
 	show_seat_brief_status.connect(set_seat_brief_status)
 	build_seat.connect(on_build_seat)
-	#$TextArea/NextAvgButton.pressed.connect(_check_next_avg)
 	$SeatBriefPanel/SeatConfirmButton.pressed.connect(_confirm_seatSelect)
 	$SeatBriefPanel/SeatPanelTriggerButton.pressed.connect(_on_seatPanelTrigger)
 	$EventResult/CollectCardButton.pressed.connect(close_card_result_panel)
@@ -53,6 +55,7 @@ func _on_clean_avg(caller: Control = null):
 
 	avgPanel.on_clean_avg()
 
+## 其他 panel 中设置 new_avg 相关功能时，都需要添加 caller 判断。
 func _on_new_avg(caller: Control = null):
 	if caller != null and caller != self:
 		return
@@ -103,10 +106,6 @@ func on_build_seat():
 		_on_seatPanelTrigger()
 		## 设置 seat 设置标记 = true，防止反复调用
 		set_seatBuild_status(true)
-
-func _check_next_avg():
-	print("执行下一步AVG")
-	GameInfo.avgManager.trigger_avg_control.emit()
 
 func _on_close_avg():
 	var parent = get_parent()

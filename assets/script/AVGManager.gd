@@ -7,6 +7,7 @@ var nowPlace:String
 var nowPlot:String
 var nowEventID:String
 var seatPair:Dictionary
+var eventPanel: Control
 
 enum finishFunc{Seat, EventResult, Battle, Choice}
 var finishFuncEnum = []
@@ -144,7 +145,7 @@ func build_event(placeID):
 	## 触发信号
 	clean_avg.emit()
 	await get_tree().create_timer(0.1).timeout
-	new_avg.emit()
+	new_avg.emit(eventPanel)
 	pass
 
 
@@ -181,13 +182,21 @@ func avg_control(nextEvent = null):
 					eventNode.build_seat.emit()
 					return
 		avgStatus.Battle:
-			return
+			if nowAvg['nextID'] == null or nowAvg['nextID'] == "":
+				GameInfo.mindStateManager.battlePanel.show_battle_compomd(true)
+				return
 
 	## 否则触发新avg
-	set_next_avg(nextEvent)
+	var caller
+	match currentAvgStatus:
+		avgStatus.Adventure:
+			caller = eventPanel
+		avgStatus.Battle:
+			caller = GameInfo.mindStateManager.battlePanel
+	set_next_avg(nextEvent, caller)
 
 
-func set_next_avg(nextEvent = null) -> void:
+func set_next_avg(nextEvent = null, caller: Control = null) -> void:
 	var nowAvg = load_avg_config()
 
 	if nextEvent == null:
@@ -197,7 +206,7 @@ func set_next_avg(nextEvent = null) -> void:
 		nowAvgID = nextEvent['avg_plot']
 
 	if nowAvgID != null and nowAvgID != "":
-		new_avg.emit()
+		new_avg.emit(caller)
 		draw_npc.emit()
 		return
 

@@ -268,6 +268,14 @@ func mindStateBattle_data_wash() -> void:
 				outputValue.append(swarmCardInfo)
 		config['CardsInfo'] = outputValue
 
+		## 处理 AvgList
+		var avgValue = config['AvgList'].replace(" ", "").split("/")
+		var outputAvgValue = []
+		for value in avgValue:
+			if value.is_valid_int():
+				outputAvgValue.append(value)
+		config['AvgList'] = outputAvgValue
+
 ## 根据传入的 TypeName 来返回对应的 templateData
 func get_mindStateTemplaterData(input: String) -> Dictionary:
 	for value in mindStateTemplate.values():
